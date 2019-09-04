@@ -1,0 +1,6 @@
+# Build artifacts
+build
+
+# Visual Studio auto-generated files
+.vs
+out

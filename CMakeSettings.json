@@ -1,0 +1,126 @@
+﻿{
+  "configurations": [
+    {
+      "name": "x64-Debug",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "inheritEnvironments": [ "msvc_x86_x64" ],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": "",
+      "variables": [
+        {
+          "name": "CMAKE_EXE_LINKER_FLAGS",
+          "value": "/machine:X86",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "name": "x64-Release",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": [
+        {
+          "name": "CMAKE_CXX_FLAGS_RELEASE",
+          "value": "/MD /O2 /Ob2 /DNDEBUG",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_EXE_LINKER_FLAGS_DEBUG",
+          "value": "/debug /INCREMENTAL",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_EXE_LINKER_FLAGS",
+          "value": "/machine:x64",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_STATIC_LINKER_FLAGS",
+          "value": "/machine:x64",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_SHARED_LINKER_FLAGS",
+          "value": "/machine:x64",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_MODULE_LINKER_FLAGS",
+          "value": "/machine:x64",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "name": "x64-Release-Profile",
+      "generator": "Ninja",
+      "configurationType": "RelWithDebInfo",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": [
+        {
+          "name": "CMAKE_CXX_FLAGS_RELEASE",
+          "value": "/MD /O2 /Ob2 /DNDEBUG",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_EXE_LINKER_FLAGS_DEBUG",
+          "value": "/debug /INCREMENTAL",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_EXE_LINKER_FLAGS",
+          "value": "/machine:x64 /PROFILE",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_STATIC_LINKER_FLAGS",
+          "value": "/machine:x64",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_SHARED_LINKER_FLAGS",
+          "value": "/machine:x64",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_MODULE_LINKER_FLAGS",
+          "value": "/machine:x64",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "name": "x64-Debug-Profile",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x86_x64" ],
+      "variables": [
+        {
+          "name": "CMAKE_EXE_LINKER_FLAGS",
+          "value": "/machine:X86 /PROFILE",
+          "type": "STRING"
+        }
+      ]
+    }
+  ]
+}
