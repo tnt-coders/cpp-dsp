@@ -19,7 +19,7 @@ make it public now because others may find it useful.
 # Build Requirements
 
 * CMake v3.14.0 (or later)
-* C++11 compliant compiler (or later)
+* C++17 compliant compiler (or later)
 * Conan package manager v1.18.1 (or later)
 
 # Dependencies
