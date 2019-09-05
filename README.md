@@ -28,7 +28,7 @@ To test the project, run CTest from the build/test directory.
     cd build/test
     ctest
 
-Note: Some tests will intentionally fail because they are note implemented yet.
+Note: Some tests will intentionally fail because they are not implemented yet.
 
 ## Build Requirements
 
