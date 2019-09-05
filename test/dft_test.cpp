@@ -4,6 +4,7 @@
 
 using namespace tnt;
 
+// TODO: Test complex input signals
 TEST(DFT, DFT)
 {
     size_t N = 4;
