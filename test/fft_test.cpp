@@ -10,6 +10,45 @@ using std::cos;
 using std::sin;
 using std::vector;
 
+class FFTTest : public testing::Test
+{
+protected:
+    double m_epsilon = std::pow(10.0, -4);
+};
+
+class FFTSizeTest : public FFTTest, public testing::WithParamInterface<size_t>
+{};
+
+TEST_P(FFTSizeTest, FFTSizeTest)
+{
+    auto N = GetParam();
+
+    vector<double> x(N);
+
+    int f_s = 1000;
+    double t_s = 1.0 / f_s;
+
+    for (size_t n = 0; n < N; ++n)
+    {
+        x[n] = sin(2 * M_PI * 100 * n * t_s);
+    }
+
+    auto X = dsp::DFT(x);
+    auto X2 = dsp::FFT(x);
+
+    ASSERT_EQ(X.size(), N);
+    ASSERT_EQ(X2.size(), N);
+
+    for (size_t k = 0; k < N; ++k)
+    {
+        EXPECT_NEAR(X[k].real(), X2[k].real(), m_epsilon);
+        EXPECT_NEAR(X[k].imag(), X2[k].imag(), m_epsilon);
+    }
+}
+
+INSTANTIATE_TEST_CASE_P(NIsEven, FFTSizeTest, testing::Values(2, 4, 6, 8, 10));
+INSTANTIATE_TEST_CASE_P(NIsOdd, FFTSizeTest, testing::Values(1, 3, 5, 7, 9));
+
 // TODO: Test larger sizes for speed
 TEST(FFT, FFT)
 {
