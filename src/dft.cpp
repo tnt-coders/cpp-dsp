@@ -1,4 +1,4 @@
-#include "dft.h"
+#include "dft.hpp"
 
 #include <cmath>
 #include <complex>

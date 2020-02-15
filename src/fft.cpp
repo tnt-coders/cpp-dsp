@@ -1,7 +1,10 @@
-#include "fft.h"
+#include "fft.hpp"
+#include "math_helpers.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cassert>
+#include <cmath>
 #include <complex>
 #include <functional>
 #include <vector>
@@ -9,21 +12,33 @@
 namespace tnt::dsp
 {
 
+using std::array;
 using std::complex;
 using std::conj;
+using std::cos;
 using std::multiplies;
 using std::polar;
+using std::sin;
 using std::transform;
 using std::vector;
 
+template <size_t N>
+consteval array<complex<double>, N/2> CalculateTwiddleFactors()
+{
+    array<complex<double>, N/2> W;
+    const auto omega = 2.0*M_PI/N;
+    for (size_t n = 0; n < N/2; ++n)
+    {
+        W[n] = complex{cos(-omega * n), sin(-omega * n)};
+    }
+
+    return W;
+}
+
+constexpr auto Twiddle = CalculateTwiddleFactors<65536>();
+
 static vector<complex<double>> BluesteinFFT(const vector<complex<double>>& x);
 static vector<complex<double>> Convolve(const vector<complex<double>>& a, const vector<complex<double>>& b);
-
-//TODO: Extract these functions out into another file (possibly another library in the future)
-static constexpr bool IsEven(const size_t value);
-static constexpr bool IsPowerOf2(const size_t value);
-static constexpr size_t NextPowerOf2(const size_t value);
-
 static vector<complex<double>> StockhamFFT(const vector<double>& x);
 static vector<complex<double>> StockhamFFT(const vector<complex<double>>& x);
 static vector<complex<double>> StockhamFFT(const vector<complex<double>>& x, const vector<complex<double>>& W);
@@ -205,30 +220,6 @@ static vector<complex<double>> Convolve(const vector<complex<double>>& a, const 
     transform(A.begin(), A.end(), B.begin(), C.begin(), multiplies<complex<double>>());
 
     return IFFT(C);
-}
-
-// Returns true if the provided value is even
-static constexpr bool IsEven(const size_t value)
-{
-    return !(value % 2);
-}
-
-// Returns true if the provided value is a power of 2
-static constexpr bool IsPowerOf2(const size_t value)
-{
-    return value && (!(value & (value - 1)));
-}
-
-// Returns the next power of 2 greater than or equal to the provided value
-static constexpr size_t NextPowerOf2(const size_t value)
-{
-    size_t result = 1;
-    while (result < value)
-    {
-        result <<= 1;
-    }
-
-    return result;
 }
 
 // C++ implementation of the Stockam FFT algorithm

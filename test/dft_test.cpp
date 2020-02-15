@@ -1,6 +1,6 @@
 #include <cmath>
 #include <gtest/gtest.h>
-#include <tnt/dsp/dft.h>
+#include <tnt/dsp/dft.hpp>
 
 using namespace tnt;
 

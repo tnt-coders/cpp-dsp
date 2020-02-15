@@ -1,7 +1,7 @@
 #include <cmath>
 #include <gtest/gtest.h>
-#include <tnt/dsp/dft.h>
-#include <tnt/dsp/fft.h>
+#include <tnt/dsp/dft.hpp>
+#include <tnt/dsp/fft.hpp>
 
 using namespace tnt;
 
