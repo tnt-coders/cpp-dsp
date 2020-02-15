@@ -18,9 +18,12 @@ using std::vector;
 
 static vector<complex<double>> BluesteinFFT(const vector<complex<double>>& x);
 static vector<complex<double>> Convolve(const vector<complex<double>>& a, const vector<complex<double>>& b);
-static bool IsEven(const size_t value);
-static bool IsPowerOf2(const size_t value);
-static size_t NextPowerOf2(const size_t value);
+
+//TODO: Extract these functions out into another file (possibly another library in the future)
+static constexpr bool IsEven(const size_t value);
+static constexpr bool IsPowerOf2(const size_t value);
+static constexpr size_t NextPowerOf2(const size_t value);
+
 static vector<complex<double>> StockhamFFT(const vector<double>& x);
 static vector<complex<double>> StockhamFFT(const vector<complex<double>>& x);
 static vector<complex<double>> StockhamFFT(const vector<complex<double>>& x, const vector<complex<double>>& W);
@@ -205,19 +208,19 @@ static vector<complex<double>> Convolve(const vector<complex<double>>& a, const 
 }
 
 // Returns true if the provided value is even
-static bool IsEven(const size_t value)
+static constexpr bool IsEven(const size_t value)
 {
     return !(value % 2);
 }
 
 // Returns true if the provided value is a power of 2
-static bool IsPowerOf2(const size_t value)
+static constexpr bool IsPowerOf2(const size_t value)
 {
     return value && (!(value & (value - 1)));
 }
 
 // Returns the next power of 2 greater than or equal to the provided value
-static size_t NextPowerOf2(const size_t value)
+static constexpr size_t NextPowerOf2(const size_t value)
 {
     size_t result = 1;
     while (result < value)

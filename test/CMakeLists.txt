@@ -1,3 +1,4 @@
+include(CTest)
 include(GoogleTest)
 
 add_executable(dsp_test

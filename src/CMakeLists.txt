@@ -10,7 +10,7 @@ add_library(TNT::dsp
 )
 
 target_compile_features(dsp
-  PUBLIC cxx_std_17
+  PUBLIC cxx_std_20
 )
 
 target_compile_options(dsp
