@@ -1,7 +1,7 @@
 #include <cmath>
 #include <gtest/gtest.h>
-#include <tnt/dsp/dft.h>
-#include <tnt/dsp/fft.h>
+#include <tnt/dsp/dft.hpp>
+#include <tnt/dsp/fft.hpp>
 
 using namespace tnt;
 
@@ -26,11 +26,11 @@ TEST_P(FFTSizeTest, FFTSizeTest)
     vector<double> x(N);
 
     int f_s = 1000;
-    double t_s = 1.0 / f_s;
+    double t_s = 1.0/f_s;
 
     for (size_t n = 0; n < N; ++n)
     {
-        x[n] = sin(2 * M_PI * 100 * n * t_s);
+        x[n] = sin(2*M_PI*100*n*t_s);
     }
 
     auto X = dsp::DFT(x);
@@ -39,10 +39,10 @@ TEST_P(FFTSizeTest, FFTSizeTest)
     ASSERT_EQ(X.size(), N);
     ASSERT_EQ(X2.size(), N);
 
-    for (size_t k = 0; k < N; ++k)
+    for (size_t m = 0; m < N; ++m)
     {
-        EXPECT_NEAR(X[k].real(), X2[k].real(), m_epsilon);
-        EXPECT_NEAR(X[k].imag(), X2[k].imag(), m_epsilon);
+        EXPECT_NEAR(X[m].real(), X2[m].real(), m_epsilon);
+        EXPECT_NEAR(X[m].imag(), X2[m].imag(), m_epsilon);
     }
 }
 
@@ -60,11 +60,11 @@ TEST(FFT, FFT)
         vector<double> x(N);
 
         int f_s = 1000;
-        double t_s = 1.0 / f_s;
+        double t_s = 1.0/f_s;
 
         for (size_t n = 0; n < N; ++n)
         {
-            x[n] = sin(2 * M_PI * 100 * n * t_s);
+            x[n] = sin(2*M_PI*100*n*t_s);
         }
 
         auto X = dsp::DFT(x);
@@ -73,10 +73,10 @@ TEST(FFT, FFT)
         ASSERT_EQ(X.size(), N);
         ASSERT_EQ(X2.size(), N);
 
-        for (size_t k = 0; k < N; ++k)
+        for (size_t m = 0; m < N; ++m)
         {
-            EXPECT_NEAR(X[k].real(), X2[k].real(), epsilon);
-            EXPECT_NEAR(X[k].imag(), X2[k].imag(), epsilon);
+            EXPECT_NEAR(X[m].real(), X2[m].real(), epsilon);
+            EXPECT_NEAR(X[m].imag(), X2[m].imag(), epsilon);
         }
     }
 
@@ -86,11 +86,11 @@ TEST(FFT, FFT)
         vector<complex<double>> x(N);
 
         int f_s = 1000;
-        double t_s = 1.0 / f_s;
+        double t_s = 1.0/f_s;
 
         for (size_t n = 0; n < N; ++n)
         {
-            x[n] = complex<double>(sin(2 * M_PI * 100 * n * t_s), cos(2 * M_PI * 100 * n * t_s));
+            x[n] = complex<double>(sin(2*M_PI*100*n*t_s), cos(2*M_PI*100*n*t_s));
         }
 
         auto X = dsp::DFT(x);
@@ -99,10 +99,10 @@ TEST(FFT, FFT)
         ASSERT_EQ(X.size(), N);
         ASSERT_EQ(X2.size(), N);
 
-        for (size_t k = 0; k < N; ++k)
+        for (size_t m = 0; m < N; ++m)
         {
-            EXPECT_NEAR(X[k].real(), X2[k].real(), epsilon);
-            EXPECT_NEAR(X[k].imag(), X2[k].imag(), epsilon);
+            EXPECT_NEAR(X[m].real(), X2[m].real(), epsilon);
+            EXPECT_NEAR(X[m].imag(), X2[m].imag(), epsilon);
         }
     }
 }
@@ -118,11 +118,11 @@ TEST(FFT, IFFT)
         vector<double> x(N);
 
         int f_s = 1000;
-        double t_s = 1.0 / f_s;
+        double t_s = 1.0/f_s;
 
         for (size_t n = 0; n < N; ++n)
         {
-            x[n] = sin(2 * M_PI * 100 * n * t_s);
+            x[n] = sin(2*M_PI*100*n*t_s);
         }
 
         auto X = dsp::FFT(x);
@@ -131,9 +131,9 @@ TEST(FFT, IFFT)
         ASSERT_EQ(x.size(), N);
         ASSERT_EQ(x2.size(), N);
 
-        for (size_t k = 0; k < N; ++k)
+        for (size_t n = 0; n < N; ++n)
         {
-            EXPECT_NEAR(x[k], x2[k].real(), epsilon);
+            EXPECT_NEAR(x[n], x2[n].real(), epsilon);
         }
     }
 
@@ -143,11 +143,11 @@ TEST(FFT, IFFT)
         vector<complex<double>> x(N);
 
         int f_s = 1000;
-        double t_s = 1.0 / f_s;
+        double t_s = 1.0/f_s;
 
         for (size_t n = 0; n < N; ++n)
         {
-            x[n] = complex<double>(sin(2 * M_PI * 100 * n * t_s), cos(2 * M_PI * 100 * n * t_s));
+            x[n] = complex<double>(sin(2*M_PI*100*n*t_s), cos(2*M_PI*100*n*t_s));
         }
 
         auto X = dsp::FFT(x);
@@ -156,10 +156,10 @@ TEST(FFT, IFFT)
         ASSERT_EQ(x.size(), N);
         ASSERT_EQ(x2.size(), N);
 
-        for (size_t k = 0; k < N; ++k)
+        for (size_t m = 0; m < N; ++m)
         {
-            EXPECT_NEAR(x[k].real(), x2[k].real(), epsilon);
-            EXPECT_NEAR(x[k].imag(), x2[k].imag(), epsilon);
+            EXPECT_NEAR(x[m].real(), x2[m].real(), epsilon);
+            EXPECT_NEAR(x[m].imag(), x2[m].imag(), epsilon);
         }
     }
 }

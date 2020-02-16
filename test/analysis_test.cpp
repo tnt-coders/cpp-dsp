@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <tnt/dsp/analysis.h>
+#include <tnt/dsp/analysis.hpp>
 
 using namespace tnt;
 

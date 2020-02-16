@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <tnt/dsp/convolution.h>
+#include <tnt/dsp/convolution.hpp>
 
 using namespace tnt;
 
