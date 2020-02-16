@@ -1,4 +1,4 @@
-#include "analysis.h"
+#include "analysis.hpp"
 
 #include <algorithm>
 #include <complex>

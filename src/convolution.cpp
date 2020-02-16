@@ -1,6 +1,6 @@
-#include "convolution.h"
+#include "convolution.hpp"
 
-#include "fft.h"
+#include "fft.hpp"
 
 #include <algorithm>
 #include <cassert>
