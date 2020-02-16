@@ -20,11 +20,11 @@ vector<complex<double>> DFT(const vector<double>& x)
 
     // Take advantage of DFT symmetry when dealing with real input signals
     // Only the first N/2 + 1 outputs are unique
-    for (size_t k = 0; k < N / 2 + 1; ++k)
+    for (size_t k = 0; k < N/2 + 1; ++k)
     {
         for (size_t n = 0; n < N; ++n)
         {
-            X[k] += x[n] * polar(1.0, -2 * M_PI * n * k / N);
+            X[k] += x[n]*polar(1.0, -2*M_PI*n*k/N);
         }
 
         // X(N-k) = X(k)* for k = 1 -> N/2
@@ -46,7 +46,7 @@ vector<complex<double>> DFT(const vector<complex<double>>& x)
     {
         for (size_t n = 0; n < N; ++n)
         {
-            X[k] += x[n] * polar(1.0, -2 * M_PI * n * k / N);
+            X[k] += x[n]*polar(1.0, -2*M_PI*n*k/N);
         }
     }
 

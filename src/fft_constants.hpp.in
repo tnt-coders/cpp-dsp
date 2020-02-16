@@ -1,0 +1,12 @@
+#pragma once
+
+#include "math_helpers.hpp"
+
+namespace tnt::dsp
+{
+
+// Max size for an FFT
+constexpr size_t MAX_FFT_SIZE = @MAX_FFT_SIZE@;
+static_assert(IsPowerOf2(MAX_FFT_SIZE), "MAX_FFT_SIZE must be a power of 2.");
+
+}

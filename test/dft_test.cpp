@@ -11,11 +11,11 @@ TEST(DFT, DFT)
     std::vector<double> x(N);
 
     int f_s = 4000;
-    double t_s = 1.0 / f_s;
+    double t_s = 1.0/f_s;
 
     for (size_t n = 0; n < N; ++n)
     {
-        x[n] = std::sin(2 * M_PI * 1000 * n * t_s);
+        x[n] = std::sin(2*M_PI*1000*n*t_s);
     }
 
     auto X = dsp::DFT(x);
