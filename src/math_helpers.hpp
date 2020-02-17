@@ -14,7 +14,7 @@ constexpr size_t NextPowerOf2(const size_t value);
 
 constexpr bool IsEven(const size_t value)
 {
-    return !(value%2);
+    return !(value % 2);
 }
 
 constexpr bool IsPowerOf2(const size_t value)
