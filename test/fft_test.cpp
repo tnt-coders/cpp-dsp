@@ -10,12 +10,12 @@ using std::cos;
 using std::sin;
 using std::vector;
 
-// TODO: Test larger sizes for speed
-TEST(FFT, FFT)
+// TODO: Test FFT of larger sizes for speed
+
+TEST(FFT, RealInputSignal)
 {
     double epsilon = std::pow(10.0, -4);
 
-    // Test real input signals
     for (size_t N = 1; N <= 100; ++N)
     {
         vector<double> x(N);
@@ -40,8 +40,12 @@ TEST(FFT, FFT)
             EXPECT_NEAR(X[m].imag(), X2[m].imag(), epsilon);
         }
     }
+}
 
-    // Test complex input signals
+TEST(FFT, ComplexInputSignal)
+{
+    double epsilon = std::pow(10.0, -4);
+
     for (size_t N = 1; N <= 100; ++N)
     {
         vector<complex<double>> x(N);
@@ -68,12 +72,12 @@ TEST(FFT, FFT)
     }
 }
 
-// TODO: Test larger sizes for speed
-TEST(FFT, IFFT)
+// TODO: Test IFFT of larger sizes for speed
+
+TEST(IFFT, RealInputSignal)
 {
     double epsilon = std::pow(10.0, -4);
 
-    // Test real input signals
     for (size_t N = 1; N <= 100; ++N)
     {
         vector<double> x(N);
@@ -97,8 +101,12 @@ TEST(FFT, IFFT)
             EXPECT_NEAR(x[n], x2[n].real(), epsilon);
         }
     }
+}
 
-    // Test complex input signals
+TEST(IFFT, ComplexInputSignal)
+{
+    double epsilon = std::pow(10.0, -4);
+
     for (size_t N = 1; N <= 100; ++N)
     {
         vector<complex<double>> x(N);

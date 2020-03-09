@@ -9,7 +9,7 @@ project(dsp
 
 include(FetchContent)
 FetchContent_Declare(CMakeModules
-  GIT_REPOSITORY https://github.com/tjwrona1992/CMakeModules.git
+  GIT_REPOSITORY https://github.com/tnt-coders/cmake-modules.git
 )
 FetchContent_MakeAvailable(CMakeModules)
 
@@ -19,3 +19,9 @@ conan_install()
 add_subdirectory(docs)
 add_subdirectory(src)
 add_subdirectory(test)
+
+include(InstallProject)
+install_project(
+  NAMESPACE tnt
+  TARGETS dsp
+)

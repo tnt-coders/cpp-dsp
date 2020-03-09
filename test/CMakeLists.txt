@@ -13,7 +13,7 @@ target_compile_options(dsp_test
 )
 
 target_link_libraries(dsp_test
-    TNT::dsp
+    tnt::dsp
     CONAN_PKG::gtest
 )
 

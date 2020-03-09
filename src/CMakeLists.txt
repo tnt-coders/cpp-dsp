@@ -5,7 +5,7 @@ add_library(dsp
     fft.cpp
 )
 
-add_library(TNT::dsp
+add_library(tnt::dsp
   ALIAS dsp
 )
 
