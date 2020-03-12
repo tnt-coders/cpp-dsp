@@ -8,9 +8,7 @@ add_executable(dsp_test
     fft_test.cpp
 )
 
-target_compile_options(dsp_test
-  PRIVATE -D_USE_MATH_DEFINES
-)
+target_compile_options(dsp_test PRIVATE -D_USE_MATH_DEFINES)
 
 target_link_libraries(dsp_test
     tnt::dsp
