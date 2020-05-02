@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14.0)
+cmake_minimum_required(VERSION 3.11.4)
 
 # Get CMake modules from Git
 include(FetchContent)
@@ -6,25 +6,24 @@ FetchContent_Declare(CMakeModules GIT_REPOSITORY https://github.com/tnt-coders/c
 FetchContent_MakeAvailable(CMakeModules)
 
 # Include the required modules
-include(tnt/Conan)
-include(tnt/Git)
-include(tnt/Project)
+include(tnt/project/Project)
 
 # Define the project
 project(dsp LANGUAGES CXX)
 
 # Define a namespace for the project
-tnt_project_SetNamespace(tnt)
-
-# Get the project version info from Git
-tnt_git_DefineProjectVersion()
+tnt_project_New(${PROJECT_NAME}
+  NAMESPACE tnt
+  CONANFILE conanfile.txt
+  VERSION_FROM_GIT
+)
 
 # Install dependencies with Conan
-tnt_conan_Install(CONANFILE conanfile.txt)
+tnt_project_ConanInstall(${PROJECT_NAME})
 
 add_subdirectory(docs)
 add_subdirectory(src)
 add_subdirectory(test)
 
 # Install project targets
-tnt_project_Install()
+tnt_project_Install(${PROJECT_NAME})

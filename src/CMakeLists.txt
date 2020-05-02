@@ -1,4 +1,6 @@
-tnt_project_AddLibrary(dsp
+tnt_project_AddLibrary(${PROJECT_NAME}
+  TARGET dsp
+  SOURCES
     analysis.cpp
     convolution.cpp
     dft.cpp

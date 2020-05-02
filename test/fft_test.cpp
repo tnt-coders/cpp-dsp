@@ -1,3 +1,5 @@
+#include "constants.hpp"
+
 #include <cmath>
 #include <gtest/gtest.h>
 #include <tnt/dsp/dft.hpp>
@@ -14,8 +16,6 @@ using std::vector;
 
 TEST(FFT, RealInputSignal)
 {
-    double epsilon = std::pow(10.0, -4);
-
     for (size_t N = 1; N <= 100; ++N)
     {
         vector<double> x(N);
@@ -25,7 +25,7 @@ TEST(FFT, RealInputSignal)
 
         for (size_t n = 0; n < N; ++n)
         {
-            x[n] = sin(2 * M_PI * 100 * n * t_s);
+            x[n] = cos(2 * M_PI * 100 * n * t_s);
         }
 
         auto X = dsp::DFT(x);
@@ -36,16 +36,14 @@ TEST(FFT, RealInputSignal)
 
         for (size_t m = 0; m < N; ++m)
         {
-            EXPECT_NEAR(X[m].real(), X2[m].real(), epsilon);
-            EXPECT_NEAR(X[m].imag(), X2[m].imag(), epsilon);
+            EXPECT_NEAR(X[m].real(), X2[m].real(), constants::EPSILON);
+            EXPECT_NEAR(X[m].imag(), X2[m].imag(), constants::EPSILON);
         }
     }
 }
 
 TEST(FFT, ComplexInputSignal)
 {
-    double epsilon = std::pow(10.0, -4);
-
     for (size_t N = 1; N <= 100; ++N)
     {
         vector<complex<double>> x(N);
@@ -55,7 +53,7 @@ TEST(FFT, ComplexInputSignal)
 
         for (size_t n = 0; n < N; ++n)
         {
-            x[n] = complex<double>(sin(2 * M_PI * 100 * n * t_s), cos(2 * M_PI * 100 * n * t_s));
+            x[n] = complex<double>(cos(2 * M_PI * 100 * n * t_s), sin(2 * M_PI * 100 * n * t_s));
         }
 
         auto X = dsp::DFT(x);
@@ -66,8 +64,8 @@ TEST(FFT, ComplexInputSignal)
 
         for (size_t m = 0; m < N; ++m)
         {
-            EXPECT_NEAR(X[m].real(), X2[m].real(), epsilon);
-            EXPECT_NEAR(X[m].imag(), X2[m].imag(), epsilon);
+            EXPECT_NEAR(X[m].real(), X2[m].real(), constants::EPSILON);
+            EXPECT_NEAR(X[m].imag(), X2[m].imag(), constants::EPSILON);
         }
     }
 }
@@ -76,8 +74,6 @@ TEST(FFT, ComplexInputSignal)
 
 TEST(IFFT, RealInputSignal)
 {
-    double epsilon = std::pow(10.0, -4);
-
     for (size_t N = 1; N <= 100; ++N)
     {
         vector<double> x(N);
@@ -87,7 +83,7 @@ TEST(IFFT, RealInputSignal)
 
         for (size_t n = 0; n < N; ++n)
         {
-            x[n] = sin(2 * M_PI * 100 * n * t_s);
+            x[n] = cos(2 * M_PI * 100 * n * t_s);
         }
 
         auto X = dsp::FFT(x);
@@ -98,15 +94,13 @@ TEST(IFFT, RealInputSignal)
 
         for (size_t n = 0; n < N; ++n)
         {
-            EXPECT_NEAR(x[n], x2[n].real(), epsilon);
+            EXPECT_NEAR(x[n], x2[n].real(), constants::EPSILON);
         }
     }
 }
 
 TEST(IFFT, ComplexInputSignal)
 {
-    double epsilon = std::pow(10.0, -4);
-
     for (size_t N = 1; N <= 100; ++N)
     {
         vector<complex<double>> x(N);
@@ -116,7 +110,7 @@ TEST(IFFT, ComplexInputSignal)
 
         for (size_t n = 0; n < N; ++n)
         {
-            x[n] = complex<double>(sin(2 * M_PI * 100 * n * t_s), cos(2 * M_PI * 100 * n * t_s));
+            x[n] = complex<double>(cos(2 * M_PI * 100 * n * t_s), sin(2 * M_PI * 100 * n * t_s));
         }
 
         auto X = dsp::FFT(x);
@@ -127,8 +121,8 @@ TEST(IFFT, ComplexInputSignal)
 
         for (size_t m = 0; m < N; ++m)
         {
-            EXPECT_NEAR(x[m].real(), x2[m].real(), epsilon);
-            EXPECT_NEAR(x[m].imag(), x2[m].imag(), epsilon);
+            EXPECT_NEAR(x[m].real(), x2[m].real(), constants::EPSILON);
+            EXPECT_NEAR(x[m].imag(), x2[m].imag(), constants::EPSILON);
         }
     }
 }
