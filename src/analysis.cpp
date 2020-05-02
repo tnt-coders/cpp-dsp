@@ -44,9 +44,26 @@ vector<double> Magnitude(const vector<complex<double>>& x)
     return x_magnitude;
 }
 
+double Phase(const double value)
+{
+    // Due to a bug in the MSVC implementation of std::arg it doesn't handle real inputs correctly
+    // Explicitly convert the value to std::complex<double> to get around this.
+    return arg(static_cast<complex<double>>(value));
+}
+
 double Phase(const complex<double>& value)
 {
     return arg(value);
+}
+
+vector<double> Phase(const vector<double>& x)
+{
+    vector<double> x_phase(x.size());
+    transform(x.begin(), x.end(), x_phase.begin(), [](const complex<double>& value) {
+        return Phase(value);
+        });
+
+    return x_phase;
 }
 
 vector<double> Phase(const vector<complex<double>>& x)

@@ -49,7 +49,7 @@ TEST(DFT, ComplexInputSignal)
 
     for (size_t n = 0; n < N; ++n)
     {
-        x[n] = complex<double>(cos(2 * M_PI * 1000 * n * t_s), sin(2 * M_PI * 1000 * n * t_s));
+        x[n] = complex<double>{ cos(2 * M_PI * 1000 * n * t_s), sin(2 * M_PI * 1000 * n * t_s) };
     }
 
     auto X = dsp::DFT(x);

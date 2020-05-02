@@ -34,8 +34,12 @@ std::vector<double> Magnitude(const std::vector<double>& x);
  */
 std::vector<double> Magnitude(const std::vector<std::complex<double>>& x);
 
-// Phase calculations don't make much sense for real input values so no phase
-// functions are provided for real inputs
+/**
+ * @brief Calculates the phase angle (in radians) of a real value
+ * @param[in] value - Real input value
+ * @return Phase angle (in radians) of the input
+ */
+double Phase(const double value);
 
 /**
  * @brief Calculates the phase angle (in radians) of a complex value
@@ -43,6 +47,13 @@ std::vector<double> Magnitude(const std::vector<std::complex<double>>& x);
  * @return Phase angle (in radians) of the input
  */
 double Phase(const std::complex<double>& value);
+
+/**
+ * @brief Calculates the phase spectrum (in radians) of a real input vector
+ * @param[in] x - Real input vector
+ * @return Phase spectrum (in radians) of the input
+ */
+std::vector<double> Phase(const std::vector<double>& x);
 
 /**
  * @brief Calculates the phase spectrum (in radians) of a complex input vector
