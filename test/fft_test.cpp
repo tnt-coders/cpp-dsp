@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 #include <tnt/dsp/dft.hpp>
 #include <tnt/dsp/fft.hpp>
+#include <vector>
 
 using namespace tnt;
 
