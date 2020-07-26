@@ -15,11 +15,10 @@ include(tnt/project/Project)
 tnt_project_New(${PROJECT_NAME}
   NAMESPACE tnt
   CONANFILE conanfile.txt
-  VERSION_FROM_GIT
 )
 
-# Install dependencies with Conan
-tnt_project_ConanInstall(${PROJECT_NAME})
+# Install and find dependencies
+tnt_project_ConanInstall(${PROJECT_NAME} CMAKE_TARGETS)
 
 add_subdirectory(docs)
 add_subdirectory(src)
