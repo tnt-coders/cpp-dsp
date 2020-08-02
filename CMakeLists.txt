@@ -14,8 +14,7 @@ include(tnt/project/Project)
 # Define a namespace for the project
 tnt_project_New(${PROJECT_NAME}
   NAMESPACE tnt
-  CONANFILE conanfile.txt
-  VERSION_FROM_GIT
+  CONANFILE conanfile.py
 )
 
 # Install and find dependencies
