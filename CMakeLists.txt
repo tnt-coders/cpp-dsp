@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.11.4)
 
 # Define the project
-project(dsp LANGUAGES CXX)
+project(cpp-dsp LANGUAGES CXX)
 
 # Get CMake modules from Git
 include(FetchContent)
@@ -18,7 +18,8 @@ tnt_project_New(${PROJECT_NAME}
 )
 
 # Install and find dependencies
-tnt_project_ConanInstall(${PROJECT_NAME} CMAKE_TARGETS)
+tnt_project_ConanInstall(${PROJECT_NAME})
+include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
 add_subdirectory(docs)
 add_subdirectory(src)

@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.11.4)
 project(TestPackage LANGUAGES CXX)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
+include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
+find_package(cpp-dsp REQUIRED)
 
 add_executable(dsp_package_test main.cpp)
-target_link_libraries(dsp_package_test CONAN_PKG::cpp-dsp)
+target_link_libraries(dsp_package_test tnt::dsp)

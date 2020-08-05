@@ -5,7 +5,7 @@ class CppDspConan(ConanFile):
     default_options = {"shared": False}
     description = "C++ Implementation of common digital signal processing algorithms"
     exports_sources = "CMakeLists.txt", "docs/*", "include/*", "src/*", "test/*"
-    generators = "cmake"
+    generators = "cmake_paths"
     license = "GNU Lesser General Public License v3.0"
     name = "cpp-dsp"
     options = {"shared": [True, False]}
@@ -17,7 +17,7 @@ class CppDspConan(ConanFile):
 
     def _configure_cmake(self):
         cmake = CMake(self)
-        cmake.configure(source_folder=".")
+        cmake.configure()
         return cmake
 
     def build(self):
@@ -27,6 +27,3 @@ class CppDspConan(ConanFile):
     def package(self):
         cmake = self._configure_cmake()
         cmake.install()
-
-    def package_info(self):
-        self.cpp_info.libs = ["dsp"]
