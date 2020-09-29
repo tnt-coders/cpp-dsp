@@ -4,7 +4,7 @@ from conans import ConanFile, CMake, tools
 
 class TestPackage(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    generators = "cmake_paths"
+    generators = "cmake", "cmake_paths"
 
     def build(self):
         cmake = CMake(self)
@@ -12,6 +12,6 @@ class TestPackage(ConanFile):
         cmake.build()
 
     def test(self):
-        if not tools.cross_building(self):
-            os.chdir("bin")
-            self.run(".%sdsp_package_test" % os.sep)
+        if not tools.cross_building(self.settings):
+            bin_path = os.path.join("bin", "test_package")
+            self.run(bin_path, run_environment=True)

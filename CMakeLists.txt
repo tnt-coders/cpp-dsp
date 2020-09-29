@@ -21,6 +21,10 @@ tnt_project_New(${PROJECT_NAME}
 tnt_project_ConanInstall(${PROJECT_NAME})
 include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
+# Enable testing for the project
+# Note: must be in top level CMakeLists.txt
+enable_testing()
+
 add_subdirectory(docs)
 add_subdirectory(src)
 add_subdirectory(test)
