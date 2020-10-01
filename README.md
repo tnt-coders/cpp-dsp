@@ -25,7 +25,7 @@ cpp-dsp can be built as a standalone CMake project.
 
 To test the project, run CTest from the build/test directory.
 
-    cd build/test
+    cd build
     ctest
 
 ## Build Requirements
