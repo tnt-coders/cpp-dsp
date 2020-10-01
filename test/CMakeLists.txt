@@ -10,10 +10,9 @@ add_executable(dsp_test
 
 target_compile_options(dsp_test PRIVATE -D_USE_MATH_DEFINES)
 
-find_package(GTest REQUIRED)
 target_link_libraries(dsp_test
     tnt::dsp
-    GTest::GTest
+    CONAN_PKG::gtest
 )
 
 gtest_discover_tests(dsp_test)

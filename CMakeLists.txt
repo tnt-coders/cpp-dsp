@@ -19,7 +19,6 @@ tnt_project_New(${PROJECT_NAME}
 
 # Install and find dependencies
 tnt_project_ConanInstall(${PROJECT_NAME})
-include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
 # Enable testing for the project
 # Note: must be in top level CMakeLists.txt
