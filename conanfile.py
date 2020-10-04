@@ -2,6 +2,7 @@ from conans import ConanFile, CMake, tools
 
 class CppDspConan(ConanFile):
     author = "TNT Coders <tnt-coders@googlegroups.com>"
+    build_requires = "gtest/1.8.1@bincrafters/stable"
     default_options = {"shared": False}
     description = "C++ Implementation of common digital signal processing algorithms"
     exports_sources = "CMakeLists.txt", "docs/*", "include/*", "src/*", "test/*"
@@ -9,7 +10,6 @@ class CppDspConan(ConanFile):
     license = "GNU Lesser General Public License v3.0"
     name = "cpp-dsp"
     options = {"shared": [True, False]}
-    build_requires = "gtest/1.8.1@bincrafters/stable"
     settings = "os", "compiler", "build_type", "arch"
     topics = ("dsp")
     url = "https://github.com/tnt-coders/cpp-dsp"
