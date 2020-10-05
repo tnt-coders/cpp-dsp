@@ -1,6 +1,6 @@
 from conans import ConanFile, CMake, tools
 
-class CppDspConan(ConanFile):
+class CppDsp(ConanFile):
     author = "TNT Coders <tnt-coders@googlegroups.com>"
     build_requires = "gtest/1.8.1@bincrafters/stable"
     default_options = {"shared": False}
@@ -28,7 +28,7 @@ class CppDspConan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = ["dsp"]
+        self.cpp_info.libs = self.collect_libs()
 
     def _configure_cmake(self):
         cmake = CMake(self)

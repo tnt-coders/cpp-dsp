@@ -11,7 +11,7 @@ FetchContent_MakeAvailable(CMakeModules)
 # Include the required modules
 include(tnt/project/Project)
 
-# Define a namespace for the project
+# Initialize the project
 tnt_project_New(${PROJECT_NAME}
   NAMESPACE tnt
   CONANFILE conanfile.py
