@@ -5,6 +5,7 @@ tnt_project_AddLibrary(${PROJECT_NAME}
     convolution.cpp
     dft.cpp
     fft.cpp
+    signal.cpp
 )
 
 target_compile_features(dsp PUBLIC cxx_std_17)
