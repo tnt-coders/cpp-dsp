@@ -5,69 +5,164 @@
 namespace tnt::dsp
 {
 
-// TODO: Restrict to only std::floating_point and std::complex<std::floating_point> with concepts
 template <typename T>
 class Signal
 {
 public:
-    Signal(size_t sampleRate) : m_sampleRate(sampleRate) {}
-    Signal(size_t sampleRate, size_t size) : m_data(size), m_sampleRate(sampleRate) {}
-    Signal(size_t sampleRate, std::vector<T> data) : m_data(data), m_sampleRate(sampleRate) {}
 
-    virtual ~Signal() = default;
+    Signal(const size_t sampleRate);
 
-    size_t GetCapacity() const
-    {
-        return m_data.capacity();
-    }
+    Signal(const size_t sampleRate, const size_t size);
 
-    size_t GetSampleRate() const
-    {
-        return m_sampleRate;
-    }
+    Signal(const Signal<T>& signal);
 
-    size_t GetSize() const
-    {
-        return m_date.size();
-    }
+    virtual ~Signal();
 
-    void SetCapacity(size_t capacity)
-    {
-        m_data.reserve(capacity);
-    }
+    size_t GetCapacity() const;
 
-    void SetSampleRate(size_t sampleRate)
-    {
-        m_sampleRate = sampleRate;
-    }
+    size_t GetSampleRate() const;
 
-    void SetSize(size_t size)
-    {
-        m_data.resize(size);
-    }
+    size_t GetSize() const;
 
-    const T& operator[](size_t index) const
-    {
-        return m_data[index];
-    }
+    void SetCapacity(size_t capacity);
 
-    T& operator[](size_t index)
-    {
-        return m_data[index];
-    }
+    void SetSampleRate(size_t sampleRate);
 
-    // Forward the iterators from the underlying data type
-    typedef typename std::vector<T>::iterator iterator;
-    typedef typename std::vector<T>::const_iterator const_iterator;
-    iterator begin() { return m_data.begin(); }
-    const_iterator begin() { return m_data.begin(); }
-    const_iterator cbegin() { return m_data.cbegin(); }
-    iterator end() { return m_data.end(); }
-    const_iterator end() { return m_data.end(); }
-    const_iterator cend() { return m_data.cend(); }
+    void SetSize(size_t size);
+
+    const T& operator[](size_t index) const;
+
+    T& operator[](size_t index);
+
+    // Iterator functions
+    using iterator = typename std::vector<T>::iterator;
+
+    using const_iterator = typename std::vector<T>::const_iterator;
+
+    iterator begin();
+
+    const_iterator begin() const;
+
+    const_iterator cbegin() const;
+
+    iterator end();
+
+    const_iterator end() const;
+
+    const_iterator cend() const;
+
 private:
+
     std::vector<T> m_data;
+
     size_t m_sampleRate;
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <typename T>
+Signal<T>::Signal(const size_t sampleRate)
+    : m_sampleRate(sampleRate)
+{}
+
+template <typename T>
+Signal<T>::Signal(const size_t sampleRate, const size_t size)
+    : m_data(size)
+    , m_sampleRate(sampleRate)
+{}
+
+template <typename T>
+Signal<T>::Signal(const Signal& signal)
+    : m_data(signal.begin(), signal.end())
+    , m_sampleRate(signal.GetSampleRate())
+{}
+
+template <typename T>
+Signal<T>::~Signal() = default;
+
+template <typename T>
+size_t Signal<T>::GetCapacity() const
+{
+    return m_data.capacity();
+}
+
+template <typename T>
+size_t Signal<T>::GetSampleRate() const
+{
+    return m_sampleRate;
+}
+
+template <typename T>
+size_t Signal<T>::GetSize() const
+{
+    return m_data.size();
+}
+
+template <typename T>
+void Signal<T>::SetCapacity(size_t capacity)
+{
+    m_data.reserve(capacity);
+}
+
+template <typename T>
+void Signal<T>::SetSampleRate(size_t sampleRate)
+{
+    m_sampleRate = sampleRate;
+}
+
+template <typename T>
+void Signal<T>::SetSize(size_t size)
+{
+    m_data.resize(size);
+}
+
+template <typename T>
+const T& Signal<T>::operator[](size_t index) const
+{
+    return m_data[index];
+}
+
+template <typename T>
+T& Signal<T>::operator[](size_t index)
+{
+    return m_data[index];
+}
+
+// Iterator functions
+template <typename T>
+typename Signal<T>::iterator Signal<T>::begin()
+{
+    return m_data.begin();
+}
+
+template <typename T>
+typename Signal<T>::const_iterator Signal<T>::begin() const
+{
+    return m_data.begin();
+}
+
+template <typename T>
+typename Signal<T>::const_iterator Signal<T>::cbegin() const
+{
+    return m_data.cbegin();
+}
+
+template <typename T>
+typename Signal<T>::iterator Signal<T>::end()
+{
+    return m_data.end();
+}
+
+template <typename T>
+typename Signal<T>::const_iterator Signal<T>::end() const
+{
+    return m_data.end();
+}
+
+template <typename T>
+typename Signal<T>::const_iterator Signal<T>::cend() const
+{
+    return m_data.cend();
+}
 
 } /* namespace tnt::dsp */
