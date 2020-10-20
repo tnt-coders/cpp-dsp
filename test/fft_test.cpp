@@ -8,34 +8,30 @@
 
 using namespace tnt;
 
-using std::complex;
-using std::cos;
-using std::sin;
-using std::vector;
-
 // TODO: Test FFT of larger sizes for speed
 
-TEST(FFT, RealInputSignal)
+TEST(FFT, FFT_RealSignal)
 {
-    for (size_t N = 1; N <= 100; ++N)
+    for (auto N = 1; N <= 100; ++N)
     {
-        vector<double> x(N);
+        const auto f_s = 1000;
 
-        int f_s = 1000;
-        double t_s = 1.0 / f_s;
+        dsp::Signal<double> x(f_s, N);
 
-        for (size_t n = 0; n < N; ++n)
+        const auto t_s = 1.0 / f_s;
+
+        for (auto n = 0; n < N; ++n)
         {
-            x[n] = cos(2 * M_PI * 100 * n * t_s);
+            x[n] = std::cos(2 * M_PI * 100 * n * t_s);
         }
 
-        auto X = dsp::DFT(x);
-        auto X2 = dsp::FFT(x);
+        const auto X = dsp::DFT(x);
+        const auto X2 = dsp::FFT(x);
 
         ASSERT_EQ(X.size(), N);
         ASSERT_EQ(X2.size(), N);
 
-        for (size_t m = 0; m < N; ++m)
+        for (auto m = 0; m < N; ++m)
         {
             EXPECT_NEAR(X[m].real(), X2[m].real(), constants::EPSILON);
             EXPECT_NEAR(X[m].imag(), X2[m].imag(), constants::EPSILON);
@@ -43,27 +39,28 @@ TEST(FFT, RealInputSignal)
     }
 }
 
-TEST(FFT, ComplexInputSignal)
+TEST(FFT, FFT_ComplexSignal)
 {
-    for (size_t N = 1; N <= 100; ++N)
+    for (auto N = 1; N <= 100; ++N)
     {
-        vector<complex<double>> x(N);
+        const auto f_s = 1000;
 
-        int f_s = 1000;
-        double t_s = 1.0 / f_s;
+        dsp::Signal<std::complex<double>> x(f_s, N);
 
-        for (size_t n = 0; n < N; ++n)
+        const auto t_s = 1.0 / f_s;
+
+        for (auto n = 0; n < N; ++n)
         {
-            x[n] = complex<double>{ cos(2 * M_PI * 100 * n * t_s), sin(2 * M_PI * 100 * n * t_s) };
+            x[n] = { std::cos(2 * M_PI * 100 * n * t_s), std::sin(2 * M_PI * 100 * n * t_s) };
         }
 
-        auto X = dsp::DFT(x);
-        auto X2 = dsp::FFT(x);
+        const auto X = dsp::DFT(x);
+        const auto X2 = dsp::FFT(x);
 
         ASSERT_EQ(X.size(), N);
         ASSERT_EQ(X2.size(), N);
 
-        for (size_t m = 0; m < N; ++m)
+        for (auto m = 0; m < N; ++m)
         {
             EXPECT_NEAR(X[m].real(), X2[m].real(), constants::EPSILON);
             EXPECT_NEAR(X[m].imag(), X2[m].imag(), constants::EPSILON);
@@ -73,18 +70,19 @@ TEST(FFT, ComplexInputSignal)
 
 // TODO: Test IFFT of larger sizes for speed
 
-TEST(IFFT, RealInputSignal)
+TEST(IFFT, IFFT_RealSignal)
 {
-    for (size_t N = 1; N <= 100; ++N)
+    for (auto N = 1; N <= 100; ++N)
     {
-        vector<double> x(N);
+        const auto f_s = 1000;
 
-        int f_s = 1000;
-        double t_s = 1.0 / f_s;
+        dsp::Signal<double> x(f_s, N);
 
-        for (size_t n = 0; n < N; ++n)
+        const auto t_s = 1.0 / f_s;
+
+        for (auto n = 0; n < N; ++n)
         {
-            x[n] = cos(2 * M_PI * 100 * n * t_s);
+            x[n] = std::cos(2 * M_PI * 100 * n * t_s);
         }
 
         auto X = dsp::FFT(x);
@@ -93,34 +91,35 @@ TEST(IFFT, RealInputSignal)
         ASSERT_EQ(x.size(), N);
         ASSERT_EQ(x2.size(), N);
 
-        for (size_t n = 0; n < N; ++n)
+        for (auto n = 0; n < N; ++n)
         {
             EXPECT_NEAR(x[n], x2[n].real(), constants::EPSILON);
         }
     }
 }
 
-TEST(IFFT, ComplexInputSignal)
+TEST(IFFT, IFFT_ComplexSignal)
 {
-    for (size_t N = 1; N <= 100; ++N)
+    for (auto N = 1; N <= 100; ++N)
     {
-        vector<complex<double>> x(N);
+        const auto f_s = 1000;
 
-        int f_s = 1000;
-        double t_s = 1.0 / f_s;
+        dsp::Signal<std::complex<double>> x(f_s, N);
 
-        for (size_t n = 0; n < N; ++n)
+        const auto t_s = 1.0 / f_s;
+
+        for (auto n = 0; n < N; ++n)
         {
-            x[n] = complex<double>{ cos(2 * M_PI * 100 * n * t_s), sin(2 * M_PI * 100 * n * t_s) };
+            x[n] = { std::cos(2 * M_PI * 100 * n * t_s), std::sin(2 * M_PI * 100 * n * t_s) };
         }
 
-        auto X = dsp::FFT(x);
-        auto x2 = dsp::IFFT(X);
+        const auto X = dsp::FFT(x);
+        const auto x2 = dsp::IFFT(X);
 
         ASSERT_EQ(x.size(), N);
         ASSERT_EQ(x2.size(), N);
 
-        for (size_t m = 0; m < N; ++m)
+        for (auto m = 0; m < N; ++m)
         {
             EXPECT_NEAR(x[m].real(), x2[m].real(), constants::EPSILON);
             EXPECT_NEAR(x[m].imag(), x2[m].imag(), constants::EPSILON);

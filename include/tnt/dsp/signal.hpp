@@ -2,54 +2,199 @@
 
 #include <vector>
 
+//TODO: Add additional container function support
+
 namespace tnt::dsp
 {
 
+/*!
+\brief Represents a DSP signal to store and process sampled data
+*/
 template <typename T>
 class Signal
 {
 public:
 
-    Signal(const size_t sampleRate);
-
-    Signal(const size_t sampleRate, const size_t size);
-
-    Signal(const Signal<T>& signal);
-
-    virtual ~Signal();
-
-    size_t GetCapacity() const;
-
-    size_t GetSampleRate() const;
-
-    size_t GetSize() const;
-
-    void SetCapacity(size_t capacity);
-
-    void SetSampleRate(size_t sampleRate);
-
-    void SetSize(size_t size);
-
-    const T& operator[](size_t index) const;
-
-    T& operator[](size_t index);
-
-    // Iterator functions
-    using iterator = typename std::vector<T>::iterator;
-
+    /*!
+    \brief Constant iterator
+    */
     using const_iterator = typename std::vector<T>::const_iterator;
 
-    iterator begin();
+    /*!
+    \brief Iterator
+    */
+    using iterator = typename std::vector<T>::iterator;
 
-    const_iterator begin() const;
+    /*!
+    \brief Constructor
+    \param[in] sampleRate Sample rate
+    */
+    Signal(const size_t sampleRate)
+        : m_sampleRate(sampleRate)
+    {}
 
-    const_iterator cbegin() const;
+    /*!
+    \brief Constructor
+    \param[in] sampleRate Sample rate
+    \param[in] size Size
+    */
+    Signal(const size_t sampleRate, const size_t size)
+        : m_data(size)
+        , m_sampleRate(sampleRate)
+    {}
 
-    iterator end();
+    /*!
+    \brief Constructor
+    \param[in] signal Signal
+    */
+    Signal(const Signal<T>& signal)
+        : m_data(signal.begin(), signal.end())
+        , m_sampleRate(signal.GetSampleRate())
+    {}
 
-    const_iterator end() const;
+    /*!
+    \brief Destructor
+    */
+    virtual ~Signal() = default;
 
-    const_iterator cend() const;
+    /*!
+    \brief Gets the sample rate
+    \return Sample rate
+    */
+    size_t GetSampleRate() const
+    {
+        return m_sampleRate;
+    }
+
+    /*!
+    \brief Sets the sample rate
+    \param[in] sampleRate Sample rate
+    */
+    void SetSampleRate(size_t sampleRate)
+    {
+        m_sampleRate = sampleRate;
+    }
+
+    /*!
+    \brief Gets an iterator to the beginning of the signal
+    \return Iterator to the first sample
+    */
+    iterator begin()
+    {
+        return m_data.begin();
+    }
+
+    /*!
+    \brief Gets a constant iterator to the beginning of the signal
+    \return Constant iterator to the first sample
+    */
+    const_iterator begin() const
+    {
+        return m_data.begin();
+    }
+
+    /*!
+    \brief Gets a constant iterator to the beginning of the signal
+    \return Constant iterator to the first sample
+    */
+    const_iterator cbegin() const
+    {
+        return m_data.cbegin();
+    }
+
+    /*!
+    \brief Gets an iterator to the end of the signal
+    \return Iterator to the sample *following* the last sample
+    */
+    iterator end()
+    {
+        return m_data.end();
+    }
+
+    /*!
+    \brief Gets a constant iterator to the end of the signal
+    \return Constant iterator to the sample *following* the last sample
+    */
+    const_iterator end() const
+    {
+        return m_data.end();
+    }
+
+    /*!
+    \brief Gets a constant iterator to the end of the signal
+    \return Constant iterator to the sample *following* the last sample
+    */
+    const_iterator cend() const
+    {
+        return m_data.cend();
+    }
+
+    /*!
+    \brief Gets the capacity
+    \return Capacity
+    */
+    size_t capacity() const
+    {
+        return m_data.capacity();
+    }
+
+    /*!
+    \brief Sets the capacity
+    \param[in] capacity Desired capacity
+    */
+    void reserve(size_t capacity)
+    {
+        m_data.reserve(capacity);
+    }
+
+    /*!
+    \brief Gets the size
+    \return Size
+    */
+    size_t size() const
+    {
+        return m_data.size();
+    }
+
+    /*!
+    \brief Sets the size
+    \param[in] size Desired size
+    */
+    void resize(size_t size)
+    {
+        m_data.resize(size);
+    }
+
+    /*!
+    \brief Appends a sample to the end of the signal
+
+    If the capacity of the signal is not large enough to hold the sample, the capacity will be
+    automatically expanded to hold the new sample.
+
+    \param[in] sample Sample to append to the signal
+    */
+    void push_back(const T& sample)
+    {
+        m_data.push_back(sample);
+    }
+
+    /*!
+    \brief Accesses the sample at the specified index
+    \return Constant reference to the requsted sample
+    */
+    const T& operator[](size_t index) const
+    {
+        return m_data[index];
+    }
+
+    /*!
+    \brief Accesses the sample at the specified index
+    \return Reference to the requested sample
+    */
+    T& operator[](size_t index)
+    {
+        return m_data[index];
+    }
 
 private:
 
@@ -58,111 +203,17 @@ private:
     size_t m_sampleRate;
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-template <typename T>
-Signal<T>::Signal(const size_t sampleRate)
-    : m_sampleRate(sampleRate)
-{}
-
-template <typename T>
-Signal<T>::Signal(const size_t sampleRate, const size_t size)
-    : m_data(size)
-    , m_sampleRate(sampleRate)
-{}
-
-template <typename T>
-Signal<T>::Signal(const Signal& signal)
-    : m_data(signal.begin(), signal.end())
-    , m_sampleRate(signal.GetSampleRate())
-{}
-
-template <typename T>
-Signal<T>::~Signal() = default;
-
-template <typename T>
-size_t Signal<T>::GetCapacity() const
+/*!
+\brief Swaps the contents of one signal with another
+\param[in] signal1 First signal to swap
+\param[in] signal2 Second signal to swap
+*/
+template<typename T>
+void swap(Signal<T>& signal1, Signal<T>& signal2)
 {
-    return m_data.capacity();
-}
-
-template <typename T>
-size_t Signal<T>::GetSampleRate() const
-{
-    return m_sampleRate;
-}
-
-template <typename T>
-size_t Signal<T>::GetSize() const
-{
-    return m_data.size();
-}
-
-template <typename T>
-void Signal<T>::SetCapacity(size_t capacity)
-{
-    m_data.reserve(capacity);
-}
-
-template <typename T>
-void Signal<T>::SetSampleRate(size_t sampleRate)
-{
-    m_sampleRate = sampleRate;
-}
-
-template <typename T>
-void Signal<T>::SetSize(size_t size)
-{
-    m_data.resize(size);
-}
-
-template <typename T>
-const T& Signal<T>::operator[](size_t index) const
-{
-    return m_data[index];
-}
-
-template <typename T>
-T& Signal<T>::operator[](size_t index)
-{
-    return m_data[index];
-}
-
-// Iterator functions
-template <typename T>
-typename Signal<T>::iterator Signal<T>::begin()
-{
-    return m_data.begin();
-}
-
-template <typename T>
-typename Signal<T>::const_iterator Signal<T>::begin() const
-{
-    return m_data.begin();
-}
-
-template <typename T>
-typename Signal<T>::const_iterator Signal<T>::cbegin() const
-{
-    return m_data.cbegin();
-}
-
-template <typename T>
-typename Signal<T>::iterator Signal<T>::end()
-{
-    return m_data.end();
-}
-
-template <typename T>
-typename Signal<T>::const_iterator Signal<T>::end() const
-{
-    return m_data.end();
-}
-
-template <typename T>
-typename Signal<T>::const_iterator Signal<T>::cend() const
-{
-    return m_data.cend();
+    Signal<T> temp = std::move(signal1);
+    signal1 = std::move(signal2);
+    signal2 = std::move(temp);
 }
 
 } /* namespace tnt::dsp */

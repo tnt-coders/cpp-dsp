@@ -19,8 +19,6 @@ tnt_project_New(${PROJECT_NAME}
 
 # Find and install dependencies
 tnt_project_ConanInstall(${PROJECT_NAME})
-include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
-find_package(GTest REQUIRED)
 
 # Enable testing for the project
 # Note: must be in top level CMakeLists.txt

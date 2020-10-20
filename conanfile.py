@@ -2,11 +2,11 @@ from conans import ConanFile, CMake, tools
 
 class CppDsp(ConanFile):
     author = "TNT Coders <tnt-coders@googlegroups.com>"
-    build_requires = "gtest/1.8.1@bincrafters/stable"
+    build_requires = "gtest/1.8.1"
     default_options = {"shared": False}
     description = "C++ Implementation of common digital signal processing algorithms"
     exports_sources = "CMakeLists.txt", "docs/*", "include/*", "src/*", "test/*"
-    generators = "cmake", "cmake_paths"
+    generators = "cmake"
     license = "GNU Lesser General Public License v3.0"
     name = "cpp-dsp"
     options = {"shared": [True, False]}

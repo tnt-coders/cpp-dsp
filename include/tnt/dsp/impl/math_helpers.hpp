@@ -1,6 +1,6 @@
 #pragma once
 
-namespace tnt::dsp
+namespace tnt::dsp::impl
 {
 
 // Returns true if the provided value is even
@@ -33,4 +33,4 @@ constexpr size_t NextPowerOf2(const size_t value)
     return result;
 }
 
-}
+} /* namespace tnt::dsp::impl */

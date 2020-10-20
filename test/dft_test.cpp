@@ -4,7 +4,10 @@
 #include <complex>
 #include <gtest/gtest.h>
 #include <tnt/dsp/dft.hpp>
+#include <tnt/dsp/signal.hpp>
 #include <vector>
+
+// TODO: Add tests for types other than double and complex<double>
 
 using namespace tnt;
 
@@ -13,13 +16,14 @@ using std::pow;
 using std::sin;
 using std::vector;
 
-TEST(DFT, RealInputSignal)
+TEST(DFT, DFT_RealSignal)
 {
+    size_t f_s = 4000;
     size_t N = 4;
-    vector<double> x(N);
 
-    int f_s = 4000;
-    double t_s = 1.0 / f_s;
+    dsp::Signal<double> x(f_s, N);
+
+    auto t_s = 1.0 / f_s;
 
     for (size_t n = 0; n < N; ++n)
     {
@@ -40,17 +44,18 @@ TEST(DFT, RealInputSignal)
     EXPECT_NEAR(X[3].imag(), 0.0, constants::EPSILON);
 }
 
-TEST(DFT, ComplexInputSignal)
+TEST(DFT, DFT_ComplexSignal)
 {
+    size_t f_s = 4000;
     size_t N = 4;
-    vector<complex<double>> x(N);
 
-    int f_s = 4000;
-    double t_s = 1.0 / f_s;
+    dsp::Signal<complex<double>> x(f_s, N);
+
+    auto t_s = 1.0 / f_s;
 
     for (size_t n = 0; n < N; ++n)
     {
-        x[n] = complex<double>{ cos(2 * M_PI * 1000 * n * t_s), sin(2 * M_PI * 1000 * n * t_s) };
+        x[n] = { cos(2 * M_PI * 1000 * n * t_s), sin(2 * M_PI * 1000 * n * t_s) };
     }
 
     auto X = dsp::DFT(x);
