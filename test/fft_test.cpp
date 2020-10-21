@@ -1,5 +1,4 @@
 #include "constants.hpp"
-
 #include <cmath>
 #include <gtest/gtest.h>
 #include <tnt/dsp/dft.hpp>

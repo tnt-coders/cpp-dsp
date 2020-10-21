@@ -1,11 +1,11 @@
 #include "constants.hpp"
-
 #include <complex>
 #include <cmath>
 #include <gtest/gtest.h>
 #include <memory>
 #include <tnt/dsp/analysis.hpp>
 #include <tnt/dsp/signal.hpp>
+#include <tnt/dsp/signal_generator.hpp>
 #include <vector>
 
 using namespace tnt;
@@ -30,18 +30,8 @@ protected:
 
     void Magnitude_RealSignal()
     {
-        const auto f_s = 4000;
-        const auto N = 4;
-
-        dsp::Signal<T> x(f_s, N);
-
-        const auto t_s = 1.0f / f_s;
-
-        for (auto n = 0; n < N; ++n)
-        {
-            x[n] = T{ cos(2 * T{ M_PI } * 1000 * n * t_s) };
-        }
-
+        const dsp::SignalGenerator<T> g(4000, 4);
+        const auto x = g.Cos(1000);
         const auto x_magnitude = dsp::Magnitude(x);
 
         EXPECT_NEAR(x_magnitude[0], 1.0, constants::EPSILON);
@@ -52,18 +42,8 @@ protected:
 
     void Magnitude_ComplexSignal()
     {
-        const auto f_s = 4000;
-        const auto N = 4;
-
-        dsp::Signal<std::complex<T>> x(f_s, N);
-
-        const auto t_s = 1.0f / f_s;
-
-        for (auto n = 0; n < N; ++n)
-        {
-            x[n] = std::complex<T>{ cos(2 * T{ M_PI } * 1000 * n * t_s), sin(2 * T{ M_PI } * 1000 * n * t_s) };
-        }
-
+        const dsp::SignalGenerator<T> g(4000, 4);
+        const dsp::Signal<std::complex<T>> x{ g.Cos(1000), g.Sin(1000) };
         const auto x_magnitude = dsp::Magnitude(x);
 
         EXPECT_NEAR(x_magnitude[0], 1.0, constants::EPSILON);
@@ -88,22 +68,16 @@ protected:
 
     void Phase_RealSignal()
     {
-        const auto f_s = 4000;
-        const auto N = 4;
+        const dsp::SignalGenerator<T> g(4000, 4);
+        auto x = g.Cos(1000);
 
-        dsp::Signal<T> x(f_s, N);
-
-        const auto t_s = 1.0f / f_s;
-
-        for (auto n = 0; n < N; ++n)
+        // Phase doesn't calculate accurately for very small values
+        // If the magnitude is below EPSILON assume the value is 0
+        for (auto& sample : x)
         {
-            x[n] = T{ cos(2 * T{ M_PI } * 1000 * n * t_s) };
-
-            // Phase doesn't calculate accurately for very small values
-            // If the magnitude is below EPSILON assume the value is 0
-            if (dsp::Magnitude(x[n]) < constants::EPSILON)
+            if (dsp::Magnitude(sample) < constants::EPSILON)
             {
-                x[n] = T{ 0.0 };
+                sample = 0;
             }
         }
 
@@ -117,30 +91,21 @@ protected:
 
     void Phase_ComplexSignal()
     {
-        const auto f_s = 4000;
-        const auto N = 4;
+        const dsp::SignalGenerator<T> g(4000, 4);
+        dsp::Signal<std::complex<T>> x{ g.Cos(1000), g.Sin(1000) };
 
-        dsp::Signal<std::complex<T>> x(f_s, N);
-
-        const auto t_s = 1.0f / f_s;
-
-        for (auto n = 0; n < N; ++n)
+        // Phase doesn't calculate accurately for very small values
+        // If the magnitude is below EPSILON assume the value is 0
+        for (auto& sample : x)
         {
-            auto real = T{ cos(2 * T{ M_PI } * 1000 * n * t_s) };
-            auto imag = T{ sin(2 * T{ M_PI } * 1000 * n * t_s) };
-
-            // Phase doesn't calculate accurately for very small values
-            // If the magnitude of the real or imag part is below EPSILON, assume it is 0
-            if (dsp::Magnitude(real) < constants::EPSILON)
+            if (dsp::Magnitude(sample.real()) < constants::EPSILON)
             {
-                real = 0;
+                sample.real(0);
             }
-            if (dsp::Magnitude(imag) < constants::EPSILON)
+            if (dsp::Magnitude(sample.imag()) < constants::EPSILON)
             {
-                imag = 0;
+                sample.imag(0);
             }
-
-            x[n] = std::complex<T>{ real, imag };
         }
 
         const auto x_phase = dsp::Phase(x);
@@ -169,20 +134,9 @@ protected:
 
     void Power_RealSignal()
     {
-        const auto f_s = 4000;
-        const auto N = 4;
-
-        dsp::Signal<T> x1(f_s, N);
-        dsp::Signal<T> x2(f_s, N);
-
-        const auto t_s = 1.0f / f_s;
-
-        for (auto n = 0; n < N; ++n)
-        {
-            x1[n] = T{ cos(2 * T{ M_PI } * 1000 * n * t_s) };
-            x2[n] = T{ 2 * cos(2 * T{ M_PI } * 1000 * n * t_s) };
-        }
-
+        const dsp::SignalGenerator<T> g(4000, 4);
+        const auto x1 = g.Cos(1000);
+        const auto x2 = g.Cos(1000, 2);
         const auto x1_power = dsp::Power(x1);
         const auto x2_power = dsp::Power(x2);
 
@@ -198,20 +152,9 @@ protected:
 
     void Power_ComplexSignal()
     {
-        const auto f_s = 4000;
-        const auto N = 4;
-
-        dsp::Signal<std::complex<double>> x1(f_s, N);
-        dsp::Signal<std::complex<double>> x2(f_s, N);
-
-        const auto t_s = 1.0f / f_s;
-
-        for (auto n = 0; n < N; ++n)
-        {
-            x1[n] = std::complex<T>{ cos(2 * T{ M_PI } * 1000 * n * t_s), sin(2 * T{ M_PI } * 1000 * n * t_s) };
-            x2[n] = std::complex<T>{ 2 * cos(2 * T{ M_PI } * 1000 * n * t_s), 2 * sin(2 * T{ M_PI } * 1000 * n * t_s) };
-        }
-
+        const dsp::SignalGenerator<T> g(4000, 4);
+        const dsp::Signal<std::complex<T>> x1{ g.Cos(1000), g.Sin(1000) };
+        const dsp::Signal<std::complex<T>> x2{ g.Cos(1000, 2), g.Sin(1000, 2) };
         const auto x1_power = dsp::Power(x1);
         const auto x2_power = dsp::Power(x2);
 
@@ -228,7 +171,7 @@ protected:
 
 using AnalysisTestTypes = ::testing::Types<double, float>;
 
-TYPED_TEST_CASE(AnalysisTest, AnalysisTestTypes);
+TYPED_TEST_SUITE(AnalysisTest, AnalysisTestTypes);
 
 TYPED_TEST(AnalysisTest, Magnitude_RealSample)
 {

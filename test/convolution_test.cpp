@@ -1,5 +1,4 @@
 #include "constants.hpp"
-
 #include <gtest/gtest.h>
 #include <tnt/dsp/convolution.hpp>
 #include <vector>

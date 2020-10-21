@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cassert>
+#include <complex>
 #include <vector>
 
 //TODO: Add additional container function support
@@ -51,6 +53,27 @@ public:
         : m_data(signal.begin(), signal.end())
         , m_sampleRate(signal.GetSampleRate())
     {}
+
+    /*!
+    \brief Creates a complex signal from two real signals
+    \param[in] real Signal containing the real samples
+    \param[in] imaginary Signal containing the imaginary samples
+    \return Complex signal
+    */
+    template <typename U>
+    Signal(const Signal<U>& real, const Signal<U>& imaginary)
+        : m_data(real.size())
+        , m_sampleRate(real.GetSampleRate())
+    {
+        assert(real.GetSampleRate() == imaginary.GetSampleRate());
+        assert(real.size() == imaginary.size());
+        const auto size = real.size();
+
+        for (auto index = 0; index < size; ++index)
+        {
+            m_data[index] = T{ real[index], imaginary[index] };
+        }
+    }
 
     /*!
     \brief Destructor
