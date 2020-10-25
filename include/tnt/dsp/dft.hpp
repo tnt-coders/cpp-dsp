@@ -32,11 +32,11 @@ Signal<std::complex<T>> DFT(const Signal<T>& x)
 
     // Take advantage of DFT symmetry when dealing with real input signals
     // Only the first N/2 + 1 outputs are unique
-    for (auto k = 0; k < N / 2 + 1; ++k)
+    for (size_t k = 0; k < N / 2 + 1; ++k)
     {
-        for (auto n = 0; n < N; ++n)
+        for (size_t n = 0; n < N; ++n)
         {
-            X[k] += x[n] * std::polar(1.0, -2 * M_PI * n * k / N);
+            X[k] += x[n] * std::polar(T{ 1.0 }, -2 * T{ M_PI } * n * k / N);
         }
 
         // X(N-k) = X(k)* for k = 1 -> N/2
@@ -68,11 +68,11 @@ Signal<std::complex<T>> DFT(const Signal<std::complex<T>>& x)
 
     Signal<std::complex<T>> X(f_s, N);
 
-    for (auto k = 0; k < N; ++k)
+    for (size_t k = 0; k < N; ++k)
     {
-        for (auto n = 0; n < N; ++n)
+        for (size_t n = 0; n < N; ++n)
         {
-            X[k] += x[n] * std::polar(1.0, -2 * M_PI * n * k / N);
+            X[k] += x[n] * std::polar(T{ 1.0 }, -2 * T{ M_PI } * n * k / N);
         }
     }
 

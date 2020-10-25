@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <complex>
+#include <utility>
 #include <vector>
 
 //TODO: Add additional container function support
@@ -58,7 +59,6 @@ public:
     \brief Creates a complex signal from two real signals
     \param[in] real Signal containing the real samples
     \param[in] imaginary Signal containing the imaginary samples
-    \return Complex signal
     */
     template <typename U>
     Signal(const Signal<U>& real, const Signal<U>& imaginary)
@@ -67,11 +67,10 @@ public:
     {
         assert(real.GetSampleRate() == imaginary.GetSampleRate());
         assert(real.size() == imaginary.size());
-        const auto size = real.size();
 
-        for (auto index = 0; index < size; ++index)
+        for (size_t n = 0; n < m_data.size(); ++n)
         {
-            m_data[index] = T{ real[index], imaginary[index] };
+            m_data[n] = T{ real[n], imaginary[n] };
         }
     }
 
@@ -87,15 +86,6 @@ public:
     size_t GetSampleRate() const
     {
         return m_sampleRate;
-    }
-
-    /*!
-    \brief Sets the sample rate
-    \param[in] sampleRate Sample rate
-    */
-    void SetSampleRate(size_t sampleRate)
-    {
-        m_sampleRate = sampleRate;
     }
 
     /*!
@@ -219,10 +209,12 @@ public:
         return m_data[index];
     }
 
+    // Friend declaration for swap
+    template <typename U>
+    friend void swap(Signal<U>& signal1, Signal<U>& signal2);
+
 private:
-
     std::vector<T> m_data;
-
     size_t m_sampleRate;
 };
 
@@ -234,9 +226,9 @@ private:
 template<typename T>
 void swap(Signal<T>& signal1, Signal<T>& signal2)
 {
-    Signal<T> temp = std::move(signal1);
-    signal1 = std::move(signal2);
-    signal2 = std::move(temp);
+    using std::swap;
+    signal1.m_data.swap(signal2.m_data);
+    swap(signal1.m_sampleRate, signal2.m_sampleRate);
 }
 
 } /* namespace tnt::dsp */

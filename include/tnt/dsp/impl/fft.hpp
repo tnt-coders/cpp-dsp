@@ -22,10 +22,10 @@ static Signal<std::complex<T>> BluesteinFFT(const Signal<std::complex<T>>& x)
 
     // Calculate the "phase factors"
     Signal<std::complex<T>> P(f_s, N);
-    for (auto n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         // %(2*N) is done to improve accuracy of floating point trigonometry
-        P[n] = std::polar(1.0, -M_PI * ((n * n) % (2 * N)) / N);
+        P[n] = std::polar(T{ 1.0 }, -T{ M_PI } *((n * n) % (2 * N)) / N);
     }
 
     // Construct the two sequences to perform convolution
@@ -33,7 +33,7 @@ static Signal<std::complex<T>> BluesteinFFT(const Signal<std::complex<T>>& x)
     Signal<std::complex<T>> b(f_s, M);
     a[0] = x[0] * P[0];
     b[0] = P[0];
-    for (auto n = 1; n < N; ++n)
+    for (size_t n = 1; n < N; ++n)
     {
         a[n] = x[n] * P[n];
         b[n] = b[M - n] = std::conj(P[n]); // (>*.*)> symmetry! <(*.*<)
@@ -43,7 +43,7 @@ static Signal<std::complex<T>> BluesteinFFT(const Signal<std::complex<T>>& x)
 
     // Mutiply by the "phase factors" to obtain the correct results
     Signal<std::complex<T>> X(f_s, N);
-    for (auto m = 0; m < N; ++m)
+    for (size_t m = 0; m < N; ++m)
     {
         X[m] = c[m] * P[m];
     }
@@ -57,16 +57,16 @@ template <typename T>
 static Signal<std::complex<T>> Convolve(const Signal<std::complex<T>>& a, const Signal<std::complex<T>>& b)
 {
     assert(a.GetSampleRate() == b.GetSampleRate());
-    const auto f_s = a.GetSampleRate();
     assert(a.size() == b.size());
+    assert(IsPowerOf2(a.size()));
+    const auto f_s = a.GetSampleRate();
     const auto N = a.size();
-    assert(IsPowerOf2(N));
     const auto NOver2 = N / 2;
 
     // Pre-calculate the twiddle factors
     Signal<std::complex<T>> W(f_s, NOver2);
-    const auto omega = 2.0 * M_PI / N;
-    for (auto n = 0; n < NOver2; ++n)
+    const auto omega = 2.0f * T{ M_PI } / N;
+    for (size_t n = 0; n < NOver2; ++n)
     {
         W[n] = { std::cos(-omega * n), std::sin(-omega * n) };
     }
@@ -87,15 +87,15 @@ static Signal<std::complex<T>> Convolve(const Signal<std::complex<T>>& a, const 
 template <typename T>
 static Signal<std::complex<T>> StockhamFFT(const Signal<std::complex<T>>& x)
 {
+    assert(impl::IsPowerOf2(x.size()));
     const auto f_s = x.GetSampleRate();
     const auto N = x.size();
-    assert(impl::IsPowerOf2(N));
     const auto NOver2 = N / 2;
 
     // Pre-calculate the twiddle factors
     Signal<std::complex<T>> W(f_s, NOver2);
-    const auto omega = 2.0 * M_PI / N;
-    for (auto n = 0; n < NOver2; ++n)
+    const auto omega = 2.0f * T{ M_PI } / N;
+    for (size_t n = 0; n < NOver2; ++n)
     {
         W[n] = { std::cos(-omega * n), std::sin(-omega * n) };
     }
@@ -107,9 +107,9 @@ static Signal<std::complex<T>> StockhamFFT(const Signal<std::complex<T>>& x)
 template <typename T>
 static Signal<std::complex<T>> StockhamFFT(const Signal<std::complex<T>>& x, const Signal<std::complex<T>>& W)
 {
+    assert(impl::IsPowerOf2(x.size()));
     const auto f_s = x.GetSampleRate();
     const auto N = x.size();
-    assert(impl::IsPowerOf2(N));
     const auto NOver2 = N / 2;
 
     // The Stockham algorithm requires one vector for input/output data and
@@ -121,15 +121,15 @@ static Signal<std::complex<T>> StockhamFFT(const Signal<std::complex<T>>& x, con
     auto WStride = N / 2;
 
     // Loop through each stage of the FFT
-    for (auto stride = 1; stride < N; stride *= 2)
+    for (size_t stride = 1; stride < N; stride *= 2)
     {
         // Loop through the individual FFTs of each stage
-        for (auto m = 0; m < NOver2; m += stride)
+        for (size_t m = 0; m < NOver2; m += stride)
         {
             const auto mTimes2 = m * 2;
 
             // Perform each individual FFT
-            for (auto n = 0; n < stride; ++n)
+            for (size_t n = 0; n < stride; ++n)
             {
                 // Calculate the input indexes
                 const auto aIndex1 = n + m;

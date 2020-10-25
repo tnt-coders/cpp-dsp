@@ -6,7 +6,6 @@
 #include <tnt/dsp/analysis.hpp>
 #include <tnt/dsp/signal.hpp>
 #include <tnt/dsp/signal_generator.hpp>
-#include <vector>
 
 using namespace tnt;
 
@@ -14,13 +13,13 @@ template <typename T>
 class AnalysisTest : public ::testing::Test
 {
 protected:
-    void Magnitude_RealSample()
+    void Magnitude_RealSample() const
     {
         EXPECT_NEAR(dsp::Magnitude(T{ 1.0 }), 1.0, constants::EPSILON);
         EXPECT_NEAR(dsp::Magnitude(T{ -1.0 }), 1.0, constants::EPSILON);
     }
 
-    void Magnitude_ComplexSample()
+    void Magnitude_ComplexSample() const
     {
         EXPECT_NEAR(dsp::Magnitude(std::complex<T>{ 3.0, 4.0 }), 5.0, constants::EPSILON);
         EXPECT_NEAR(dsp::Magnitude(std::complex<T>{ -3.0, 4.0 }), 5.0, constants::EPSILON);
@@ -28,7 +27,7 @@ protected:
         EXPECT_NEAR(dsp::Magnitude(std::complex<T>{ -3.0, -4.0 }), 5.0, constants::EPSILON);
     }
 
-    void Magnitude_RealSignal()
+    void Magnitude_RealSignal() const
     {
         const dsp::SignalGenerator<T> g(4000, 4);
         const auto x = g.Cos(1000);
@@ -40,7 +39,7 @@ protected:
         EXPECT_NEAR(x_magnitude[3], 0.0, constants::EPSILON);
     }
 
-    void Magnitude_ComplexSignal()
+    void Magnitude_ComplexSignal() const
     {
         const dsp::SignalGenerator<T> g(4000, 4);
         const dsp::Signal<std::complex<T>> x{ g.Cos(1000), g.Sin(1000) };
@@ -52,13 +51,13 @@ protected:
         EXPECT_NEAR(x_magnitude[3], 1.0, constants::EPSILON);
     }
 
-    void Phase_RealSample()
+    void Phase_RealSample() const
     {
         EXPECT_NEAR(dsp::Phase(T{ 1.0 }), 0.0, constants::EPSILON);
         EXPECT_NEAR(dsp::Phase(T{ -1.0 }), M_PI, constants::EPSILON);
     }
 
-    void Phase_ComplexSample()
+    void Phase_ComplexSample() const
     {
         EXPECT_NEAR(dsp::Phase(std::complex<T>{ 1.0, 1.0 }), M_PI / 4, constants::EPSILON);
         EXPECT_NEAR(dsp::Phase(std::complex<T>{ -1.0, 1.0 }), 3 * M_PI / 4, constants::EPSILON);
@@ -66,7 +65,7 @@ protected:
         EXPECT_NEAR(dsp::Phase(std::complex<T>{ -1.0, -1.0 }), -3 * M_PI / 4, constants::EPSILON);
     }
 
-    void Phase_RealSignal()
+    void Phase_RealSignal() const
     {
         const dsp::SignalGenerator<T> g(4000, 4);
         auto x = g.Cos(1000);
@@ -89,7 +88,7 @@ protected:
         EXPECT_NEAR(x_phase[3], 0.0, constants::EPSILON);
     }
 
-    void Phase_ComplexSignal()
+    void Phase_ComplexSignal() const
     {
         const dsp::SignalGenerator<T> g(4000, 4);
         dsp::Signal<std::complex<T>> x{ g.Cos(1000), g.Sin(1000) };
@@ -116,7 +115,7 @@ protected:
         EXPECT_NEAR(x_phase[3], -M_PI / 2, constants::EPSILON);
     }
 
-    void Power_RealSample()
+    void Power_RealSample() const
     {
         EXPECT_NEAR(dsp::Power(T{ 1.0 }), 1.0, constants::EPSILON);
         EXPECT_NEAR(dsp::Power(T{ -1.0 }), 1.0, constants::EPSILON);
@@ -124,7 +123,7 @@ protected:
         EXPECT_NEAR(dsp::Power(T{ -2.0 }), 4.0, constants::EPSILON);
     }
 
-    void Power_ComplexSample()
+    void Power_ComplexSample() const
     {
         EXPECT_NEAR(dsp::Power(std::complex<T>{ 3.0, 4.0 }), 25.0, constants::EPSILON);
         EXPECT_NEAR(dsp::Power(std::complex<T>{ -3.0, 4.0 }), 25.0, constants::EPSILON);
@@ -132,7 +131,7 @@ protected:
         EXPECT_NEAR(dsp::Power(std::complex<T>{ -3.0, -4.0 }), 25.0, constants::EPSILON);
     }
 
-    void Power_RealSignal()
+    void Power_RealSignal() const
     {
         const dsp::SignalGenerator<T> g(4000, 4);
         const auto x1 = g.Cos(1000);
@@ -150,7 +149,7 @@ protected:
         EXPECT_NEAR(x2_power[3], 0.0, constants::EPSILON);
     }
 
-    void Power_ComplexSignal()
+    void Power_ComplexSignal() const
     {
         const dsp::SignalGenerator<T> g(4000, 4);
         const dsp::Signal<std::complex<T>> x1{ g.Cos(1000), g.Sin(1000) };

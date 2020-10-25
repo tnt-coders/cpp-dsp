@@ -40,7 +40,7 @@ Signal<std::complex<T>> FFT(const Signal<T>& x)
     // using a single N/2-point complex FFT. Split the input signal into its
     // even and odd components and load the data into a single complex vector.
     Signal<std::complex<T>> x_p(f_s, NOver2);
-    for (auto n = 0; n < NOver2; ++n)
+    for (size_t n = 0; n < NOver2; ++n)
     {
         const auto nTimes2 = n * 2;
 
@@ -59,7 +59,7 @@ Signal<std::complex<T>> FFT(const Signal<T>& x)
 
     // Extract the real FFT from the output of the complex FFT
     Signal<std::complex<T>> X(f_s, N);
-    for (auto m = 0; m < NOver2; ++m)
+    for (size_t m = 0; m < NOver2; ++m)
     {
         const auto NOver2MinusM = NOver2 - m;
 
@@ -73,8 +73,8 @@ Signal<std::complex<T>> FFT(const Signal<T>& x)
             (X_p[m].imag() - X_p[NOver2MinusM].imag()) / 2
         );
 
-        const auto a = std::cos(M_PI * m / NOver2);
-        const auto b = std::sin(M_PI * m / NOver2);
+        const auto a = std::cos(T{ M_PI } * m / NOver2);
+        const auto b = std::sin(T{ M_PI } * m / NOver2);
 
         X[m] = {
             X_r.first + a * X_i.first - b * X_r.second,
@@ -83,7 +83,7 @@ Signal<std::complex<T>> FFT(const Signal<T>& x)
     }
 
     // X[m] = X*[N-m] where 1 <= m <= N/2 - 1
-    for (auto m = 1; m < NOver2; ++m)
+    for (size_t m = 1; m < NOver2; ++m)
     {
         X[N - m] = std::conj(X[m]); // (>*.*)> symmetry! <(*.*<)
     }

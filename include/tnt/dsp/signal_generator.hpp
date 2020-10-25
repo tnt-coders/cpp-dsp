@@ -6,34 +6,58 @@
 namespace tnt::dsp
 {
 
+/*!
+\brief Generates signals of similar sample rates/sizes
+*/
 template <typename T>
-class SignalGenerator
+class SignalGenerator final
 {
 public:
+
+    /*!
+    \brief Constructor
+    \param[in] sampleRate Sample rate to use for generated signals
+    \param[in] size Size to use for generated signals
+    */
     SignalGenerator(size_t sampleRate, size_t size)
         : m_sampleRate(sampleRate)
+        , m_sampleInterval(T{ 1.0 } / m_sampleRate)
         , m_size(size)
-    {
-        m_step = 1.0f / m_sampleRate;
-    }
+    {}
 
-    Signal<T> Sin(T frequency, T amplitude = 1, T phaseShift = 0, T verticalShift = 0) const
+    /*!
+    \brief Generates a cosine wave
+    \param[in] frequency Frequency in Hz
+    \param[in] amplitude Amplitude
+    \param[in] phaseShift Phase shift
+    \param[in] verticalShift Vertical shift
+    */
+    Signal<T> Cos(T frequency, T amplitude = 1, T phaseShift = 0, T verticalShift = 0) const
     {
         Signal<T> signal(m_sampleRate, m_size);
-        for (auto index = 0; index < signal.size(); ++index)
+
+        for (size_t n = 0; n < signal.size(); ++n)
         {
-            signal[index] = amplitude * std::sin(2 * T{ M_PI } * frequency * index * m_step + phaseShift) + verticalShift;
+            signal[n] = amplitude * std::cos(2 * T{ M_PI } *frequency * n * m_sampleInterval + phaseShift) + verticalShift;
         }
 
         return signal;
     }
 
-    Signal<T> Cos(T frequency, T amplitude = 1, T phaseShift = 0, T verticalShift = 0) const
+    /*!
+    \brief Generates a sine wave
+    \param[in] frequency Frequency in Hz
+    \param[in] amplitude Amplitude
+    \param[in] phaseShift Phase shift
+    \param[in] verticalShift Vertical shift
+    */
+    Signal<T> Sin(T frequency, T amplitude = 1, T phaseShift = 0, T verticalShift = 0) const
     {
         Signal<T> signal(m_sampleRate, m_size);
-        for (auto index = 0; index < signal.size(); ++index)
+
+        for (size_t n = 0; n < signal.size(); ++n)
         {
-            signal[index] = amplitude * std::cos(2 * T{ M_PI } * frequency * index * m_step + phaseShift) + verticalShift;
+            signal[n] = amplitude * std::sin(2 * T{ M_PI } * frequency * n * m_sampleInterval + phaseShift) + verticalShift;
         }
 
         return signal;
@@ -41,8 +65,8 @@ public:
 
 private:
     size_t m_sampleRate;
+    T m_sampleInterval;
     size_t m_size;
-    T m_step;
 };
 
 } /* namespace tnt::dsp */
