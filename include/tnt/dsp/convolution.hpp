@@ -1,6 +1,6 @@
 #pragma once
 
-#include "fft.hpp"
+#include "fourier_transform.hpp"
 #include <algorithm>
 #include <cassert>
 #include <complex>
@@ -24,15 +24,15 @@ Signal<T> Convolve(const Signal<T>& a, const Signal<T>& b)
     const auto N = a.size();
 
     // TODO: Cache FFT twiddle factors so they aren't calculated twice
-    const auto A = FFT(a);
-    const auto B = FFT(b);
+    const auto A = FourierTransform(a);
+    const auto B = FourierTransform(b);
 
     // The convolution theorem states that multiplication in the frequency
     // domain is equivalent to convolution in the time domain
     Signal<std::complex<T>> C(f_s, N);
     std::transform(A.begin(), A.end(), B.begin(), C.begin(), std::multiplies<std::complex<T>>());
 
-    const auto c = IFFT(C);
+    const auto c = InverseFourierTransform(C);
 
     // Strip off the complex portion of the result since we are dealing
     // with only real input signals
@@ -105,15 +105,15 @@ Signal<std::complex<T>> Convolve(const Signal<std::complex<T>>& a, const Signal<
     const auto N = a.size();
 
     // TODO: Cache FFT twiddle factors so they aren't calculated twice
-    const auto A = FFT(a);
-    const auto B = FFT(b);
+    const auto A = FourierTransform(a);
+    const auto B = FourierTransform(b);
 
     // The convolution theorem states that multiplication in the frequency
     // domain is equivalent to convolution in the time domain
     Signal<std::complex<T>> C(f_s, N);
     std::transform(A.begin(), A.end(), B.begin(), C.begin(), std::multiplies<std::complex<T>>());
 
-    return IFFT(C);
+    return InverseFourierTransform(C);
 }
 
 } /* namespace tnt::dsp */

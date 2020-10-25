@@ -1,6 +1,6 @@
 #pragma once
 
-#include "impl/fft.hpp"
+#include "impl/fourier_transform.hpp"
 #include "impl/math_helpers.hpp"
 #include "signal.hpp"
 #include <algorithm>
@@ -11,13 +11,15 @@
 namespace tnt::dsp
 {
 
+
+
 /*!
 \brief Calculates the fast Fourier transform of a real signal
 \param[in] x - Vector of real input data
 \return Vector of complex values representing the FFT of the input data
 */
 template <typename T>
-Signal<std::complex<T>> FFT(const Signal<T>& x)
+Signal<std::complex<T>> FourierTransform(const Signal<T>& x)
 {
     const auto f_s = x.GetSampleRate();
     const auto N = x.size();
@@ -31,7 +33,7 @@ Signal<std::complex<T>> FFT(const Signal<T>& x)
             return std::complex<T>(sample);
             });
 
-        return FFT(x_p);
+        return FourierTransform(x_p);
     }
 
     const auto NOver2 = N / 2;
@@ -100,7 +102,7 @@ Signal<std::complex<T>> FFT(const Signal<T>& x)
 \return Vector of complex values representing the FFT of the input data
 */
 template <typename T>
-Signal<std::complex<T>> FFT(const Signal<std::complex<T>>& x)
+Signal<std::complex<T>> FourierTransform(const Signal<std::complex<T>>& x)
 {
     const auto N = x.size();
 
@@ -115,7 +117,7 @@ Signal<std::complex<T>> FFT(const Signal<std::complex<T>>& x)
 \return Vector of complex values representing the IFFT of the input data
 */
 template <typename T>
-Signal<std::complex<T>> IFFT(const Signal<std::complex<T>>& X)
+Signal<std::complex<T>> InverseFourierTransform(const Signal<std::complex<T>>& X)
 {
     const auto f_s = X.GetSampleRate();
     const auto N = X.size();
@@ -125,7 +127,7 @@ Signal<std::complex<T>> IFFT(const Signal<std::complex<T>>& X)
         return std::conj(sample);
         });
 
-    const auto x_p = FFT(X_p);
+    const auto x_p = FourierTransform(X_p);
 
     Signal<std::complex<T>> x(f_s, N);
     std::transform(x_p.begin(), x_p.end(), x.begin(), [=](const auto& sample) {

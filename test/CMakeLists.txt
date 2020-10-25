@@ -4,8 +4,7 @@ add_executable(dsp_test
     main.cpp
     analysis_test.cpp
     convolution_test.cpp
-    dft_test.cpp
-    fft_test.cpp
+    fourier_transform_test.cpp
     signal_generator_test.cpp
     signal_test.cpp
 )

@@ -32,7 +32,7 @@ public:
     \param[in] phaseShift Phase shift
     \param[in] verticalShift Vertical shift
     */
-    Signal<T> Cos(T frequency, T amplitude = 1, T phaseShift = 0, T verticalShift = 0) const
+    Signal<T> Cosine(T frequency, T amplitude = 1, T phaseShift = 0, T verticalShift = 0) const
     {
         Signal<T> signal(m_sampleRate, m_size);
 
@@ -51,7 +51,7 @@ public:
     \param[in] phaseShift Phase shift
     \param[in] verticalShift Vertical shift
     */
-    Signal<T> Sin(T frequency, T amplitude = 1, T phaseShift = 0, T verticalShift = 0) const
+    Signal<T> Sine(T frequency, T amplitude = 1, T phaseShift = 0, T verticalShift = 0) const
     {
         Signal<T> signal(m_sampleRate, m_size);
 

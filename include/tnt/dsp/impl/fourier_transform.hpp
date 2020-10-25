@@ -80,7 +80,7 @@ static Signal<std::complex<T>> Convolve(const Signal<std::complex<T>>& a, const 
     Signal<std::complex<T>> C(f_s, N);
     std::transform(A.begin(), A.end(), B.begin(), C.begin(), std::multiplies<std::complex<T>>());
 
-    return IFFT(C);
+    return InverseFourierTransform(C);
 }
 
 // C++ implementation of the Stockam FFT algorithm

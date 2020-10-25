@@ -14,7 +14,7 @@ protected:
         // Nothing definitive to test
     }
 
-    void SignalGenerator_Cos()
+    void SignalGenerator_Cosine()
     {
         const size_t f_s = 1000;
         const size_t N = 10;
@@ -33,7 +33,7 @@ protected:
         }
 
         dsp::SignalGenerator<T> g(f_s, N);
-        const auto x = g.Cos(frequency, amplitude, phaseShift, verticalShift);
+        const auto x = g.Cosine(frequency, amplitude, phaseShift, verticalShift);
 
         ASSERT_EQ(x.size(), cosine.size());
         ASSERT_EQ(x.GetSampleRate(), cosine.GetSampleRate());
@@ -44,7 +44,7 @@ protected:
         }
     }
 
-    void SignalGenerator_Sin()
+    void SignalGenerator_Sine()
     {
         const size_t f_s = 1000;
         const size_t N = 10;
@@ -63,7 +63,7 @@ protected:
         }
 
         dsp::SignalGenerator<T> g(f_s, N);
-        const auto x = g.Sin(frequency, amplitude, phaseShift, verticalShift);
+        const auto x = g.Sine(frequency, amplitude, phaseShift, verticalShift);
 
         ASSERT_EQ(x.size(), sine.size());
         ASSERT_EQ(x.GetSampleRate(), sine.GetSampleRate());
@@ -84,12 +84,12 @@ TYPED_TEST(SignalGeneratorTest, SignalGenerator_Constructor)
     this->SignalGenerator_Constructor();
 }
 
-TYPED_TEST(SignalGeneratorTest, SignalGenerator_Cos)
+TYPED_TEST(SignalGeneratorTest, SignalGenerator_Cosine)
 {
-    this->SignalGenerator_Cos();
+    this->SignalGenerator_Cosine();
 }
 
-TYPED_TEST(SignalGeneratorTest, SignalGenerator_Sin)
+TYPED_TEST(SignalGeneratorTest, SignalGenerator_Sine)
 {
-    this->SignalGenerator_Sin();
+    this->SignalGenerator_Sine();
 }

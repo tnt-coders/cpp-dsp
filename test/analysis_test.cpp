@@ -30,7 +30,7 @@ protected:
     void Magnitude_RealSignal() const
     {
         const dsp::SignalGenerator<T> g(4000, 4);
-        const auto x = g.Cos(1000);
+        const auto x = g.Cosine(1000);
         const auto x_magnitude = dsp::Magnitude(x);
 
         EXPECT_NEAR(x_magnitude[0], 1.0, constants::EPSILON);
@@ -42,7 +42,7 @@ protected:
     void Magnitude_ComplexSignal() const
     {
         const dsp::SignalGenerator<T> g(4000, 4);
-        const dsp::Signal<std::complex<T>> x{ g.Cos(1000), g.Sin(1000) };
+        const dsp::Signal<std::complex<T>> x{ g.Cosine(1000), g.Sine(1000) };
         const auto x_magnitude = dsp::Magnitude(x);
 
         EXPECT_NEAR(x_magnitude[0], 1.0, constants::EPSILON);
@@ -68,7 +68,7 @@ protected:
     void Phase_RealSignal() const
     {
         const dsp::SignalGenerator<T> g(4000, 4);
-        auto x = g.Cos(1000);
+        auto x = g.Cosine(1000);
 
         // Phase doesn't calculate accurately for very small values
         // If the magnitude is below EPSILON assume the value is 0
@@ -91,7 +91,7 @@ protected:
     void Phase_ComplexSignal() const
     {
         const dsp::SignalGenerator<T> g(4000, 4);
-        dsp::Signal<std::complex<T>> x{ g.Cos(1000), g.Sin(1000) };
+        dsp::Signal<std::complex<T>> x{ g.Cosine(1000), g.Sine(1000) };
 
         // Phase doesn't calculate accurately for very small values
         // If the magnitude is below EPSILON assume the value is 0
@@ -134,8 +134,8 @@ protected:
     void Power_RealSignal() const
     {
         const dsp::SignalGenerator<T> g(4000, 4);
-        const auto x1 = g.Cos(1000);
-        const auto x2 = g.Cos(1000, 2);
+        const auto x1 = g.Cosine(1000);
+        const auto x2 = g.Cosine(1000, 2);
         const auto x1_power = dsp::Power(x1);
         const auto x2_power = dsp::Power(x2);
 
@@ -152,8 +152,8 @@ protected:
     void Power_ComplexSignal() const
     {
         const dsp::SignalGenerator<T> g(4000, 4);
-        const dsp::Signal<std::complex<T>> x1{ g.Cos(1000), g.Sin(1000) };
-        const dsp::Signal<std::complex<T>> x2{ g.Cos(1000, 2), g.Sin(1000, 2) };
+        const dsp::Signal<std::complex<T>> x1{ g.Cosine(1000), g.Sine(1000) };
+        const dsp::Signal<std::complex<T>> x2{ g.Cosine(1000, 2), g.Sine(1000, 2) };
         const auto x1_power = dsp::Power(x1);
         const auto x2_power = dsp::Power(x2);
 
