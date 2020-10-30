@@ -80,6 +80,15 @@ public:
     virtual ~Signal() = default;
 
     /*!
+    \brief Gets the duration of the signal in seconds
+    \return Duration
+    */
+    T GetDuration() const
+    {
+        return this->size() / static_cast<T>(m_sampleRate);
+    }
+
+    /*!
     \brief Gets the sample rate
     \return Sample rate
     */

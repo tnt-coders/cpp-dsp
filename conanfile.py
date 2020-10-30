@@ -28,7 +28,7 @@ class CppDsp(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = self.collect_libs()
+        self.cpp_info.libs = tools.collect_libs(self)
 
     def _configure_cmake(self):
         cmake = CMake(self)

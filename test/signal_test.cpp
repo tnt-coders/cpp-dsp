@@ -124,10 +124,16 @@ protected:
         }
     }
 
+    void Signal_GetDuration() const
+    {
+        dsp::Signal<T> x(1000, 2500);
+        EXPECT_NEAR(x.GetDuration(), 2.5, constants::EPSILON);
+    }
+
     void Signal_GetSampleRate() const
     {
         dsp::Signal<T> x(1000);
-        EXPECT_EQ(x.GetSampleRate(), 1000)
+        EXPECT_EQ(x.GetSampleRate(), 1000);
     }
 
     void Signal_Iterators() const
@@ -282,6 +288,16 @@ TYPED_TEST(SignalTest, Signal_ConstructComplexSignal_Signal)
 TYPED_TEST(SignalTest, Signal_ConstructComplexSignal_RealSignal_RealSignal)
 {
     this->Signal_ConstructComplexSignal_RealSignal_RealSignal();
+}
+
+TYPED_TEST(SignalTest, Signal_GetSampleRate)
+{
+    this->Signal_GetSampleRate();
+}
+
+TYPED_TEST(SignalTest, Signal_GetDuration)
+{
+    this->Signal_GetDuration();
 }
 
 TYPED_TEST(SignalTest, Signal_Iterators)
