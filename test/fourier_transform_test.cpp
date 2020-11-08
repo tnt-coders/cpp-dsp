@@ -17,7 +17,7 @@ protected:
     {
         for (size_t N = 1; N <= 100; ++N)
         {
-            dsp::SignalGenerator<T> g(1000, N);
+            dsp::SignalGenerator<T> g{ 1000, N };
             const auto x = g.Cosine(100);
             const auto X = DFT(x);
             const auto X2 = dsp::FourierTransform(x);
@@ -37,8 +37,8 @@ protected:
     {
         for (size_t N = 1; N <= 100; ++N)
         {
-            dsp::SignalGenerator<T> g(1000, N);
-            dsp::Signal<std::complex<T>> x = { g.Cosine(100), g.Sine(100) };
+            dsp::SignalGenerator<T> g{ 1000, N };
+            dsp::Signal<std::complex<T>> x{ g.Cosine(100), g.Sine(100) };
             const auto X = DFT(x);
             const auto X2 = dsp::FourierTransform(x);
 
@@ -57,7 +57,7 @@ protected:
     {
         for (size_t N = 1; N <= 100; ++N)
         {
-            dsp::SignalGenerator<T> g(1000, N);
+            dsp::SignalGenerator<T> g{ 1000, N };
             const auto x = g.Cosine(100);
             auto X = dsp::FourierTransform(x);
             auto x2 = dsp::InverseFourierTransform(X);
@@ -76,8 +76,8 @@ protected:
     {
         for (size_t N = 1; N <= 100; ++N)
         {
-            dsp::SignalGenerator<T> g(1000, N);
-            dsp::Signal<std::complex<T>> x = { g.Cosine(100), g.Sine(100) };
+            dsp::SignalGenerator<T> g{ 1000, N };
+            dsp::Signal<std::complex<T>> x{ g.Cosine(100), g.Sine(100) };
             const auto X = dsp::FourierTransform(x);
             const auto x2 = dsp::InverseFourierTransform(X);
 
@@ -124,7 +124,7 @@ dsp::Signal<std::complex<T>> DFT(const dsp::Signal<T>& x)
     auto f_s = x.GetSampleRate();
     auto N = x.size();
 
-    dsp::Signal<std::complex<T>> X(f_s, N);
+    dsp::Signal<std::complex<T>> X{ f_s, N };
 
     // Take advantage of DFT symmetry when dealing with real input signals
     // Only the first N/2 + 1 outputs are unique
@@ -132,7 +132,7 @@ dsp::Signal<std::complex<T>> DFT(const dsp::Signal<T>& x)
     {
         for (size_t n = 0; n < N; ++n)
         {
-            X[k] += x[n] * std::polar(T{ 1.0 }, -2 * T{ M_PI } *n * k / N);
+            X[k] += x[n] * std::polar(static_cast<T>(1), -2 * static_cast<T>(M_PI) * n * k / N);
         }
 
         // X(N-k) = X(k)* for k = 1 -> N/2
@@ -152,13 +152,13 @@ dsp::Signal<std::complex<T>> DFT(const dsp::Signal<std::complex<T>>& x)
     auto f_s = x.GetSampleRate();
     auto N = x.size();
 
-    dsp::Signal<std::complex<T>> X(f_s, N);
+    dsp::Signal<std::complex<T>> X{ f_s, N };
 
     for (size_t k = 0; k < N; ++k)
     {
         for (size_t n = 0; n < N; ++n)
         {
-            X[k] += x[n] * std::polar(T{ 1.0 }, -2 * T{ M_PI } *n * k / N);
+            X[k] += x[n] * std::polar(static_cast<T>(1), -2 * static_cast<T>(M_PI) * n * k / N);
         }
     }
 

@@ -6,6 +6,11 @@
 namespace tnt::dsp
 {
 
+/*!
+\brief Calculates the analytical signal of a real input signal
+\param[in] x - Real input signal
+\return Analytical signal representing the Hilbert transform of the input signal
+*/
 template <typename T>
 Signal<std::complex<T>> HilbertTransform(const Signal<T>& x)
 {
@@ -15,7 +20,7 @@ Signal<std::complex<T>> HilbertTransform(const Signal<T>& x)
     // Take the Fourier transform
     const auto X = FourierTransform(x);
 
-    Signal<std::complex<T>> X_c(sampleRate, N);
+    Signal<std::complex<T>> X_c{ sampleRate, N };
     
     // The DC component does not get doubled
     X_c[0] = X[0];
@@ -24,7 +29,7 @@ Signal<std::complex<T>> HilbertTransform(const Signal<T>& x)
     // Zero out imaginary components (past N/2)
     for(size_t n = 1; n <= N / 2; ++n)
     {
-        X_c[n] = T{ 2.0 } * X[n];
+        X_c[n] = static_cast<T>(2) * X[n];
     }
 
     // Take the inverse Fourier transform

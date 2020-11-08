@@ -13,7 +13,7 @@ class HilbertTransformTest : public ::testing::Test
 protected:
     void HilbertTransform_EvenLength() const
     {
-        dsp::SignalGenerator<T> g(4000, 4);
+        dsp::SignalGenerator<T> g{ 4000, 4 };
         const auto x = g.Cosine(1000);
 
         const auto x_c = dsp::HilbertTransform(x);
@@ -30,7 +30,7 @@ protected:
     
     void HilbertTransform_OddLength() const
     {
-        dsp::SignalGenerator<T> g(4000, 5);
+        dsp::SignalGenerator<T> g{ 4000, 5 };
         const auto x = g.Cosine(1000);
         const auto x_c = dsp::HilbertTransform(x);
 

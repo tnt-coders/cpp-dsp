@@ -37,7 +37,7 @@ T Magnitude(const std::complex<T>& sample)
 template <typename T>
 Signal<T> Magnitude(const Signal<T>& x)
 {
-    Signal<T> x_magnitude(x.GetSampleRate(), x.size());
+    Signal<T> x_magnitude{ x.GetSampleRate(), x.size() };
     std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
         return Magnitude(sample);
         });
@@ -53,7 +53,7 @@ Signal<T> Magnitude(const Signal<T>& x)
 template <typename T>
 Signal<T> Magnitude(const Signal<std::complex<T>>& x)
 {
-    Signal<T> x_magnitude(x.GetSampleRate(), x.size());
+    Signal<T> x_magnitude{ x.GetSampleRate(), x.size() };
     std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
         return Magnitude(sample);
         });
@@ -91,7 +91,7 @@ T Phase(const std::complex<T>& sample)
 template <typename T>
 Signal<T> Phase(const Signal<T>& x)
 {
-    Signal<T> x_phase(x.GetSampleRate(), x.size());
+    Signal<T> x_phase{ x.GetSampleRate(), x.size() };
     std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
         return Phase(sample);
         });
@@ -107,7 +107,7 @@ Signal<T> Phase(const Signal<T>& x)
 template <typename T>
 Signal<T> Phase(const Signal<std::complex<T>>& x)
 {
-    Signal<T> x_phase(x.GetSampleRate(), x.size());
+    Signal<T> x_phase{ x.GetSampleRate(), x.size() };
     std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
         return Phase(sample);
         });
@@ -145,7 +145,7 @@ T Power(const std::complex<T>& sample)
 template <typename T>
 Signal<T> Power(const Signal<T>& x)
 {
-    Signal<T> x_power(x.GetSampleRate(), x.size());
+    Signal<T> x_power{ x.GetSampleRate(), x.size() };
     std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
         return Power(sample);
         });
@@ -161,7 +161,7 @@ Signal<T> Power(const Signal<T>& x)
 template <typename T>
 Signal<T> Power(const Signal<std::complex<T>>& x)
 {
-    Signal<T> x_power(x.GetSampleRate(), x.size());
+    Signal<T> x_power{ x.GetSampleRate(), x.size() };
     std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
         return Power(sample);
         });

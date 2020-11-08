@@ -13,7 +13,7 @@ class ConvolutionTest : public ::testing::Test
 protected:
     void Convolve_RealSignal_RealSignal() const
     {
-        dsp::SignalGenerator<T> g(4000, 4);
+        dsp::SignalGenerator<T> g{ 4000, 4 };
         const auto a = g.Cosine(1000);
         const auto b = g.Sine(1000);
         const auto c = dsp::Convolve(a, b);
@@ -29,9 +29,9 @@ protected:
 
     void Convolve_RealSignal_ComplexSignal() const
     {
-        dsp::SignalGenerator<T> g(4000, 4);
+        dsp::SignalGenerator<T> g{ 4000, 4 };
         const auto a = g.Cosine(1000);
-        dsp::Signal<std::complex<T>> b = { g.Cosine(1000), g.Sine(1000) };
+        dsp::Signal<std::complex<T>> b{ g.Cosine(1000), g.Sine(1000) };
         const auto c = dsp::Convolve(a, b);
 
         ASSERT_EQ(c.size(), a.size());
@@ -49,8 +49,8 @@ protected:
 
     void Convolve_ComplexSignal_RealSignal() const
     {
-        dsp::SignalGenerator<T> g(4000, 4);
-        dsp::Signal<std::complex<T>> a = { g.Cosine(1000), g.Sine(1000) };
+        dsp::SignalGenerator<T> g{ 4000, 4 };
+        dsp::Signal<std::complex<T>> a{ g.Cosine(1000), g.Sine(1000) };
         const auto b = g.Cosine(1000);
         const auto c = dsp::Convolve(a, b);
 
@@ -69,9 +69,9 @@ protected:
 
     void Convolve_ComplexSignal_ComplexSignal() const
     {
-        dsp::SignalGenerator<T> g(4000, 4);
-        dsp::Signal<std::complex<T>> a = { g.Cosine(1000), g.Sine(1000) };
-        dsp::Signal<std::complex<T>> b = { g.Cosine(1000), g.Sine(1000) };
+        dsp::SignalGenerator<T> g{ 4000, 4 };
+        dsp::Signal<std::complex<T>> a{ g.Cosine(1000), g.Sine(1000) };
+        dsp::Signal<std::complex<T>> b{ g.Cosine(1000), g.Sine(1000) };
         const auto c = dsp::Convolve(a, b);
 
         EXPECT_NEAR(c[0].real(), 4.0, constants::EPSILON);

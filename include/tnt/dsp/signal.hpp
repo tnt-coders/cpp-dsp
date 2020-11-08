@@ -5,7 +5,8 @@
 #include <utility>
 #include <vector>
 
-//TODO: Add additional container function support
+// TODO: Add additional container function support
+// TODO: Add arithmetic operators
 
 namespace tnt::dsp
 {
@@ -14,7 +15,7 @@ namespace tnt::dsp
 \brief Represents a DSP signal to store and process sampled data
 */
 template <typename T>
-class Signal
+class Signal final
 {
 public:
 
@@ -29,10 +30,20 @@ public:
     using iterator = typename std::vector<T>::iterator;
 
     /*!
+    \brief Size type
+    */
+    using size_type = typename std::vector<T>::size_type;
+
+    /*!
+    \brief Value type
+    */
+    using value_type = typename std::vector<T>::value_type;
+
+    /*!
     \brief Constructor
     \param[in] sampleRate Sample rate
     */
-    Signal(const size_t sampleRate)
+    explicit Signal(const size_t sampleRate)
         : m_sampleRate(sampleRate)
     {}
 
@@ -41,18 +52,9 @@ public:
     \param[in] sampleRate Sample rate
     \param[in] size Size
     */
-    Signal(const size_t sampleRate, const size_t size)
+    explicit Signal(const size_t sampleRate, const size_type& size)
         : m_data(size)
         , m_sampleRate(sampleRate)
-    {}
-
-    /*!
-    \brief Constructor
-    \param[in] signal Signal
-    */
-    Signal(const Signal<T>& signal)
-        : m_data(signal.begin(), signal.end())
-        , m_sampleRate(signal.GetSampleRate())
     {}
 
     /*!
@@ -75,17 +77,43 @@ public:
     }
 
     /*!
+    \brief Copy constructor
+    \param[in] signal Signal
+    */
+    Signal(const Signal<T>& signal) = default;
+
+    /*!
+    \brief Move constructor
+    \param[in] signal Signal
+    */
+    Signal(Signal<T>&& signal) = default;
+
+    /*!
+    \brief Copy assignment operator
+    \param[in] signal Signal to assign from
+    \return Signal equal to the input
+    */
+    Signal<T>& operator=(const Signal<T>& signal) = default;
+
+    /*!
+    \brief Move assignment operator
+    \param[in] signal Signal to assign from
+    \return Signal equal to the input
+    */
+    Signal<T>& operator=(Signal<T>&& signal) = default;
+
+    /*!
     \brief Destructor
     */
-    virtual ~Signal() = default;
+    ~Signal() = default;
 
     /*!
     \brief Gets the duration of the signal in seconds
     \return Duration
     */
-    T GetDuration() const
+    double GetDuration() const
     {
-        return this->size() / static_cast<T>(m_sampleRate);
+        return this->size() / static_cast<double>(this->GetSampleRate());
     }
 
     /*!
@@ -155,7 +183,7 @@ public:
     \brief Gets the capacity
     \return Capacity
     */
-    size_t capacity() const
+    size_type capacity() const
     {
         return m_data.capacity();
     }
@@ -164,7 +192,7 @@ public:
     \brief Sets the capacity
     \param[in] capacity Desired capacity
     */
-    void reserve(size_t capacity)
+    void reserve(const size_type& capacity)
     {
         m_data.reserve(capacity);
     }
@@ -173,7 +201,7 @@ public:
     \brief Gets the size
     \return Size
     */
-    size_t size() const
+    size_type size() const
     {
         return m_data.size();
     }
@@ -182,7 +210,7 @@ public:
     \brief Sets the size
     \param[in] size Desired size
     */
-    void resize(size_t size)
+    void resize(const size_type& size)
     {
         m_data.resize(size);
     }
@@ -195,7 +223,7 @@ public:
 
     \param[in] sample Sample to append to the signal
     */
-    void push_back(const T& sample)
+    void push_back(const value_type& sample)
     {
         m_data.push_back(sample);
     }
@@ -204,8 +232,9 @@ public:
     \brief Accesses the sample at the specified index
     \return Constant reference to the requsted sample
     */
-    const T& operator[](size_t index) const
+    const value_type& operator[](const size_type& index) const
     {
+        assert(index < this->size());
         return m_data[index];
     }
 
@@ -213,8 +242,9 @@ public:
     \brief Accesses the sample at the specified index
     \return Reference to the requested sample
     */
-    T& operator[](size_t index)
+    value_type& operator[](const size_type& index)
     {
+        assert(index < this->size());
         return m_data[index];
     }
 
@@ -236,7 +266,7 @@ template<typename T>
 void swap(Signal<T>& signal1, Signal<T>& signal2)
 {
     using std::swap;
-    signal1.m_data.swap(signal2.m_data);
+    swap(signal1.m_data, signal2.m_data);
     swap(signal1.m_sampleRate, signal2.m_sampleRate);
 }
 

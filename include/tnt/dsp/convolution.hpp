@@ -11,9 +11,9 @@ namespace tnt::dsp
 
 /*!
  \brief Calculates the convolution of two real input signals
- \param[in] a - Vector of real input data
- \param[in] b - Vector of real input data
- \return Vector of real values representing \a a * \a b
+ \param[in] a - Real input signal
+ \param[in] b - Real input signal
+ \return Signal representing \a a * \a b
  */
 template <typename T>
 Signal<T> Convolve(const Signal<T>& a, const Signal<T>& b)
@@ -29,14 +29,14 @@ Signal<T> Convolve(const Signal<T>& a, const Signal<T>& b)
 
     // The convolution theorem states that multiplication in the frequency
     // domain is equivalent to convolution in the time domain
-    Signal<std::complex<T>> C(f_s, N);
+    Signal<std::complex<T>> C{ f_s, N };
     std::transform(A.begin(), A.end(), B.begin(), C.begin(), std::multiplies<std::complex<T>>());
 
     const auto c = InverseFourierTransform(C);
 
     // Strip off the complex portion of the result since we are dealing
     // with only real input signals
-    Signal<T> x(f_s, N);
+    Signal<T> x{ f_s, N };
     std::transform(c.begin(), c.end(), x.begin(), [](const auto& sample) {
         return sample.real();
         });
@@ -46,9 +46,9 @@ Signal<T> Convolve(const Signal<T>& a, const Signal<T>& b)
 
 /*!
  \brief Calculates the convolution of a real, and a complex input signal
- \param[in] a - Vector of real input data
- \param[in] b - Vector of complex input data
- \return Vector of complex values representing \a a * \a b
+ \param[in] a - Real input signal
+ \param[in] b - Complex input signal
+ \return Signal representing \a a * \a b
  */
 template<typename T>
 Signal<std::complex<T>> Convolve(const Signal<T>& a, const Signal<std::complex<T>>& b)
@@ -59,7 +59,7 @@ Signal<std::complex<T>> Convolve(const Signal<T>& a, const Signal<std::complex<T
     const auto N = a.size();
 
     // Convert "a" into a complex signal
-    Signal<std::complex<T>> a_p(f_s, N);
+    Signal<std::complex<T>> a_p{ f_s, N };
     std::transform(a.begin(), a.end(), a_p.begin(), [](const auto& sample) {
         return std::complex<T>(sample);
         });
@@ -69,9 +69,9 @@ Signal<std::complex<T>> Convolve(const Signal<T>& a, const Signal<std::complex<T
 
 /*!
  \brief Calculates the convolution of a complex, and a real input signal
- \param[in] a - Vector of complex input data
- \param[in] b - Vector of real input data
- \return Vector of complex values representing \a a * \a b
+ \param[in] a - Complex input signal
+ \param[in] b - Real input signal
+ \return Signal representing \a a * \a b
  */
 template <typename T>
 Signal<std::complex<T>> Convolve(const Signal<std::complex<T>>& a, const Signal<T>& b)
@@ -82,9 +82,9 @@ Signal<std::complex<T>> Convolve(const Signal<std::complex<T>>& a, const Signal<
     const auto N = a.size();
 
     // Convert "b" into a complex signal
-    Signal<std::complex<T>> b_p(f_s, N);
+    Signal<std::complex<T>> b_p{ f_s, N };
     std::transform(b.begin(), b.end(), b_p.begin(), [](const auto& sample) {
-        return std::complex<T>(sample);
+        return std::complex<T>{ sample };
         });
 
     return Convolve(a, b_p);
@@ -92,9 +92,9 @@ Signal<std::complex<T>> Convolve(const Signal<std::complex<T>>& a, const Signal<
 
 /**
  \brief Calculates the convolution of two complex input signals
- \param[in] a - Vector of complex input data
- \param[in] b - Vector of complex input data
- \return Vector of complex values representing \a a * \a b
+ \param[in] a - Complex input signal
+ \param[in] b - Complex input signal
+ \return Signal representing \a a * \a b
  */
 template <typename T>
 Signal<std::complex<T>> Convolve(const Signal<std::complex<T>>& a, const Signal<std::complex<T>>& b)
@@ -110,7 +110,7 @@ Signal<std::complex<T>> Convolve(const Signal<std::complex<T>>& a, const Signal<
 
     // The convolution theorem states that multiplication in the frequency
     // domain is equivalent to convolution in the time domain
-    Signal<std::complex<T>> C(f_s, N);
+    Signal<std::complex<T>> C{ f_s, N };
     std::transform(A.begin(), A.end(), B.begin(), C.begin(), std::multiplies<std::complex<T>>());
 
     return InverseFourierTransform(C);

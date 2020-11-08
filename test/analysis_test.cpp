@@ -15,8 +15,8 @@ class AnalysisTest : public ::testing::Test
 protected:
     void Magnitude_RealSample() const
     {
-        EXPECT_NEAR(dsp::Magnitude(T{ 1.0 }), 1.0, constants::EPSILON);
-        EXPECT_NEAR(dsp::Magnitude(T{ -1.0 }), 1.0, constants::EPSILON);
+        EXPECT_NEAR(dsp::Magnitude(static_cast<T>(1)), 1.0, constants::EPSILON);
+        EXPECT_NEAR(dsp::Magnitude(static_cast<T>(-1)), 1.0, constants::EPSILON);
     }
 
     void Magnitude_ComplexSample() const
@@ -29,7 +29,7 @@ protected:
 
     void Magnitude_RealSignal() const
     {
-        const dsp::SignalGenerator<T> g(4000, 4);
+        const dsp::SignalGenerator<T> g{ 4000, 4 };
         const auto x = g.Cosine(1000);
         const auto x_magnitude = dsp::Magnitude(x);
 
@@ -41,7 +41,7 @@ protected:
 
     void Magnitude_ComplexSignal() const
     {
-        const dsp::SignalGenerator<T> g(4000, 4);
+        const dsp::SignalGenerator<T> g{ 4000, 4 };
         const dsp::Signal<std::complex<T>> x{ g.Cosine(1000), g.Sine(1000) };
         const auto x_magnitude = dsp::Magnitude(x);
 
@@ -53,8 +53,8 @@ protected:
 
     void Phase_RealSample() const
     {
-        EXPECT_NEAR(dsp::Phase(T{ 1.0 }), 0.0, constants::EPSILON);
-        EXPECT_NEAR(dsp::Phase(T{ -1.0 }), M_PI, constants::EPSILON);
+        EXPECT_NEAR(dsp::Phase(static_cast<T>(1)), 0.0, constants::EPSILON);
+        EXPECT_NEAR(dsp::Phase(static_cast<T>(-1)), M_PI, constants::EPSILON);
     }
 
     void Phase_ComplexSample() const
@@ -67,7 +67,7 @@ protected:
 
     void Phase_RealSignal() const
     {
-        const dsp::SignalGenerator<T> g(4000, 4);
+        const dsp::SignalGenerator<T> g{ 4000, 4 };
         auto x = g.Cosine(1000);
 
         // Phase doesn't calculate accurately for very small values
@@ -90,7 +90,7 @@ protected:
 
     void Phase_ComplexSignal() const
     {
-        const dsp::SignalGenerator<T> g(4000, 4);
+        const dsp::SignalGenerator<T> g{ 4000, 4 };
         dsp::Signal<std::complex<T>> x{ g.Cosine(1000), g.Sine(1000) };
 
         // Phase doesn't calculate accurately for very small values
@@ -117,10 +117,10 @@ protected:
 
     void Power_RealSample() const
     {
-        EXPECT_NEAR(dsp::Power(T{ 1.0 }), 1.0, constants::EPSILON);
-        EXPECT_NEAR(dsp::Power(T{ -1.0 }), 1.0, constants::EPSILON);
-        EXPECT_NEAR(dsp::Power(T{ 2.0 }), 4.0, constants::EPSILON);
-        EXPECT_NEAR(dsp::Power(T{ -2.0 }), 4.0, constants::EPSILON);
+        EXPECT_NEAR(dsp::Power(static_cast<T>(1)), 1.0, constants::EPSILON);
+        EXPECT_NEAR(dsp::Power(static_cast<T>(-1)), 1.0, constants::EPSILON);
+        EXPECT_NEAR(dsp::Power(static_cast<T>(2)), 4.0, constants::EPSILON);
+        EXPECT_NEAR(dsp::Power(static_cast<T>(-2)), 4.0, constants::EPSILON);
     }
 
     void Power_ComplexSample() const
@@ -133,7 +133,7 @@ protected:
 
     void Power_RealSignal() const
     {
-        const dsp::SignalGenerator<T> g(4000, 4);
+        const dsp::SignalGenerator<T> g{ 4000, 4 };
         const auto x1 = g.Cosine(1000);
         const auto x2 = g.Cosine(1000, 2);
         const auto x1_power = dsp::Power(x1);
@@ -151,7 +151,7 @@ protected:
 
     void Power_ComplexSignal() const
     {
-        const dsp::SignalGenerator<T> g(4000, 4);
+        const dsp::SignalGenerator<T> g{ 4000, 4 };
         const dsp::Signal<std::complex<T>> x1{ g.Cosine(1000), g.Sine(1000) };
         const dsp::Signal<std::complex<T>> x2{ g.Cosine(1000, 2), g.Sine(1000, 2) };
         const auto x1_power = dsp::Power(x1);

@@ -21,7 +21,7 @@ public:
     */
     SignalGenerator(size_t sampleRate, size_t size)
         : m_sampleRate(sampleRate)
-        , m_sampleInterval(T{ 1.0 } / m_sampleRate)
+        , m_sampleInterval(1 / static_cast<T>(m_sampleRate))
         , m_size(size)
     {}
 
@@ -34,11 +34,10 @@ public:
     */
     Signal<T> Cosine(T frequency, T amplitude = 1, T phaseShift = 0, T verticalShift = 0) const
     {
-        Signal<T> signal(m_sampleRate, m_size);
-
+        Signal<T> signal{ m_sampleRate, m_size };
         for (size_t n = 0; n < signal.size(); ++n)
         {
-            signal[n] = amplitude * std::cos(2 * T{ M_PI } *frequency * n * m_sampleInterval + phaseShift) + verticalShift;
+            signal[n] = amplitude * std::cos(2 * static_cast<T>(M_PI) * frequency * n * m_sampleInterval + phaseShift) + verticalShift;
         }
 
         return signal;
@@ -53,11 +52,10 @@ public:
     */
     Signal<T> Sine(T frequency, T amplitude = 1, T phaseShift = 0, T verticalShift = 0) const
     {
-        Signal<T> signal(m_sampleRate, m_size);
-
+        Signal<T> signal{ m_sampleRate, m_size };
         for (size_t n = 0; n < signal.size(); ++n)
         {
-            signal[n] = amplitude * std::sin(2 * T{ M_PI } * frequency * n * m_sampleInterval + phaseShift) + verticalShift;
+            signal[n] = amplitude * std::sin(2 * static_cast<T>(M_PI) * frequency * n * m_sampleInterval + phaseShift) + verticalShift;
         }
 
         return signal;
