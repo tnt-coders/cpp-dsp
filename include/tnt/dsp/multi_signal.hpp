@@ -20,22 +20,22 @@ public:
     /*!
     \brief Constant iterator
     */
-    using const_iterator = typename std::vector<SignalProxy>::const_iterator;
+    using const_iterator = typename std::vector<Signal<T>>::const_iterator;
 
     /*!
     \brief Iterator
     */
-    using iterator = typename std::vector<SignalProxy>::iterator;
+    using iterator = typename std::vector<Signal<T>>::iterator;
 
     /*!
     \brief Size type
     */
-    using size_type = typename std::vector<SignalProxy>::size_type;
+    using size_type = typename std::vector<Signal<T>>::size_type;
 
     /*!
     \brief Value type
     */
-    using value_type = typename std::vector<SignalProxy>::value_type;
+    using value_type = typename std::vector<Signal<T>>::value_type;
 
     /*!
     \brief Constructor
@@ -192,43 +192,6 @@ public:
         m_channels.push_back(signal);
     }
 
-
-    /*!
-    \brief Gets a constant iterator to the first channel
-    \return Constant iterator to the first channel
-    */
-    const_iterator begin() const
-    {
-        return m_channels.begin();
-    }
-
-    /*!
-    \brief Gets a constant iterator to the first channel
-    \return Constant iterator to the first channel
-    */
-    const_iterator cbegin() const
-    {
-        return m_channels.cbegin();
-    }
-
-    /*!
-    \brief Gets a constant iterator to the last channel
-    \return Constant iterator to the channel *following* the last channel
-    */
-    const_iterator end() const
-    {
-        return m_channels.end();
-    }
-
-    /*!
-    \brief Gets a constant iterator to the last channel
-    \return Constant iterator to the channel *following* the last channel
-    */
-    const_iterator cend() const
-    {
-        return m_channels.cend();
-    }
-
     /*!
     \brief Gets the number of channels in the signal
     \return Number of channels in the signal
@@ -301,7 +264,7 @@ private:
 
     size_t m_sampleRate;
     size_type m_size;
-    std::vector<SignalProxy> m_channels;
+    std::vector<Signal<T>> m_channels;
 };
 
 /*!

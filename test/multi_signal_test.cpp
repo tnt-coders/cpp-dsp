@@ -4,6 +4,7 @@
 #include <tnt/dsp/multi_signal.hpp>
 #include <tnt/dsp/signal.hpp>
 #include <tnt/dsp/signal_generator.hpp>
+#include <utility>
 
 using namespace tnt;
 
@@ -247,37 +248,81 @@ protected:
         }
     }
 
-    void MultiSignal_Iterators() const
+    void MultiSignal_channels() const
+    {
+        dsp::MultiSignal<T> x{ 1000, 10, 2 };
+        EXPECT_EQ(x.channels(), 2);
+    }
+
+    void MultiSignal_size() const
+    {
+        dsp::MultiSignal<T> x{ 1000, 10 };
+        EXPECT_EQ(x.size(), 10);
+    }
+
+    void MultiSignal_DataAccessOperator() const
     {
         const size_t f_s = 1000;
         const size_t N = 10;
 
         dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::MultiSignal<T> x{
-            g.Cosine(100),
-            g.Sine(100)
+        dsp::Signal<T> c0 = g.Cosine(100);
+        dsp::Signal<T> c1 = g.Sine(100);
+        dsp::MultiSignal<T> x1{
+            c0,
+            c1,
         };
 
-        // non-const begin, end
-        std::for_each(x.begin(), x.end(), [](auto& channel) {
-            std::for_each(channel.begin(), channel.end(), [](auto& sample) {
-                sample = 1;
-                });
-            });
+        for (size_t n = 0; n < N; ++n)
+        {
+            EXPECT_NEAR(x1[0][n], c0[n], constants::EPSILON);
+            EXPECT_NEAR(x1[1][n], c1[n], constants::EPSILON);
+        }
 
-        // const begin, end
-        std::for_each(x.begin(), x.end(), [](const auto& channel) {
-            std::for_each(channel.begin(), channel.end(), [](const auto& sample) {
-                EXPECT_NEAR(sample, 1.0, constants::EPSILON);
-                });
-            });
+        // non-const data access
+        for (size_t n = 0; n < N; ++n)
+        {
+            x1[0][n] = c1[n];
+            x1[1][n] = c0[n];
+        }
 
-        // cbegin, cend
-        std::for_each(x.cbegin(), x.cend(), [](const auto& channel) {
-            std::for_each(channel.begin(), channel.end(), [](const auto& sample) {
-                EXPECT_NEAR(sample, 1.0, constants::EPSILON);
-                });
-            });
+        const dsp::MultiSignal<T> x2{ x1 };
+
+        // const data access
+        for (size_t n = 0; n < N; ++n)
+        {
+            EXPECT_NEAR(x2[0][n], c1[n], constants::EPSILON);
+            EXPECT_NEAR(x2[1][n], c0[n], constants::EPSILON);
+        }
+    }
+
+    void MultiSignal_swap() const
+    {
+        const size_t f_s = 1000;
+        const size_t N = 10;
+
+        dsp::SignalGenerator<T> g{ f_s, N };
+        dsp::MultiSignal<T> x1{
+            g.Cosine(100),
+            g.Sine(100),
+        };
+        dsp::MultiSignal<T> x2{
+            g.Sine(100),
+            g.Cosine(100),
+        };
+        const auto x1_c = x1;
+        const auto x2_c = x2;
+
+        std::swap(x1, x2);
+
+        for (size_t c = 0; c < 2; ++c)
+        {
+            for (size_t n = 0; n < N; ++n)
+            {
+                EXPECT_NEAR(x1[c][n], x2_c[c][n], constants::EPSILON);
+                EXPECT_NEAR(x2[c][n], x1_c[c][n], constants::EPSILON);
+            }
+        }
     }
 };
 
@@ -365,27 +410,22 @@ TYPED_TEST(MultiSignalTest, MultiSignal_AddChannel)
     this->MultiSignal_AddChannel();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_Iterators)
+TYPED_TEST(MultiSignalTest, MultiSignal_channels)
 {
-    this->MultiSignal_Iterators();
+    this->MultiSignal_channels();
 }
 
-//TYPED_TEST(MultiSignalTest, MultiSignal_channels)
-//{
-//    this->MultiSignal_channels();
-//}
-//
-//TYPED_TEST(MultiSignalTest, MultiSignal_size)
-//{
-//    this->MultiSignal_size();
-//}
-//
-//TYPED_TEST(MultiSignalTest, MultiSignal_DataAccessOperator)
-//{
-//    this->MultiSignal_DataAccessOperator();
-//}
-//
-//TYPED_TEST(MultiSignalTest, MultiSignal_swap)
-//{
-//    this->MultiSignal_swap();
-//}
+TYPED_TEST(MultiSignalTest, MultiSignal_size)
+{
+    this->MultiSignal_size();
+}
+
+TYPED_TEST(MultiSignalTest, MultiSignal_DataAccessOperator)
+{
+    this->MultiSignal_DataAccessOperator();
+}
+
+TYPED_TEST(MultiSignalTest, MultiSignal_swap)
+{
+    this->MultiSignal_swap();
+}
