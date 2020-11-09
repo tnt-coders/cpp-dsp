@@ -13,7 +13,7 @@ class CppDsp(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     topics = ("dsp")
     url = "https://github.com/tnt-coders/cpp-dsp"
-    version = "0.0.1"
+    version = "0.0.2"
 
     def configure(self):
         tools.check_min_cppstd(self, "17")
