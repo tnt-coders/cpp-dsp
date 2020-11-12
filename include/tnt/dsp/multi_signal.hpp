@@ -135,17 +135,6 @@ public:
     ~MultiSignal() = default;
 
     /*!
-    \brief Gets the specified channel
-    \param[in] channel Desired channel
-    \return Signal content in the channel
-    */
-    Signal<T> GetChannel(const size_type& channel) const
-    {
-        assert(channel < m_channels.size());
-        return m_channels[channel];
-    }
-
-    /*!
     \brief Gets the duration of the signal in seconds
     \return Duration
     */

@@ -11,7 +11,7 @@ namespace tnt::dsp::impl
 
 // C++ implementation of the Bluestein FFT algorithm
 template <typename T>
-static Signal<std::complex<T>> BluesteinFFT(const Signal<std::complex<T>>& x)
+Signal<std::complex<T>> BluesteinFFT(const Signal<std::complex<T>>& x)
 {
     const auto f_s = x.GetSampleRate();
     const auto N = x.size();
@@ -54,7 +54,7 @@ static Signal<std::complex<T>> BluesteinFFT(const Signal<std::complex<T>>& x)
 // Note that this is specialized for performing the Bluestein FFT efficiently.
 // This is not a general purpose convolution algorithm.
 template <typename T>
-static Signal<std::complex<T>> Convolve(const Signal<std::complex<T>>& a, const Signal<std::complex<T>>& b)
+Signal<std::complex<T>> Convolve(const Signal<std::complex<T>>& a, const Signal<std::complex<T>>& b)
 {
     assert(a.GetSampleRate() == b.GetSampleRate());
     assert(a.size() == b.size());
@@ -85,7 +85,7 @@ static Signal<std::complex<T>> Convolve(const Signal<std::complex<T>>& a, const 
 
 // C++ implementation of the Stockam FFT algorithm
 template <typename T>
-static Signal<std::complex<T>> StockhamFFT(const Signal<std::complex<T>>& x)
+Signal<std::complex<T>> StockhamFFT(const Signal<std::complex<T>>& x)
 {
     assert(impl::IsPowerOf2(x.size()));
     const auto f_s = x.GetSampleRate();
@@ -105,7 +105,7 @@ static Signal<std::complex<T>> StockhamFFT(const Signal<std::complex<T>>& x)
 
 // C++ implementation of the Stockam FFT algorithm
 template <typename T>
-static Signal<std::complex<T>> StockhamFFT(const Signal<std::complex<T>>& x, const Signal<std::complex<T>>& W)
+Signal<std::complex<T>> StockhamFFT(const Signal<std::complex<T>>& x, const Signal<std::complex<T>>& W)
 {
     assert(impl::IsPowerOf2(x.size()));
     const auto f_s = x.GetSampleRate();

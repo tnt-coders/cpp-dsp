@@ -198,27 +198,6 @@ protected:
         }
     }
 
-    void MultiSignal_GetChannel() const
-    {
-        const size_t f_s = 1000;
-        const size_t N = 10;
-
-        dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::MultiSignal<T> x{
-            g.Cosine(100),
-            g.Sine(100),
-        };
-
-        const auto c0 = x.GetChannel(0);
-        const auto c1 = x.GetChannel(1);
-
-        for (size_t n = 0; n < N; ++n)
-        {
-            EXPECT_NEAR(c0[n], x[0][n], constants::EPSILON);
-            EXPECT_NEAR(c1[n], x[1][n], constants::EPSILON);
-        }
-    }
-
     void MultiSignal_GetDuration() const
     {
         dsp::MultiSignal<T> x{ 1000, 2500 };
@@ -388,11 +367,6 @@ TYPED_TEST(MultiSignalTest, MultiSignal_CopyAssignmentOperator)
 TYPED_TEST(MultiSignalTest, MultiSignal_MoveAssignmentOperator)
 {
     this->MultiSignal_MoveAssignmentOperator();
-}
-
-TYPED_TEST(MultiSignalTest, MultiSignal_GetChannel)
-{
-    this->MultiSignal_GetChannel();
 }
 
 TYPED_TEST(MultiSignalTest, MultiSignal_GetDuration)
