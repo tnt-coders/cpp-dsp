@@ -12,7 +12,7 @@ namespace tnt::dsp
 \brief Represents a Multi-channel DSP signal to store and process sampled data
 */
 template <typename T>
-class MultiSignal final
+class Multisignal final
 {
     class SignalProxy;
 public:
@@ -41,7 +41,7 @@ public:
     \brief Constructor
     \param[in] signals One or more single channel signals
     */
-    explicit MultiSignal(const std::initializer_list<Signal<T>> signals)
+    explicit Multisignal(const std::initializer_list<Signal<T>> signals)
         : m_sampleRate(0)
         , m_size(0)
         , m_channels(signals)
@@ -74,7 +74,7 @@ public:
     \brief Constructor
     \param[in] sampleRate Sample rate
     */
-    explicit MultiSignal(const size_t sampleRate)
+    explicit Multisignal(const size_t sampleRate)
         : m_sampleRate(sampleRate)
         , m_size(0)
         , m_channels()
@@ -85,7 +85,7 @@ public:
     \param[in] sampleRate Sample rate
     \param[in] size Size
     */
-    explicit MultiSignal(const size_t sampleRate, const typename Signal<T>::size_type& size)
+    explicit Multisignal(const size_t sampleRate, const typename Signal<T>::size_type& size)
         : m_sampleRate(sampleRate)
         , m_size(size)
         , m_channels()
@@ -97,7 +97,7 @@ public:
     \param[in] size Size
     \param[in] channels Number of channels
     */
-    explicit MultiSignal(const size_t sampleRate, const typename Signal<T>::size_type& size, const size_type& channels)
+    explicit Multisignal(const size_t sampleRate, const typename Signal<T>::size_type& size, const size_type& channels)
         : m_sampleRate(sampleRate)
         , m_size(size)
         , m_channels(channels, Signal<T>{ sampleRate, size })
@@ -107,32 +107,32 @@ public:
     \brief Copy constructor
     \param[in] signal Multi-channel signal
     */
-    MultiSignal(const MultiSignal& signal) = default;
+    Multisignal(const Multisignal& signal) = default;
 
     /*!
     \brief Move constructor
     \param[in] signal Multi-channel signal
     */
-    MultiSignal(MultiSignal<T>&& signal) = default;
+    Multisignal(Multisignal<T>&& signal) = default;
 
     /*!
     \brief Copy assignment operator
     \param[in] signal Multi-channel signal to assign from
     \return Multi-channel signal equal to the input
     */
-    MultiSignal<T>& operator=(const MultiSignal<T>& signal) = default;
+    Multisignal<T>& operator=(const Multisignal<T>& signal) = default;
 
     /*!
     \brief Move assignment operator
     \param[in] signal Multi-channel signal to assign from
     \return Multi-channel signal equal to the input
     */
-    MultiSignal<T>& operator=(MultiSignal<T>&& signal) = default;
+    Multisignal<T>& operator=(Multisignal<T>&& signal) = default;
 
     /*!
     \brief Destructor
     */
-    ~MultiSignal() = default;
+    ~Multisignal() = default;
 
     /*!
     \brief Gets the duration of the signal in seconds
@@ -221,7 +221,7 @@ public:
 
     // Friend declaration for swap
     template <typename U>
-    friend void swap(MultiSignal<U>& signal1, MultiSignal<U>& signal2);
+    friend void swap(Multisignal<U>& signal1, Multisignal<U>& signal2);
 
 private:
 
@@ -262,7 +262,7 @@ private:
 \param[in] signal2 Second signal to swap
 */
 template<typename T>
-void swap(MultiSignal<T>& signal1, MultiSignal<T>& signal2)
+void swap(Multisignal<T>& signal1, Multisignal<T>& signal2)
 {
     using std::swap;
     swap(signal1.m_channels, signal2.m_channels);

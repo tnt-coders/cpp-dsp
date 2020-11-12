@@ -6,7 +6,7 @@ add_executable(dsp_test
     convolution_test.cpp
     fourier_transform_test.cpp
     hilbert_transform_test.cpp
-    multi_signal_test.cpp
+    multisignal_test.cpp
     signal_generator_test.cpp
     signal_test.cpp
 )

@@ -1,7 +1,7 @@
 #include "constants.hpp"
 #include <complex>
 #include <gtest/gtest.h>
-#include <tnt/dsp/multi_signal.hpp>
+#include <tnt/dsp/multisignal.hpp>
 #include <tnt/dsp/signal.hpp>
 #include <tnt/dsp/signal_generator.hpp>
 #include <utility>
@@ -9,64 +9,64 @@
 using namespace tnt;
 
 template <typename T>
-class MultiSignalTest : public ::testing::Test
+class MultisignalTest : public ::testing::Test
 {
 protected:
-    void MultiSignal_ConstructRealSignal_SampleRate() const
+    void Multisignal_ConstructRealSignal_SampleRate() const
     {
-        dsp::MultiSignal<T> x{ 1000 };
+        dsp::Multisignal<T> x{ 1000 };
         EXPECT_EQ(x.GetSampleRate(), 1000);
         EXPECT_EQ(x.channels(), 0);
         EXPECT_EQ(x.size(), 0);
     }
 
-    void MultiSignal_ConstructComplexSignal_SampleRate() const
+    void Multisignal_ConstructComplexSignal_SampleRate() const
     {
-        dsp::MultiSignal<std::complex<T>> x{ 1000 };
+        dsp::Multisignal<std::complex<T>> x{ 1000 };
         EXPECT_EQ(x.GetSampleRate(), 1000);
         EXPECT_EQ(x.channels(), 0);
         EXPECT_EQ(x.size(), 0);
     }
 
-    void MultiSignal_ConstructRealSignal_SampleRate_Size() const
+    void Multisignal_ConstructRealSignal_SampleRate_Size() const
     {
-        dsp::MultiSignal<T> x{ 1000, 10 };
+        dsp::Multisignal<T> x{ 1000, 10 };
         EXPECT_EQ(x.GetSampleRate(), 1000);
         EXPECT_EQ(x.channels(), 0);
         EXPECT_EQ(x.size(), 10);
     }
 
-    void MultiSignal_ConstructComplexSignal_SampleRate_Size() const
+    void Multisignal_ConstructComplexSignal_SampleRate_Size() const
     {
-        dsp::MultiSignal<std::complex<T>> x{ 1000, 10 };
+        dsp::Multisignal<std::complex<T>> x{ 1000, 10 };
         EXPECT_EQ(x.GetSampleRate(), 1000);
         EXPECT_EQ(x.channels(), 0);
         EXPECT_EQ(x.size(), 10);
     }
 
-    void MultiSignal_ConstructRealSignal_SampleRate_Size_Channels() const
+    void Multisignal_ConstructRealSignal_SampleRate_Size_Channels() const
     {
-        dsp::MultiSignal<T> x{ 1000, 10, 2 };
+        dsp::Multisignal<T> x{ 1000, 10, 2 };
         EXPECT_EQ(x.GetSampleRate(), 1000);
         EXPECT_EQ(x.channels(), 2);
         EXPECT_EQ(x.size(), 10);
     }
 
-    void MultiSignal_ConstructComplexSignal_SampleRate_Size_Channels() const
+    void Multisignal_ConstructComplexSignal_SampleRate_Size_Channels() const
     {
-        dsp::MultiSignal<std::complex<T>> x{ 1000, 10, 2 };
+        dsp::Multisignal<std::complex<T>> x{ 1000, 10, 2 };
         EXPECT_EQ(x.GetSampleRate(), 1000);
         EXPECT_EQ(x.channels(), 2);
         EXPECT_EQ(x.size(), 10);
     }
 
-    void MultiSignal_ConstructRealSignal_Signals() const
+    void Multisignal_ConstructRealSignal_Signals() const
     {
         const size_t f_s = 1000;
         const size_t N = 10;
 
         dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::MultiSignal<T> x{
+        dsp::Multisignal<T> x{
             g.Cosine(100),
             g.Sine(100),
         };
@@ -76,13 +76,13 @@ protected:
         EXPECT_EQ(x.size(), N);
     }
 
-    void MultiSignal_ConstructComplexSignal_Signals() const
+    void Multisignal_ConstructComplexSignal_Signals() const
     {
         const size_t f_s = 1000;
         const size_t N = 10;
 
         dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::MultiSignal<std::complex<T>> x{
+        dsp::Multisignal<std::complex<T>> x{
             { g.Cosine(1000), g.Sine(100) },
             { g.Sine(1000), g.Cosine(100) },
         };
@@ -92,18 +92,18 @@ protected:
         EXPECT_EQ(x.size(), N);
     }
 
-    void MultiSignal_CopyConstructor() const
+    void Multisignal_CopyConstructor() const
     {
         const size_t f_s = 1000;
         const size_t N = 10;
 
         dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::MultiSignal<T> x1{
+        dsp::Multisignal<T> x1{
             g.Cosine(100),
             g.Sine(100),
         };
 
-        const dsp::MultiSignal<T> x2{ x1 };
+        const dsp::Multisignal<T> x2{ x1 };
 
         EXPECT_EQ(x2.channels(), x1.channels());
         EXPECT_EQ(x2.GetSampleRate(), x1.GetSampleRate());
@@ -118,7 +118,7 @@ protected:
         }
     }
 
-    void MultiSignal_MoveConstructor() const
+    void Multisignal_MoveConstructor() const
     {
         const size_t f_s = 1000;
         const size_t N = 10;
@@ -126,12 +126,12 @@ protected:
         dsp::SignalGenerator<T> g{ f_s, N };
         dsp::Signal<T> c0 = g.Cosine(100);
         dsp::Signal<T> c1 = g.Sine(100);
-        dsp::MultiSignal<T> x1{
+        dsp::Multisignal<T> x1{
             c0,
             c1,
         };
 
-        const dsp::MultiSignal<T> x2{ std::move(x1) };
+        const dsp::Multisignal<T> x2{ std::move(x1) };
 
         EXPECT_EQ(x2.channels(), 2);
         EXPECT_EQ(x2.GetSampleRate(), f_s);
@@ -144,13 +144,13 @@ protected:
         }
     }
 
-    void MultiSignal_CopyAssignmentOperator() const
+    void Multisignal_CopyAssignmentOperator() const
     {
         const size_t f_s = 1000;
         const size_t N = 10;
 
         dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::MultiSignal<T> x1{
+        dsp::Multisignal<T> x1{
             g.Cosine(100),
             g.Sine(100),
         };
@@ -172,7 +172,7 @@ protected:
         }
     }
 
-    void MultiSignal_MoveAssignmentOperator() const
+    void Multisignal_MoveAssignmentOperator() const
     {
         const size_t f_s = 1000;
         const size_t N = 10;
@@ -180,7 +180,7 @@ protected:
         dsp::SignalGenerator<T> g{ f_s, N };
         dsp::Signal<T> c0 = g.Cosine(100);
         dsp::Signal<T> c1 = g.Sine(100);
-        dsp::MultiSignal<T> x1{
+        dsp::Multisignal<T> x1{
             c0,
             c1,
         };
@@ -198,25 +198,25 @@ protected:
         }
     }
 
-    void MultiSignal_GetDuration() const
+    void Multisignal_GetDuration() const
     {
-        dsp::MultiSignal<T> x{ 1000, 2500 };
+        dsp::Multisignal<T> x{ 1000, 2500 };
         EXPECT_NEAR(x.GetDuration(), 2.5, constants::EPSILON);
     }
 
-    void MultiSignal_GetSampleRate() const
+    void Multisignal_GetSampleRate() const
     {
-        dsp::MultiSignal<T> x{ 1000 };
+        dsp::Multisignal<T> x{ 1000 };
         EXPECT_EQ(x.GetSampleRate(), 1000);
     }
 
-    void MultiSignal_AddChannel() const
+    void Multisignal_AddChannel() const
     {
         const size_t f_s = 1000;
         const size_t N = 10;
 
         dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::MultiSignal<T> x{ f_s };
+        dsp::Multisignal<T> x{ f_s };
         x.AddChannel(g.Cosine(100));
 
         const auto data = g.Cosine(100);
@@ -227,19 +227,19 @@ protected:
         }
     }
 
-    void MultiSignal_channels() const
+    void Multisignal_channels() const
     {
-        dsp::MultiSignal<T> x{ 1000, 10, 2 };
+        dsp::Multisignal<T> x{ 1000, 10, 2 };
         EXPECT_EQ(x.channels(), 2);
     }
 
-    void MultiSignal_size() const
+    void Multisignal_size() const
     {
-        dsp::MultiSignal<T> x{ 1000, 10 };
+        dsp::Multisignal<T> x{ 1000, 10 };
         EXPECT_EQ(x.size(), 10);
     }
 
-    void MultiSignal_DataAccessOperator() const
+    void Multisignal_DataAccessOperator() const
     {
         const size_t f_s = 1000;
         const size_t N = 10;
@@ -247,7 +247,7 @@ protected:
         dsp::SignalGenerator<T> g{ f_s, N };
         dsp::Signal<T> c0 = g.Cosine(100);
         dsp::Signal<T> c1 = g.Sine(100);
-        dsp::MultiSignal<T> x1{
+        dsp::Multisignal<T> x1{
             c0,
             c1,
         };
@@ -265,7 +265,7 @@ protected:
             x1[1][n] = c0[n];
         }
 
-        const dsp::MultiSignal<T> x2{ x1 };
+        const dsp::Multisignal<T> x2{ x1 };
 
         // const data access
         for (size_t n = 0; n < N; ++n)
@@ -275,17 +275,17 @@ protected:
         }
     }
 
-    void MultiSignal_swap() const
+    void Multisignal_swap() const
     {
         const size_t f_s = 1000;
         const size_t N = 10;
 
         dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::MultiSignal<T> x1{
+        dsp::Multisignal<T> x1{
             g.Cosine(100),
             g.Sine(100),
         };
-        dsp::MultiSignal<T> x2{
+        dsp::Multisignal<T> x2{
             g.Sine(100),
             g.Cosine(100),
         };
@@ -305,101 +305,101 @@ protected:
     }
 };
 
-using MultiSignalTestTypes = ::testing::Types<double, float>;
+using MultisignalTestTypes = ::testing::Types<double, float>;
 
-TYPED_TEST_SUITE(MultiSignalTest, MultiSignalTestTypes);
+TYPED_TEST_SUITE(MultisignalTest, MultisignalTestTypes);
 
-TYPED_TEST(MultiSignalTest, MultiSignal_ConstructRealSignal_SampleRate)
+TYPED_TEST(MultisignalTest, Multisignal_ConstructRealSignal_SampleRate)
 {
-    this->MultiSignal_ConstructRealSignal_SampleRate();
+    this->Multisignal_ConstructRealSignal_SampleRate();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_ConstructComplexSignal_SampleRate)
+TYPED_TEST(MultisignalTest, Multisignal_ConstructComplexSignal_SampleRate)
 {
-    this->MultiSignal_ConstructComplexSignal_SampleRate();
+    this->Multisignal_ConstructComplexSignal_SampleRate();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_ConstructRealSignal_SampleRate_Size)
+TYPED_TEST(MultisignalTest, Multisignal_ConstructRealSignal_SampleRate_Size)
 {
-    this->MultiSignal_ConstructRealSignal_SampleRate_Size();
+    this->Multisignal_ConstructRealSignal_SampleRate_Size();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_ConstructComplexSignal_SampleRate_Size)
+TYPED_TEST(MultisignalTest, Multisignal_ConstructComplexSignal_SampleRate_Size)
 {
-    this->MultiSignal_ConstructComplexSignal_SampleRate_Size();
+    this->Multisignal_ConstructComplexSignal_SampleRate_Size();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_ConstructRealSignal_SampleRate_Size_Channels)
+TYPED_TEST(MultisignalTest, Multisignal_ConstructRealSignal_SampleRate_Size_Channels)
 {
-    this->MultiSignal_ConstructRealSignal_SampleRate_Size_Channels();
+    this->Multisignal_ConstructRealSignal_SampleRate_Size_Channels();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_ConstructComplexSignal_SampleRate_Size_Channels)
+TYPED_TEST(MultisignalTest, Multisignal_ConstructComplexSignal_SampleRate_Size_Channels)
 {
-    this->MultiSignal_ConstructComplexSignal_SampleRate_Size_Channels();
+    this->Multisignal_ConstructComplexSignal_SampleRate_Size_Channels();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_ConstructRealSignal_Signals)
+TYPED_TEST(MultisignalTest, Multisignal_ConstructRealSignal_Signals)
 {
-    this->MultiSignal_ConstructRealSignal_Signals();
+    this->Multisignal_ConstructRealSignal_Signals();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_ConstructComplexSignal_Signals)
+TYPED_TEST(MultisignalTest, Multisignal_ConstructComplexSignal_Signals)
 {
-    this->MultiSignal_ConstructComplexSignal_Signals();
+    this->Multisignal_ConstructComplexSignal_Signals();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_CopyConstructor)
+TYPED_TEST(MultisignalTest, Multisignal_CopyConstructor)
 {
-    this->MultiSignal_CopyConstructor();
+    this->Multisignal_CopyConstructor();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_MoveConstructor)
+TYPED_TEST(MultisignalTest, Multisignal_MoveConstructor)
 {
-    this->MultiSignal_MoveConstructor();
+    this->Multisignal_MoveConstructor();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_CopyAssignmentOperator)
+TYPED_TEST(MultisignalTest, Multisignal_CopyAssignmentOperator)
 {
-    this->MultiSignal_CopyAssignmentOperator();
+    this->Multisignal_CopyAssignmentOperator();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_MoveAssignmentOperator)
+TYPED_TEST(MultisignalTest, Multisignal_MoveAssignmentOperator)
 {
-    this->MultiSignal_MoveAssignmentOperator();
+    this->Multisignal_MoveAssignmentOperator();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_GetDuration)
+TYPED_TEST(MultisignalTest, Multisignal_GetDuration)
 {
-    this->MultiSignal_GetDuration();
+    this->Multisignal_GetDuration();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_GetSampleRate)
+TYPED_TEST(MultisignalTest, Multisignal_GetSampleRate)
 {
-    this->MultiSignal_GetSampleRate();
+    this->Multisignal_GetSampleRate();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_AddChannel)
+TYPED_TEST(MultisignalTest, Multisignal_AddChannel)
 {
-    this->MultiSignal_AddChannel();
+    this->Multisignal_AddChannel();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_channels)
+TYPED_TEST(MultisignalTest, Multisignal_channels)
 {
-    this->MultiSignal_channels();
+    this->Multisignal_channels();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_size)
+TYPED_TEST(MultisignalTest, Multisignal_size)
 {
-    this->MultiSignal_size();
+    this->Multisignal_size();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_DataAccessOperator)
+TYPED_TEST(MultisignalTest, Multisignal_DataAccessOperator)
 {
-    this->MultiSignal_DataAccessOperator();
+    this->Multisignal_DataAccessOperator();
 }
 
-TYPED_TEST(MultiSignalTest, MultiSignal_swap)
+TYPED_TEST(MultisignalTest, Multisignal_swap)
 {
-    this->MultiSignal_swap();
+    this->Multisignal_swap();
 }
