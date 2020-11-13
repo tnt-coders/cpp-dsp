@@ -191,8 +191,8 @@ public:
     }
 
     /*!
-    \brief Gets the size
-    \return Size
+    \brief Gets the number of samples per channel
+    \return Number of samples per channel
     */
     size_type size() const
     {
