@@ -5,7 +5,7 @@
 #include <tnt/dsp/signal.hpp>
 #include <tnt/dsp/signal_generator.hpp>
 
-// TODO: Test FourierTransform/InverseFourierTransform of larger sizes for speed
+// TODO: Test fourier_transform/inverse_fourier_transform of larger sizes for speed
 
 using namespace tnt;
 
@@ -17,10 +17,10 @@ protected:
     {
         for (size_t N = 1; N <= 100; ++N)
         {
-            dsp::SignalGenerator<T> g{ 1000, N };
-            const auto x = g.Cosine(100);
+            dsp::signal_generator<T> g{ 1000, N };
+            const auto x = g.cosine(100);
             const auto X = DFT(x);
-            const auto X2 = dsp::FourierTransform(x);
+            const auto X2 = dsp::fourier_transform(x);
 
             ASSERT_EQ(X.size(), N);
             ASSERT_EQ(X2.size(), N);
@@ -37,10 +37,10 @@ protected:
     {
         for (size_t N = 1; N <= 100; ++N)
         {
-            dsp::SignalGenerator<T> g{ 1000, N };
-            dsp::Signal<std::complex<T>> x{ g.Cosine(100), g.Sine(100) };
+            dsp::signal_generator<T> g{ 1000, N };
+            dsp::signal<std::complex<T>> x{ g.cosine(100), g.sine(100) };
             const auto X = DFT(x);
-            const auto X2 = dsp::FourierTransform(x);
+            const auto X2 = dsp::fourier_transform(x);
 
             ASSERT_EQ(X.size(), N);
             ASSERT_EQ(X2.size(), N);
@@ -57,10 +57,10 @@ protected:
     {
         for (size_t N = 1; N <= 100; ++N)
         {
-            dsp::SignalGenerator<T> g{ 1000, N };
-            const auto x = g.Cosine(100);
-            auto X = dsp::FourierTransform(x);
-            auto x2 = dsp::InverseFourierTransform(X);
+            dsp::signal_generator<T> g{ 1000, N };
+            const auto x = g.cosine(100);
+            auto X = dsp::fourier_transform(x);
+            auto x2 = dsp::inverse_fourier_transform(X);
 
             ASSERT_EQ(x.size(), N);
             ASSERT_EQ(x2.size(), N);
@@ -76,10 +76,10 @@ protected:
     {
         for (size_t N = 1; N <= 100; ++N)
         {
-            dsp::SignalGenerator<T> g{ 1000, N };
-            dsp::Signal<std::complex<T>> x{ g.Cosine(100), g.Sine(100) };
-            const auto X = dsp::FourierTransform(x);
-            const auto x2 = dsp::InverseFourierTransform(X);
+            dsp::signal_generator<T> g{ 1000, N };
+            dsp::signal<std::complex<T>> x{ g.cosine(100), g.sine(100) };
+            const auto X = dsp::fourier_transform(x);
+            const auto x2 = dsp::inverse_fourier_transform(X);
 
             ASSERT_EQ(x.size(), N);
             ASSERT_EQ(x2.size(), N);
@@ -119,12 +119,12 @@ TYPED_TEST(FourierTransformTest, InverseFourierTransform_ComplexSignal)
 
 // Implementation of slow Fourier transform to compare against
 template <typename T>
-dsp::Signal<std::complex<T>> DFT(const dsp::Signal<T>& x)
+dsp::signal<std::complex<T>> DFT(const dsp::signal<T>& x)
 {
-    auto f_s = x.GetSampleRate();
+    auto f_s = x.sample_rate();
     auto N = x.size();
 
-    dsp::Signal<std::complex<T>> X{ f_s, N };
+    dsp::signal<std::complex<T>> X{ f_s, N };
 
     // Take advantage of DFT symmetry when dealing with real input signals
     // Only the first N/2 + 1 outputs are unique
@@ -147,12 +147,12 @@ dsp::Signal<std::complex<T>> DFT(const dsp::Signal<T>& x)
 
 // Implementation of slow fourier transform to compare against
 template <typename T>
-dsp::Signal<std::complex<T>> DFT(const dsp::Signal<std::complex<T>>& x)
+dsp::signal<std::complex<T>> DFT(const dsp::signal<std::complex<T>>& x)
 {
-    auto f_s = x.GetSampleRate();
+    auto f_s = x.sample_rate();
     auto N = x.size();
 
-    dsp::Signal<std::complex<T>> X{ f_s, N };
+    dsp::signal<std::complex<T>> X{ f_s, N };
 
     for (size_t k = 0; k < N; ++k)
     {

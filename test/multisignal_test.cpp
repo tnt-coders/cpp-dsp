@@ -14,48 +14,48 @@ class MultisignalTest : public ::testing::Test
 protected:
     void Multisignal_ConstructRealSignal_SampleRate() const
     {
-        dsp::Multisignal<T> x{ 1000 };
-        EXPECT_EQ(x.GetSampleRate(), 1000);
+        dsp::multisignal<T> x{ 1000 };
+        EXPECT_EQ(x.sample_rate(), 1000);
         EXPECT_EQ(x.channels(), 0);
         EXPECT_EQ(x.size(), 0);
     }
 
     void Multisignal_ConstructComplexSignal_SampleRate() const
     {
-        dsp::Multisignal<std::complex<T>> x{ 1000 };
-        EXPECT_EQ(x.GetSampleRate(), 1000);
+        dsp::multisignal<std::complex<T>> x{ 1000 };
+        EXPECT_EQ(x.sample_rate(), 1000);
         EXPECT_EQ(x.channels(), 0);
         EXPECT_EQ(x.size(), 0);
     }
 
     void Multisignal_ConstructRealSignal_SampleRate_Size() const
     {
-        dsp::Multisignal<T> x{ 1000, 10 };
-        EXPECT_EQ(x.GetSampleRate(), 1000);
+        dsp::multisignal<T> x{ 1000, 10 };
+        EXPECT_EQ(x.sample_rate(), 1000);
         EXPECT_EQ(x.channels(), 0);
         EXPECT_EQ(x.size(), 10);
     }
 
     void Multisignal_ConstructComplexSignal_SampleRate_Size() const
     {
-        dsp::Multisignal<std::complex<T>> x{ 1000, 10 };
-        EXPECT_EQ(x.GetSampleRate(), 1000);
+        dsp::multisignal<std::complex<T>> x{ 1000, 10 };
+        EXPECT_EQ(x.sample_rate(), 1000);
         EXPECT_EQ(x.channels(), 0);
         EXPECT_EQ(x.size(), 10);
     }
 
     void Multisignal_ConstructRealSignal_SampleRate_Size_Channels() const
     {
-        dsp::Multisignal<T> x{ 1000, 10, 2 };
-        EXPECT_EQ(x.GetSampleRate(), 1000);
+        dsp::multisignal<T> x{ 1000, 10, 2 };
+        EXPECT_EQ(x.sample_rate(), 1000);
         EXPECT_EQ(x.channels(), 2);
         EXPECT_EQ(x.size(), 10);
     }
 
     void Multisignal_ConstructComplexSignal_SampleRate_Size_Channels() const
     {
-        dsp::Multisignal<std::complex<T>> x{ 1000, 10, 2 };
-        EXPECT_EQ(x.GetSampleRate(), 1000);
+        dsp::multisignal<std::complex<T>> x{ 1000, 10, 2 };
+        EXPECT_EQ(x.sample_rate(), 1000);
         EXPECT_EQ(x.channels(), 2);
         EXPECT_EQ(x.size(), 10);
     }
@@ -65,14 +65,14 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
 
-        dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::Multisignal<T> x{
-            g.Cosine(100),
-            g.Sine(100),
+        dsp::signal_generator<T> g{ f_s, N };
+        dsp::multisignal<T> x{
+            g.cosine(100),
+            g.sine(100),
         };
 
         EXPECT_EQ(x.channels(), 2);
-        EXPECT_EQ(x.GetSampleRate(), f_s);
+        EXPECT_EQ(x.sample_rate(), f_s);
         EXPECT_EQ(x.size(), N);
     }
 
@@ -81,14 +81,14 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
 
-        dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::Multisignal<std::complex<T>> x{
-            { g.Cosine(1000), g.Sine(100) },
-            { g.Sine(1000), g.Cosine(100) },
+        dsp::signal_generator<T> g{ f_s, N };
+        dsp::multisignal<std::complex<T>> x{
+            { g.cosine(1000), g.sine(100) },
+            { g.sine(1000), g.cosine(100) },
         };
 
         EXPECT_EQ(x.channels(), 2);
-        EXPECT_EQ(x.GetSampleRate(), f_s);
+        EXPECT_EQ(x.sample_rate(), f_s);
         EXPECT_EQ(x.size(), N);
     }
 
@@ -97,16 +97,16 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
 
-        dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::Multisignal<T> x1{
-            g.Cosine(100),
-            g.Sine(100),
+        dsp::signal_generator<T> g{ f_s, N };
+        dsp::multisignal<T> x1{
+            g.cosine(100),
+            g.sine(100),
         };
 
-        const dsp::Multisignal<T> x2{ x1 };
+        const dsp::multisignal<T> x2{ x1 };
 
         EXPECT_EQ(x2.channels(), x1.channels());
-        EXPECT_EQ(x2.GetSampleRate(), x1.GetSampleRate());
+        EXPECT_EQ(x2.sample_rate(), x1.sample_rate());
         EXPECT_EQ(x2.size(), x1.size());
 
         for (size_t c = 0; c < x1.channels(); ++c)
@@ -123,18 +123,18 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
 
-        dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::Signal<T> c0 = g.Cosine(100);
-        dsp::Signal<T> c1 = g.Sine(100);
-        dsp::Multisignal<T> x1{
+        dsp::signal_generator<T> g{ f_s, N };
+        dsp::signal<T> c0 = g.cosine(100);
+        dsp::signal<T> c1 = g.sine(100);
+        dsp::multisignal<T> x1{
             c0,
             c1,
         };
 
-        const dsp::Multisignal<T> x2{ std::move(x1) };
+        const dsp::multisignal<T> x2{ std::move(x1) };
 
         EXPECT_EQ(x2.channels(), 2);
-        EXPECT_EQ(x2.GetSampleRate(), f_s);
+        EXPECT_EQ(x2.sample_rate(), f_s);
         EXPECT_EQ(x2.size(), N);
 
         for (size_t n = 0; n < N; ++n)
@@ -149,16 +149,16 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
 
-        dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::Multisignal<T> x1{
-            g.Cosine(100),
-            g.Sine(100),
+        dsp::signal_generator<T> g{ f_s, N };
+        dsp::multisignal<T> x1{
+            g.cosine(100),
+            g.sine(100),
         };
 
         const auto x2 = x1;
 
         EXPECT_EQ(x2.channels(), x1.channels());
-        EXPECT_EQ(x2.GetSampleRate(), x1.GetSampleRate());
+        EXPECT_EQ(x2.sample_rate(), x1.sample_rate());
         EXPECT_EQ(x2.size(), x1.size());
 
         std::cout << x2[0][0] << std::endl;
@@ -177,10 +177,10 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
 
-        dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::Signal<T> c0 = g.Cosine(100);
-        dsp::Signal<T> c1 = g.Sine(100);
-        dsp::Multisignal<T> x1{
+        dsp::signal_generator<T> g{ f_s, N };
+        dsp::signal<T> c0 = g.cosine(100);
+        dsp::signal<T> c1 = g.sine(100);
+        dsp::multisignal<T> x1{
             c0,
             c1,
         };
@@ -188,7 +188,7 @@ protected:
         const auto x2 = std::move(x1);
 
         EXPECT_EQ(x2.channels(), 2);
-        EXPECT_EQ(x2.GetSampleRate(), f_s);
+        EXPECT_EQ(x2.sample_rate(), f_s);
         EXPECT_EQ(x2.size(), N);
 
         for (size_t n = 0; n < N; ++n)
@@ -200,14 +200,14 @@ protected:
 
     void Multisignal_GetDuration() const
     {
-        dsp::Multisignal<T> x{ 1000, 2500 };
-        EXPECT_NEAR(x.GetDuration(), 2.5, constants::EPSILON);
+        dsp::multisignal<T> x{ 1000, 2500 };
+        EXPECT_NEAR(x.duration(), 2.5, constants::EPSILON);
     }
 
     void Multisignal_GetSampleRate() const
     {
-        dsp::Multisignal<T> x{ 1000 };
-        EXPECT_EQ(x.GetSampleRate(), 1000);
+        dsp::multisignal<T> x{ 1000 };
+        EXPECT_EQ(x.sample_rate(), 1000);
     }
 
     void Multisignal_AddChannel() const
@@ -215,11 +215,11 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
 
-        dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::Multisignal<T> x{ f_s };
-        x.AddChannel(g.Cosine(100));
+        dsp::signal_generator<T> g{ f_s, N };
+        dsp::multisignal<T> x{ f_s };
+        x.add_channel(g.cosine(100));
 
-        const auto data = g.Cosine(100);
+        const auto data = g.cosine(100);
 
         for (size_t n = 0; n < N; ++n)
         {
@@ -229,13 +229,13 @@ protected:
 
     void Multisignal_channels() const
     {
-        dsp::Multisignal<T> x{ 1000, 10, 2 };
+        dsp::multisignal<T> x{ 1000, 10, 2 };
         EXPECT_EQ(x.channels(), 2);
     }
 
     void Multisignal_size() const
     {
-        dsp::Multisignal<T> x{ 1000, 10 };
+        dsp::multisignal<T> x{ 1000, 10 };
         EXPECT_EQ(x.size(), 10);
     }
 
@@ -244,10 +244,10 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
 
-        dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::Signal<T> c0 = g.Cosine(100);
-        dsp::Signal<T> c1 = g.Sine(100);
-        dsp::Multisignal<T> x1{
+        dsp::signal_generator<T> g{ f_s, N };
+        dsp::signal<T> c0 = g.cosine(100);
+        dsp::signal<T> c1 = g.sine(100);
+        dsp::multisignal<T> x1{
             c0,
             c1,
         };
@@ -265,7 +265,7 @@ protected:
             x1[1][n] = c0[n];
         }
 
-        const dsp::Multisignal<T> x2{ x1 };
+        const dsp::multisignal<T> x2{ x1 };
 
         // const data access
         for (size_t n = 0; n < N; ++n)
@@ -280,14 +280,14 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
 
-        dsp::SignalGenerator<T> g{ f_s, N };
-        dsp::Multisignal<T> x1{
-            g.Cosine(100),
-            g.Sine(100),
+        dsp::signal_generator<T> g{ f_s, N };
+        dsp::multisignal<T> x1{
+            g.cosine(100),
+            g.sine(100),
         };
-        dsp::Multisignal<T> x2{
-            g.Sine(100),
-            g.Cosine(100),
+        dsp::multisignal<T> x2{
+            g.sine(100),
+            g.cosine(100),
         };
         const auto x1_c = x1;
         const auto x2_c = x2;

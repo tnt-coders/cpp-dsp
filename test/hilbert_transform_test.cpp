@@ -13,10 +13,10 @@ class HilbertTransformTest : public ::testing::Test
 protected:
     void HilbertTransform_EvenLength() const
     {
-        dsp::SignalGenerator<T> g{ 4000, 4 };
-        const auto x = g.Cosine(1000);
+        dsp::signal_generator<T> g{ 4000, 4 };
+        const auto x = g.cosine(1000);
 
-        const auto x_c = dsp::HilbertTransform(x);
+        const auto x_c = dsp::hilbert_transform(x);
 
         EXPECT_NEAR(x_c[0].real(), 1.0, constants::EPSILON);
         EXPECT_NEAR(x_c[0].imag(), 0.0, constants::EPSILON);
@@ -30,9 +30,9 @@ protected:
     
     void HilbertTransform_OddLength() const
     {
-        dsp::SignalGenerator<T> g{ 4000, 5 };
-        const auto x = g.Cosine(1000);
-        const auto x_c = dsp::HilbertTransform(x);
+        dsp::signal_generator<T> g{ 4000, 5 };
+        const auto x = g.cosine(1000);
+        const auto x_c = dsp::hilbert_transform(x);
 
         EXPECT_NEAR(x_c[0].real(), 1.0, constants::EPSILON);
         EXPECT_NEAR(x_c[0].imag(), 0.470, constants::EPSILON);

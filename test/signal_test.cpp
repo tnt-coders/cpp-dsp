@@ -12,33 +12,33 @@ class SignalTest : public ::testing::Test
 protected:
     void Signal_ConstructRealSignal_SampleRate() const
     {
-        dsp::Signal<T> x{ 1000 };
+        dsp::signal<T> x{ 1000 };
 
-        EXPECT_EQ(x.GetSampleRate(), 1000);
+        EXPECT_EQ(x.sample_rate(), 1000);
         EXPECT_EQ(x.size(), 0);
     }
 
     void Signal_ConstructComplexSignal_SampleRate() const
     {
-        dsp::Signal<std::complex<T>> x{ 1000 };
+        dsp::signal<std::complex<T>> x{ 1000 };
 
-        EXPECT_EQ(x.GetSampleRate(), 1000);
+        EXPECT_EQ(x.sample_rate(), 1000);
         EXPECT_EQ(x.size(), 0);
     }
 
     void Signal_ConstructRealSignal_SampleRate_Size() const
     {
-        dsp::Signal<T> x{ 1000, 10 };
+        dsp::signal<T> x{ 1000, 10 };
 
-        EXPECT_EQ(x.GetSampleRate(), 1000);
+        EXPECT_EQ(x.sample_rate(), 1000);
         EXPECT_EQ(x.size(), 10);
     }
 
     void Signal_ConstructComplexSignal_SampleRate_Size() const
     {
-        dsp::Signal<std::complex<T>> x{ 1000, 10 };
+        dsp::signal<std::complex<T>> x{ 1000, 10 };
 
-        EXPECT_EQ(x.GetSampleRate(), 1000);
+        EXPECT_EQ(x.sample_rate(), 1000);
         EXPECT_EQ(x.size(), 10);
     }
 
@@ -47,8 +47,8 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
         const auto t_s = 1 / static_cast<T>(f_s);
-        dsp::Signal<T> x1_real{ f_s, N };
-        dsp::Signal<T> x1_imag{ f_s, N };
+        dsp::signal<T> x1_real{ f_s, N };
+        dsp::signal<T> x1_imag{ f_s, N };
 
         // Put some data in it
         for (size_t n = 0; n < N; ++n)
@@ -57,10 +57,10 @@ protected:
             x1_imag[n] = std::sin(2 * static_cast<T>(M_PI) * 100 * n * t_s);
         }
 
-        dsp::Signal<std::complex<T>> x2{ x1_real, x1_imag };
+        dsp::signal<std::complex<T>> x2{ x1_real, x1_imag };
 
-        EXPECT_EQ(x2.GetSampleRate(), x1_real.GetSampleRate());
-        EXPECT_EQ(x2.GetSampleRate(), x1_imag.GetSampleRate());
+        EXPECT_EQ(x2.sample_rate(), x1_real.sample_rate());
+        EXPECT_EQ(x2.sample_rate(), x1_imag.sample_rate());
         EXPECT_EQ(x2.size(), x1_real.size());
         EXPECT_EQ(x2.size(), x1_imag.size());
 
@@ -77,7 +77,7 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
         const auto t_s = 1 / static_cast<T>(f_s);
-        dsp::Signal<T> x1{ f_s, N };
+        dsp::signal<T> x1{ f_s, N };
 
         // Put some data in it
         for (size_t n = 0; n < N; ++n)
@@ -85,9 +85,9 @@ protected:
             x1[n] = std::cos(2 * static_cast<T>(M_PI) * 100 * n * t_s);
         }
 
-        dsp::Signal<T> x2{ x1 };
+        dsp::signal<T> x2{ x1 };
 
-        EXPECT_EQ(x2.GetSampleRate(), x1.GetSampleRate());
+        EXPECT_EQ(x2.sample_rate(), x1.sample_rate());
         EXPECT_EQ(x2.size(), x1.size());
 
         for (size_t n = 0; n < N; ++n)
@@ -101,7 +101,7 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
         const auto t_s = 1 / static_cast<T>(f_s);
-        dsp::Signal<T> x1{ f_s, N };
+        dsp::signal<T> x1{ f_s, N };
 
         // Put some data in it
         std::vector<T> data(N);
@@ -111,9 +111,9 @@ protected:
             data[n] = x1[n];
         }
 
-        dsp::Signal<T> x2{ std::move(x1) };
+        dsp::signal<T> x2{ std::move(x1) };
 
-        EXPECT_EQ(x2.GetSampleRate(), f_s);
+        EXPECT_EQ(x2.sample_rate(), f_s);
         EXPECT_EQ(x2.size(), N);
 
         for (size_t n = 0; n < N; ++n)
@@ -127,7 +127,7 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
         const auto t_s = 1 / static_cast<T>(f_s);
-        dsp::Signal<T> x1{ f_s, N };
+        dsp::signal<T> x1{ f_s, N };
 
         // Put some data in it
         for (size_t n = 0; n < N; ++n)
@@ -137,7 +137,7 @@ protected:
 
         const auto x2 = x1;
 
-        EXPECT_EQ(x2.GetSampleRate(), x1.GetSampleRate());
+        EXPECT_EQ(x2.sample_rate(), x1.sample_rate());
         EXPECT_EQ(x2.size(), x1.size());
 
         for (size_t n = 0; n < N; ++n)
@@ -151,7 +151,7 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
         const auto t_s = 1 / static_cast<T>(f_s);
-        dsp::Signal<T> x1{ f_s, N };
+        dsp::signal<T> x1{ f_s, N };
 
         // Put some data in it
         std::vector<T> data(N);
@@ -163,7 +163,7 @@ protected:
 
         const auto x2 = std::move(x1);
 
-        EXPECT_EQ(x2.GetSampleRate(), f_s);
+        EXPECT_EQ(x2.sample_rate(), f_s);
         EXPECT_EQ(x2.size(), N);
 
         for (size_t n = 0; n < N; ++n)
@@ -174,14 +174,14 @@ protected:
 
     void Signal_GetDuration() const
     {
-        dsp::Signal<T> x{ 1000, 2500 };
-        EXPECT_NEAR(x.GetDuration(), 2.5, constants::EPSILON);
+        dsp::signal<T> x{ 1000, 2500 };
+        EXPECT_NEAR(x.duration(), 2.5, constants::EPSILON);
     }
 
     void Signal_GetSampleRate() const
     {
-        dsp::Signal<T> x{ 1000 };
-        EXPECT_EQ(x.GetSampleRate(), 1000);
+        dsp::signal<T> x{ 1000 };
+        EXPECT_EQ(x.sample_rate(), 1000);
     }
 
     void Signal_Iterators() const
@@ -189,7 +189,7 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
         const auto t_s = 1 / static_cast<T>(f_s);
-        dsp::Signal<T> x{ f_s, N };
+        dsp::signal<T> x{ f_s, N };
 
         // Put some data in it
         for (size_t n = 0; n < N; ++n)
@@ -215,7 +215,7 @@ protected:
 
     void Signal_capacity_reserve() const
     {
-        dsp::Signal<T> x{ 1000 };
+        dsp::signal<T> x{ 1000 };
         x.reserve(100);
         EXPECT_EQ(x.capacity(), 100);
 
@@ -226,7 +226,7 @@ protected:
 
     void Signal_size_resize() const
     {
-        dsp::Signal<T> x{ 1000, 10 };
+        dsp::signal<T> x{ 1000, 10 };
         EXPECT_EQ(x.size(), 10);
         x.resize(100);
         EXPECT_EQ(x.size(), 100);
@@ -239,7 +239,7 @@ protected:
 
     void Signal_push_back() const
     {
-        dsp::Signal<T> x{ 1000 };
+        dsp::signal<T> x{ 1000 };
         x.push_back(1.0);
         x.push_back(2.0);
         x.push_back(3.0);
@@ -255,7 +255,7 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
         const auto t_s = 1 / static_cast<T>(f_s);
-        dsp::Signal<T> x1{ f_s, N };
+        dsp::signal<T> x1{ f_s, N };
 
         // non-const data access
         for (size_t n = 0; n < N; ++n)
@@ -263,7 +263,7 @@ protected:
             x1[n] = std::cos(2 * static_cast<T>(M_PI) * 100 * n * t_s);
         }
 
-        const dsp::Signal<T> x2{ x1 };
+        const dsp::signal<T> x2{ x1 };
 
         // const data access
         for (size_t n = 0; n < N; ++n)
@@ -277,8 +277,8 @@ protected:
         const size_t f_s = 1000;
         const size_t N = 10;
         const auto t_s = 1 / static_cast<T>(f_s);
-        dsp::Signal<T> cosine{ f_s, N };
-        dsp::Signal<T> sine{ f_s, N };
+        dsp::signal<T> cosine{ f_s, N };
+        dsp::signal<T> sine{ f_s, N };
 
         for (size_t n = 0; n < N; ++n)
         {

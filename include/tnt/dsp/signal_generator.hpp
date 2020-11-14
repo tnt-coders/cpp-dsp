@@ -10,18 +10,18 @@ namespace tnt::dsp
 \brief Generates signals of similar sample rates/sizes
 */
 template <typename T>
-class SignalGenerator final
+class signal_generator final
 {
 public:
 
     /*!
     \brief Constructor
-    \param[in] sampleRate Sample rate to use for generated signals
+    \param[in] sample_rate Sample rate to use for generated signals
     \param[in] size Size to use for generated signals
     */
-    SignalGenerator(size_t sampleRate, size_t size)
-        : m_sampleRate(sampleRate)
-        , m_sampleInterval(1 / static_cast<T>(m_sampleRate))
+    signal_generator(size_t sample_rate, size_t size)
+        : m_sample_rate(sample_rate)
+        , m_sample_interval(1 / static_cast<T>(m_sample_rate))
         , m_size(size)
     {}
 
@@ -29,15 +29,15 @@ public:
     \brief Generates a cosine wave
     \param[in] frequency Frequency in Hz
     \param[in] amplitude Amplitude
-    \param[in] phaseShift Phase shift
-    \param[in] verticalShift Vertical shift
+    \param[in] phase_shift Phase shift
+    \param[in] vertical_shift Vertical shift
     */
-    Signal<T> Cosine(T frequency, T amplitude = 1, T phaseShift = 0, T verticalShift = 0) const
+    signal<T> cosine(T frequency, T amplitude = 1, T phase_shift = 0, T vertical_shift = 0) const
     {
-        Signal<T> signal{ m_sampleRate, m_size };
+        signal<T> signal{ m_sample_rate, m_size };
         for (size_t n = 0; n < signal.size(); ++n)
         {
-            signal[n] = amplitude * std::cos(2 * static_cast<T>(M_PI) * frequency * n * m_sampleInterval + phaseShift) + verticalShift;
+            signal[n] = amplitude * std::cos(2 * static_cast<T>(M_PI) * frequency * n * m_sample_interval + phase_shift) + vertical_shift;
         }
 
         return signal;
@@ -47,23 +47,23 @@ public:
     \brief Generates a sine wave
     \param[in] frequency Frequency in Hz
     \param[in] amplitude Amplitude
-    \param[in] phaseShift Phase shift
-    \param[in] verticalShift Vertical shift
+    \param[in] phase_shift Phase shift
+    \param[in] vertical_shift Vertical shift
     */
-    Signal<T> Sine(T frequency, T amplitude = 1, T phaseShift = 0, T verticalShift = 0) const
+    signal<T> sine(T frequency, T amplitude = 1, T phase_shift = 0, T vertical_shift = 0) const
     {
-        Signal<T> signal{ m_sampleRate, m_size };
+        signal<T> signal{ m_sample_rate, m_size };
         for (size_t n = 0; n < signal.size(); ++n)
         {
-            signal[n] = amplitude * std::sin(2 * static_cast<T>(M_PI) * frequency * n * m_sampleInterval + phaseShift) + verticalShift;
+            signal[n] = amplitude * std::sin(2 * static_cast<T>(M_PI) * frequency * n * m_sample_interval + phase_shift) + vertical_shift;
         }
 
         return signal;
     }
 
 private:
-    size_t m_sampleRate;
-    T m_sampleInterval;
+    size_t m_sample_rate;
+    T m_sample_interval;
     size_t m_size;
 };
 

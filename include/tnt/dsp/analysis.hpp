@@ -13,7 +13,7 @@ namespace tnt::dsp
 \return Magnitude of the sample
 */
 template <typename T>
-T Magnitude(const T& sample)
+T magnitude(const T& sample)
 {
     return std::abs(sample);
 }
@@ -24,7 +24,7 @@ T Magnitude(const T& sample)
 \return Magnitude of the sample
 */
 template <typename T>
-T Magnitude(const std::complex<T>& sample)
+T magnitude(const std::complex<T>& sample)
 {
     return std::abs(sample);
 }
@@ -35,11 +35,11 @@ T Magnitude(const std::complex<T>& sample)
 \return Magnitude of the signal
 */
 template <typename T>
-Signal<T> Magnitude(const Signal<T>& x)
+signal<T> magnitude(const signal<T>& x)
 {
-    Signal<T> x_magnitude{ x.GetSampleRate(), x.size() };
+    signal<T> x_magnitude{ x.sample_rate(), x.size() };
     std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
-        return Magnitude(sample);
+        return magnitude(sample);
         });
 
     return x_magnitude;
@@ -51,11 +51,11 @@ Signal<T> Magnitude(const Signal<T>& x)
 \return Magnitude of the signal
 */
 template <typename T>
-Signal<T> Magnitude(const Signal<std::complex<T>>& x)
+signal<T> magnitude(const signal<std::complex<T>>& x)
 {
-    Signal<T> x_magnitude{ x.GetSampleRate(), x.size() };
+    signal<T> x_magnitude{ x.sample_rate(), x.size() };
     std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
-        return Magnitude(sample);
+        return magnitude(sample);
         });
 
     return x_magnitude;
@@ -67,7 +67,7 @@ Signal<T> Magnitude(const Signal<std::complex<T>>& x)
 \return Phase angle (in radians) of the sample
 */
 template <typename T>
-T Phase(const T& sample)
+T phase(const T& sample)
 {
     return std::arg(sample);
 }
@@ -78,7 +78,7 @@ T Phase(const T& sample)
 \return Phase angle (in radians) of the sample
 */
 template <typename T>
-T Phase(const std::complex<T>& sample)
+T phase(const std::complex<T>& sample)
 {
     return std::arg(sample);
 }
@@ -89,11 +89,11 @@ T Phase(const std::complex<T>& sample)
 \return Phase spectrum (in radians) of the signal
 */
 template <typename T>
-Signal<T> Phase(const Signal<T>& x)
+signal<T> phase(const signal<T>& x)
 {
-    Signal<T> x_phase{ x.GetSampleRate(), x.size() };
+    signal<T> x_phase{ x.sample_rate(), x.size() };
     std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
-        return Phase(sample);
+        return phase(sample);
         });
 
     return x_phase;
@@ -105,11 +105,11 @@ Signal<T> Phase(const Signal<T>& x)
 \return Phase spectrum (in radians) of the signal
 */
 template <typename T>
-Signal<T> Phase(const Signal<std::complex<T>>& x)
+signal<T> phase(const signal<std::complex<T>>& x)
 {
-    Signal<T> x_phase{ x.GetSampleRate(), x.size() };
+    signal<T> x_phase{ x.sample_rate(), x.size() };
     std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
-        return Phase(sample);
+        return phase(sample);
         });
 
     return x_phase;
@@ -121,7 +121,7 @@ Signal<T> Phase(const Signal<std::complex<T>>& x)
 \return Power of the sample
 */
 template <typename T>
-T Power(const T& sample)
+T power(const T& sample)
 {
     return std::norm(sample);
 }
@@ -132,7 +132,7 @@ T Power(const T& sample)
 \return Power of the sample
 */
 template <typename T>
-T Power(const std::complex<T>& sample)
+T power(const std::complex<T>& sample)
 {
     return std::norm(sample);
 }
@@ -143,11 +143,11 @@ T Power(const std::complex<T>& sample)
 \return Power spectrum of the signal
 */
 template <typename T>
-Signal<T> Power(const Signal<T>& x)
+signal<T> power(const signal<T>& x)
 {
-    Signal<T> x_power{ x.GetSampleRate(), x.size() };
+    signal<T> x_power{ x.sample_rate(), x.size() };
     std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
-        return Power(sample);
+        return power(sample);
         });
 
     return x_power;
@@ -159,11 +159,11 @@ Signal<T> Power(const Signal<T>& x)
 \return Power spectrum of the signal
 */
 template <typename T>
-Signal<T> Power(const Signal<std::complex<T>>& x)
+signal<T> power(const signal<std::complex<T>>& x)
 {
-    Signal<T> x_power{ x.GetSampleRate(), x.size() };
+    signal<T> x_power{ x.sample_rate(), x.size() };
     std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
-        return Power(sample);
+        return power(sample);
         });
 
     return x_power;

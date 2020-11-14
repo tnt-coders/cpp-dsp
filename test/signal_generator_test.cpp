@@ -25,18 +25,18 @@ protected:
         const T phaseShift = static_cast<T>(M_PI) / 2;
         const T verticalShift = 2;
 
-        dsp::Signal<T> cosine{ f_s, N };
+        dsp::signal<T> cosine{ f_s, N };
 
         for (size_t n = 0; n < N; ++n)
         {
             cosine[n] = amplitude * std::cos(2 * static_cast<T>(M_PI) * frequency * n * t_s + phaseShift) + verticalShift;
         }
 
-        dsp::SignalGenerator<T> g{ f_s, N };
-        const auto x = g.Cosine(frequency, amplitude, phaseShift, verticalShift);
+        dsp::signal_generator<T> g{ f_s, N };
+        const auto x = g.cosine(frequency, amplitude, phaseShift, verticalShift);
 
         ASSERT_EQ(x.size(), cosine.size());
-        ASSERT_EQ(x.GetSampleRate(), cosine.GetSampleRate());
+        ASSERT_EQ(x.sample_rate(), cosine.sample_rate());
 
         for (size_t n = 0; n < N; ++n)
         {
@@ -55,18 +55,18 @@ protected:
         const T phaseShift = static_cast<T>(M_PI) / 2;
         const T verticalShift = 2;
 
-        dsp::Signal<T> sine{ f_s, N };
+        dsp::signal<T> sine{ f_s, N };
 
         for (size_t n = 0; n < N; ++n)
         {
             sine[n] = amplitude * std::sin(2 * static_cast<T>(M_PI) * frequency * n * t_s + phaseShift) + verticalShift;
         }
 
-        dsp::SignalGenerator<T> g{ f_s, N };
-        const auto x = g.Sine(frequency, amplitude, phaseShift, verticalShift);
+        dsp::signal_generator<T> g{ f_s, N };
+        const auto x = g.sine(frequency, amplitude, phaseShift, verticalShift);
 
         ASSERT_EQ(x.size(), sine.size());
-        ASSERT_EQ(x.GetSampleRate(), sine.GetSampleRate());
+        ASSERT_EQ(x.sample_rate(), sine.sample_rate());
 
         for (size_t n = 0; n < N; ++n)
         {

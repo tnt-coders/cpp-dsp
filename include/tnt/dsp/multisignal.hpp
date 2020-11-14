@@ -12,50 +12,50 @@ namespace tnt::dsp
 \brief Represents a Multi-channel DSP signal to store and process sampled data
 */
 template <typename T>
-class Multisignal final
+class multisignal final
 {
-    class SignalProxy;
+    class signal_proxy;
 public:
 
     /*!
     \brief Constant iterator
     */
-    using const_iterator = typename std::vector<Signal<T>>::const_iterator;
+    using const_iterator = typename std::vector<signal<T>>::const_iterator;
 
     /*!
     \brief Iterator
     */
-    using iterator = typename std::vector<Signal<T>>::iterator;
+    using iterator = typename std::vector<signal<T>>::iterator;
 
     /*!
     \brief Size type
     */
-    using size_type = typename std::vector<Signal<T>>::size_type;
+    using size_type = typename std::vector<signal<T>>::size_type;
 
     /*!
     \brief Value type
     */
-    using value_type = typename std::vector<Signal<T>>::value_type;
+    using value_type = typename std::vector<signal<T>>::value_type;
 
     /*!
     \brief Constructor
     \param[in] signals One or more single channel signals
     */
-    explicit Multisignal(const std::initializer_list<Signal<T>> signals)
-        : m_sampleRate(0)
+    explicit multisignal(const std::initializer_list<signal<T>> signals)
+        : m_sample_rate(0)
         , m_size(0)
         , m_channels(signals)
     {
         for (const auto& signal : signals)
         {
             // Validate sample rate
-            if (m_sampleRate)
+            if (m_sample_rate)
             {
-                assert(signal.GetSampleRate() == m_sampleRate);
+                assert(signal.sample_rate() == m_sample_rate);
             }
             else
             {
-                m_sampleRate = signal.GetSampleRate();
+                m_sample_rate = signal.sample_rate();
             }
 
             // Validate size
@@ -72,100 +72,100 @@ public:
 
     /*
     \brief Constructor
-    \param[in] sampleRate Sample rate
+    \param[in] sample_rate Sample rate
     */
-    explicit Multisignal(const size_t sampleRate)
-        : m_sampleRate(sampleRate)
+    explicit multisignal(const size_t sample_rate)
+        : m_sample_rate(sample_rate)
         , m_size(0)
         , m_channels()
     {}
 
     /*
     \brief Constructor
-    \param[in] sampleRate Sample rate
+    \param[in] sample_rate Sample rate
     \param[in] size Size
     */
-    explicit Multisignal(const size_t sampleRate, const typename Signal<T>::size_type& size)
-        : m_sampleRate(sampleRate)
+    explicit multisignal(const size_t sample_rate, const typename signal<T>::size_type& size)
+        : m_sample_rate(sample_rate)
         , m_size(size)
         , m_channels()
     {}
 
     /*!
     \brief Constructor
-    \param[in] sampleRate Sample rate
+    \param[in] sample_rate Sample rate
     \param[in] size Size
     \param[in] channels Number of channels
     */
-    explicit Multisignal(const size_t sampleRate, const typename Signal<T>::size_type& size, const size_type& channels)
-        : m_sampleRate(sampleRate)
+    explicit multisignal(const size_t sample_rate, const typename signal<T>::size_type& size, const size_type& channels)
+        : m_sample_rate(sample_rate)
         , m_size(size)
-        , m_channels(channels, Signal<T>{ sampleRate, size })
+        , m_channels(channels, signal<T>{ sample_rate, size })
     {}
 
     /*!
     \brief Copy constructor
     \param[in] signal Multi-channel signal
     */
-    Multisignal(const Multisignal& signal) = default;
+    multisignal(const multisignal& signal) = default;
 
     /*!
     \brief Move constructor
     \param[in] signal Multi-channel signal
     */
-    Multisignal(Multisignal<T>&& signal) = default;
+    multisignal(multisignal<T>&& signal) = default;
 
     /*!
     \brief Copy assignment operator
     \param[in] signal Multi-channel signal to assign from
     \return Multi-channel signal equal to the input
     */
-    Multisignal<T>& operator=(const Multisignal<T>& signal) = default;
+    multisignal<T>& operator=(const multisignal<T>& signal) = default;
 
     /*!
     \brief Move assignment operator
     \param[in] signal Multi-channel signal to assign from
     \return Multi-channel signal equal to the input
     */
-    Multisignal<T>& operator=(Multisignal<T>&& signal) = default;
+    multisignal<T>& operator=(multisignal<T>&& signal) = default;
 
     /*!
     \brief Destructor
     */
-    ~Multisignal() = default;
+    ~multisignal() = default;
 
     /*!
     \brief Gets the duration of the signal in seconds
     \return Duration
     */
-    double GetDuration() const
+    double duration() const
     {
-        return this->size() / static_cast<double>(this->GetSampleRate());
+        return this->size() / static_cast<double>(this->sample_rate());
     }
 
     /*!
     \brief Gets the sample rate
     \return Sample rate
     */
-    size_t GetSampleRate() const
+    size_t sample_rate() const
     {
-        return m_sampleRate;
+        return m_sample_rate;
     }
 
     /*!
     \brief Adds a channel
     \param[in] signal Signal to put in the channel
     */
-    void AddChannel(const Signal<T>& signal)
+    void add_channel(const signal<T>& signal)
     {
         // Validate sample rate
-        if (m_sampleRate)
+        if (m_sample_rate)
         {
-            assert(signal.GetSampleRate() == m_sampleRate);
+            assert(signal.sample_rate() == m_sample_rate);
         }
         else
         {
-            m_sampleRate = signal.GetSampleRate();
+            m_sample_rate = signal.sample_rate();
         }
 
         // Validate size
@@ -203,7 +203,7 @@ public:
     \brief Accesses the channel at the specified index
     \return Constant reference to the requsted channel
     */
-    const Signal<T>& operator[](const size_type& channel) const
+    const signal<T>& operator[](const size_type& channel) const
     {
         assert(channel < this->channels());
         return m_channels[channel];
@@ -213,7 +213,7 @@ public:
     \brief Accesses the channel at the specified index
     \return Proxy reference to the requested channel (The proxy prevents resizing)
     */
-    SignalProxy operator[](const size_type& channel)
+    signal_proxy operator[](const size_type& channel)
     {
         assert(channel < this->channels());
         return m_channels[channel];
@@ -221,23 +221,23 @@ public:
 
     // Friend declaration for swap
     template <typename U>
-    friend void swap(Multisignal<U>& signal1, Multisignal<U>& signal2);
+    friend void swap(multisignal<U>& signal1, multisignal<U>& signal2);
 
 private:
 
-    // Proxy class that provides a limited interface to the Signal class
+    // Proxy class that provides a limited interface to the signal class
     // We don't want to allow users to modify the size of a signal contained within a multi-signal.
-    class SignalProxy final
+    class signal_proxy final
     {
     public:
-        using const_iterator = typename Signal<T>::const_iterator;
-        using iterator = typename Signal<T>::iterator;
-        using size_type = typename Signal<T>::size_type;
-        using value_type = typename Signal<T>::value_type;
-        SignalProxy(Signal<T>& signal) : m_signal(signal) {}
-        operator Signal<T>() { return m_signal; }
-        double GetDuration() const { return m_signal.GetDuration(); }
-        size_t GetSampleRate() const { return m_signal.GetSampleRate(); }
+        using const_iterator = typename signal<T>::const_iterator;
+        using iterator = typename signal<T>::iterator;
+        using size_type = typename signal<T>::size_type;
+        using value_type = typename signal<T>::value_type;
+        signal_proxy(signal<T>& signal) : m_signal(signal) {}
+        operator signal<T>() { return m_signal; }
+        double duration() const { return m_signal.duration(); }
+        size_t sample_rate() const { return m_signal.sample_rate(); }
         iterator begin() { return m_signal.begin(); }
         const_iterator begin() const { return m_signal.begin(); }
         const_iterator cbegin() const { return m_signal.cbegin(); }
@@ -248,12 +248,12 @@ private:
         const value_type& operator[](const size_type index) const { return m_signal[index]; }
         typename value_type& operator[](const size_type index) { return m_signal[index]; }
     private:
-        Signal<T>& m_signal;
+        signal<T>& m_signal;
     };
 
-    size_t m_sampleRate;
+    size_t m_sample_rate;
     size_type m_size;
-    std::vector<Signal<T>> m_channels;
+    std::vector<signal<T>> m_channels;
 };
 
 /*!
@@ -262,7 +262,7 @@ private:
 \param[in] signal2 Second signal to swap
 */
 template<typename T>
-void swap(Multisignal<T>& signal1, Multisignal<T>& signal2)
+void swap(multisignal<T>& signal1, multisignal<T>& signal2)
 {
     using std::swap;
     swap(signal1.m_channels, signal2.m_channels);
