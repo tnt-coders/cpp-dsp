@@ -270,4 +270,16 @@ void swap(signal<T>& signal1, signal<T>& signal2)
     swap(signal1.m_sample_rate, signal2.m_sample_rate);
 }
 
+/*
+\brief Generates a complex signal from two real signals
+\param[in] real Signal containing the real samples
+\param[in] imaginary Signal containing the imaginary samples
+\return Complex signal created from the real and imaginary parts
+*/
+template <typename T>
+signal<std::complex<T>> complex_signal(signal<T> real, signal<T> imaginary)
+{
+    return dsp::signal<std::complex<T>>{ real, imaginary };
+}
+
 } /* namespace tnt::dsp */

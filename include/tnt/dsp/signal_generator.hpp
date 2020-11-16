@@ -2,6 +2,7 @@
 
 #include "signal.hpp"
 #include <cmath>
+#include <complex>
 
 namespace tnt::dsp
 {

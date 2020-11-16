@@ -3,6 +3,7 @@
 #include "signal.hpp"
 #include <algorithm>
 #include <complex>
+#include <limits>
 
 namespace tnt::dsp
 {
@@ -63,24 +64,60 @@ signal<T> magnitude(const signal<std::complex<T>>& x)
 
 /*!
 \brief Calculates the phase angle (in radians) of a real sample
+\param[in] sample Real sample
+\param[in] epsilon Values below epsilon will be treated as 0
+\return Phase angle (in radians) of the sample
+*/
+template <typename T>
+T phase(const T& sample, const T& epsilon)
+{
+    const auto x = std::abs(sample) < epsilon ? 0 : sample;
+    return std::arg(x);
+}
+
+/*!
+\brief Calculates the phase angle (in radians) of a real sample
+
+Phase does not behave well around 0. Values close to 0 will be treated as 0.
+
 \param[in] sample - Real sample
 \return Phase angle (in radians) of the sample
 */
 template <typename T>
 T phase(const T& sample)
 {
-    return std::arg(sample);
+    return phase(sample, std::numeric_limits<T>::epsilon() * 100);
 }
 
 /*!
 \brief Calculates the phase angle (in radians) of a complex sample
+\param[in] sample Complex sample
+\param[in] epsilon Real/imaginary components below epsilon will be treated as 0
+\return Phase angle (in radians) of the sample
+*/
+template <typename T>
+T phase(const std::complex<T>& sample, const T& epsilon)
+{
+    const std::complex<T> x = {
+        std::abs(sample.real()) < epsilon ? 0 : sample.real(),
+        std::abs(sample.imag()) < epsilon ? 0 : sample.imag(),
+    };
+
+    return std::arg(x);
+}
+
+/*!
+\brief Calculates the phase angle (in radians) of a complex sample
+
+Phase does not behave well around 0. Real/imaginary components close to 0 will be treated as 0.
+
 \param[in] sample - Complex sample
 \return Phase angle (in radians) of the sample
 */
 template <typename T>
 T phase(const std::complex<T>& sample)
 {
-    return std::arg(sample);
+    return phase(sample, std::numeric_limits<T>::epsilon() * 100);
 }
 
 /*!
