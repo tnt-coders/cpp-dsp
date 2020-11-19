@@ -27,6 +27,24 @@ public:
     {}
 
     /*!
+    \brief Gets the sample rate
+    \return Sample rate
+    */
+    size_t sample_rate() const
+    {
+        return m_sample_rate;
+    }
+
+    /*!
+    \brief Gets the size
+    \return Size
+    */
+    size_t size() const
+    {
+        return m_size;
+    }
+
+    /*!
     \brief Generates a cosine wave
     \param[in] frequency Frequency in Hz
     \param[in] amplitude Amplitude

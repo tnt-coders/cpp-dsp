@@ -41,7 +41,7 @@ signal<T> magnitude(const signal<T>& x)
     signal<T> x_magnitude{ x.sample_rate(), x.size() };
     std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
         return magnitude(sample);
-        });
+    });
 
     return x_magnitude;
 }
@@ -57,7 +57,7 @@ signal<T> magnitude(const signal<std::complex<T>>& x)
     signal<T> x_magnitude{ x.sample_rate(), x.size() };
     std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
         return magnitude(sample);
-        });
+    });
 
     return x_magnitude;
 }
@@ -131,7 +131,7 @@ signal<T> phase(const signal<T>& x)
     signal<T> x_phase{ x.sample_rate(), x.size() };
     std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
         return phase(sample);
-        });
+    });
 
     return x_phase;
 }
@@ -147,7 +147,7 @@ signal<T> phase(const signal<std::complex<T>>& x)
     signal<T> x_phase{ x.sample_rate(), x.size() };
     std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
         return phase(sample);
-        });
+    });
 
     return x_phase;
 }
@@ -185,7 +185,7 @@ signal<T> power(const signal<T>& x)
     signal<T> x_power{ x.sample_rate(), x.size() };
     std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
         return power(sample);
-        });
+    });
 
     return x_power;
 }
@@ -201,7 +201,7 @@ signal<T> power(const signal<std::complex<T>>& x)
     signal<T> x_power{ x.sample_rate(), x.size() };
     std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
         return power(sample);
-        });
+    });
 
     return x_power;
 }

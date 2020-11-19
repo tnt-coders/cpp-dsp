@@ -11,8 +11,6 @@
 namespace tnt::dsp
 {
 
-
-
 /*!
 \brief Calculates the fast Fourier transform of a real signal
 \param[in] x - Real input signal
@@ -31,7 +29,7 @@ signal<std::complex<T>> fourier_transform(const signal<T>& x)
         signal<std::complex<T>> x_p{ f_s, N };
         std::transform(x.begin(), x.end(), x_p.begin(), [](const auto& sample) {
             return std::complex<T>{ sample };
-            });
+        });
 
         return fourier_transform(x_p);
     }
@@ -125,14 +123,14 @@ signal<std::complex<T>> inverse_fourier_transform(const signal<std::complex<T>>&
     signal<std::complex<T>> X_p{ f_s, N };
     std::transform(X.begin(), X.end(), X_p.begin(), [](const auto& sample) {
         return std::conj(sample);
-        });
+    });
 
     const auto x_p = fourier_transform(X_p);
 
     signal<std::complex<T>> x{ f_s, N };
     std::transform(x_p.begin(), x_p.end(), x.begin(), [=](const auto& sample) {
         return std::conj(sample) / static_cast<T>(N);
-        });
+    });
 
     return x;
 }

@@ -39,7 +39,7 @@ signal<T> convolve(const signal<T>& a, const signal<T>& b)
     signal<T> x{ f_s, N };
     std::transform(c.begin(), c.end(), x.begin(), [](const auto& sample) {
         return sample.real();
-        });
+    });
 
     return x;
 }
@@ -62,7 +62,7 @@ signal<std::complex<T>> convolve(const signal<T>& a, const signal<std::complex<T
     signal<std::complex<T>> a_p{ f_s, N };
     std::transform(a.begin(), a.end(), a_p.begin(), [](const auto& sample) {
         return std::complex<T>(sample);
-        });
+    });
 
     return convolve(a_p, b);
 }
@@ -85,7 +85,7 @@ signal<std::complex<T>> convolve(const signal<std::complex<T>>& a, const signal<
     signal<std::complex<T>> b_p{ f_s, N };
     std::transform(b.begin(), b.end(), b_p.begin(), [](const auto& sample) {
         return std::complex<T>{ sample };
-        });
+    });
 
     return convolve(a, b_p);
 }

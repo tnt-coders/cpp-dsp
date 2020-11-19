@@ -126,6 +126,26 @@ public:
     }
 
     /*!
+    \brief Accesses the sample at the specified index
+    \return Constant reference to the requsted sample
+    */
+    const value_type& operator[](const size_type& index) const
+    {
+        assert(index < this->size());
+        return m_data[index];
+    }
+
+    /*!
+    \brief Accesses the sample at the specified index
+    \return Reference to the requested sample
+    */
+    value_type& operator[](const size_type& index)
+    {
+        assert(index < this->size());
+        return m_data[index];
+    }
+
+    /*!
     \brief Gets an iterator to the beginning of the signal
     \return Iterator to the first sample
     */
@@ -226,26 +246,6 @@ public:
     void push_back(const value_type& sample)
     {
         m_data.push_back(sample);
-    }
-
-    /*!
-    \brief Accesses the sample at the specified index
-    \return Constant reference to the requsted sample
-    */
-    const value_type& operator[](const size_type& index) const
-    {
-        assert(index < this->size());
-        return m_data[index];
-    }
-
-    /*!
-    \brief Accesses the sample at the specified index
-    \return Reference to the requested sample
-    */
-    value_type& operator[](const size_type& index)
-    {
-        assert(index < this->size());
-        return m_data[index];
     }
 
     // Friend declaration for swap

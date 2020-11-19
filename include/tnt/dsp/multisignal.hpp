@@ -18,16 +18,6 @@ class multisignal final
 public:
 
     /*!
-    \brief Constant iterator
-    */
-    using const_iterator = typename std::vector<signal<T>>::const_iterator;
-
-    /*!
-    \brief Iterator
-    */
-    using iterator = typename std::vector<signal<T>>::iterator;
-
-    /*!
     \brief Size type
     */
     using size_type = typename std::vector<signal<T>>::size_type;
@@ -153,6 +143,26 @@ public:
     }
 
     /*!
+    \brief Accesses the channel at the specified index
+    \return Constant reference to the requsted channel
+    */
+    const signal<T>& operator[](const size_type& channel) const
+    {
+        assert(channel < this->channels());
+        return m_channels[channel];
+    }
+
+    /*!
+    \brief Accesses the channel at the specified index
+    \return Proxy reference to the requested channel (The proxy prevents resizing)
+    */
+    signal_proxy operator[](const size_type& channel)
+    {
+        assert(channel < this->channels());
+        return m_channels[channel];
+    }
+
+    /*!
     \brief Adds a channel
     \param[in] signal Signal to put in the channel
     */
@@ -197,26 +207,6 @@ public:
     size_type size() const
     {
         return m_size;
-    }
-
-    /*!
-    \brief Accesses the channel at the specified index
-    \return Constant reference to the requsted channel
-    */
-    const signal<T>& operator[](const size_type& channel) const
-    {
-        assert(channel < this->channels());
-        return m_channels[channel];
-    }
-
-    /*!
-    \brief Accesses the channel at the specified index
-    \return Proxy reference to the requested channel (The proxy prevents resizing)
-    */
-    signal_proxy operator[](const size_type& channel)
-    {
-        assert(channel < this->channels());
-        return m_channels[channel];
     }
 
     // Friend declaration for swap
