@@ -6,14 +6,14 @@ class CppDsp(ConanFile):
     default_options = {"shared": False}
     description = "C++ Implementation of common digital signal processing algorithms"
     exports_sources = "CMakeLists.txt", "docs/*", "include/*", "src/*", "test/*"
-    generators = "cmake_paths"
+    generators = "cmake", "cmake_paths"
     license = "GNU Lesser General Public License v3.0"
     name = "cpp-dsp"
     options = {"shared": [True, False]}
     settings = "os", "compiler", "build_type", "arch"
     topics = ("dsp")
     url = "https://github.com/tnt-coders/cpp-dsp"
-    version = "0.0.2"
+    version = "1.0.0"
 
     def configure(self):
         tools.check_min_cppstd(self, "17")
