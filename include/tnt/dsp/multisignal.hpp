@@ -14,18 +14,27 @@ namespace tnt::dsp
 template <typename T>
 class multisignal final
 {
-    class signal_proxy;
 public:
+
+    /*!
+    \brief Constant iterator
+    */
+    using const_iterator = typename std::vector<std::vector<T>>::const_iterator;
+
+    /*!
+    \brief Iterator
+    */
+    using iterator = typename std::vector<std::vector<T>>::iterator;
 
     /*!
     \brief Size type
     */
-    using size_type = typename std::vector<signal<T>>::size_type;
+    using size_type = typename std::vector<std::vector<T>>::size_type;
 
     /*!
     \brief Value type
     */
-    using value_type = typename std::vector<signal<T>>::value_type;
+    using value_type = typename std::vector<std::vector<T>>::value_type;
 
     /*!
     \brief Constructor
@@ -33,30 +42,11 @@ public:
     */
     explicit multisignal(const std::initializer_list<signal<T>> signals)
         : m_sample_rate(0)
-        , m_size(0)
-        , m_channels(signals)
+        , m_data()
     {
         for (const auto& signal : signals)
         {
-            // Validate sample rate
-            if (m_sample_rate)
-            {
-                assert(signal.sample_rate() == m_sample_rate);
-            }
-            else
-            {
-                m_sample_rate = signal.sample_rate();
-            }
-
-            // Validate size
-            if (m_size)
-            {
-                assert(signal.size() == m_size);
-            }
-            else
-            {
-                m_size = signal.size();
-            }
+            this->add_channel(signal);
         }
     }
 
@@ -66,8 +56,7 @@ public:
     */
     explicit multisignal(const size_t sample_rate)
         : m_sample_rate(sample_rate)
-        , m_size(0)
-        , m_channels()
+        , m_data()
     {}
 
     /*
@@ -75,10 +64,9 @@ public:
     \param[in] sample_rate Sample rate
     \param[in] size Size
     */
-    explicit multisignal(const size_t sample_rate, const typename signal<T>::size_type& size)
+    explicit multisignal(const size_t sample_rate, const size_type& size)
         : m_sample_rate(sample_rate)
-        , m_size(size)
-        , m_channels()
+        , m_data(size)
     {}
 
     /*!
@@ -87,10 +75,9 @@ public:
     \param[in] size Size
     \param[in] channels Number of channels
     */
-    explicit multisignal(const size_t sample_rate, const typename signal<T>::size_type& size, const size_type& channels)
+    explicit multisignal(const size_t sample_rate, const size_type& size, const typename std::vector<T>::size_type& channels)
         : m_sample_rate(sample_rate)
-        , m_size(size)
-        , m_channels(channels, signal<T>{ sample_rate, size })
+        , m_data(size, std::vector<T>(channels))
     {}
 
     /*!
@@ -125,6 +112,24 @@ public:
     ~multisignal() = default;
 
     /*!
+    \brief Gets the specified channel
+    \param[in] channel Desired channel
+    \return Signal contained in the specified channel
+    */
+    signal<T> channel(const typename std::vector<T>::size_type& channel) const
+    {
+        assert(channel < this->channels());
+
+        signal<T> signal{ this->sample_rate(), this->size() };
+        for (size_type n = 0; n < this->size(); ++n)
+        {
+            signal[n] = m_data[n][channel];
+        }
+
+        return signal;
+    }
+
+    /*!
     \brief Gets the duration of the signal in seconds
     \return Duration
     */
@@ -143,23 +148,77 @@ public:
     }
 
     /*!
-    \brief Accesses the channel at the specified index
-    \return Constant reference to the requsted channel
+    \brief Accesses the samples at the specified index
+    \return Constant reference to the requested samples
     */
-    const signal<T>& operator[](const size_type& channel) const
+    const value_type& operator[](const size_type& index) const
     {
-        assert(channel < this->channels());
-        return m_channels[channel];
+        assert(index < this->size());
+        return m_data[index];
     }
 
     /*!
-    \brief Accesses the channel at the specified index
-    \return Proxy reference to the requested channel (The proxy prevents resizing)
+    \brief Accesses samples at the specified index
+    \return Reference to the requested samples
     */
-    signal_proxy operator[](const size_type& channel)
+    value_type& operator[](const size_type& index)
     {
-        assert(channel < this->channels());
-        return m_channels[channel];
+        assert(index < this->size());
+        return m_data[index];
+    }
+
+    /*!
+    \brief Gets an iterator to the beginning of the signal
+    \return Iterator to the first sample
+    */
+    iterator begin()
+    {
+        return m_data.begin();
+    }
+
+    /*!
+    \brief Gets a constant iterator to the beginning of the signal
+    \return Constant iterator to the first sample
+    */
+    const_iterator begin() const
+    {
+        return m_data.begin();
+    }
+
+    /*!
+    \brief Gets a constant iterator to the beginning of the signal
+    \return Constant iterator to the first sample
+    */
+    const_iterator cbegin() const
+    {
+        return m_data.cbegin();
+    }
+
+    /*!
+    \brief Gets an iterator to the end of the signal
+    \return Iterator to the sample *following* the last sample
+    */
+    iterator end()
+    {
+        return m_data.end();
+    }
+
+    /*!
+    \brief Gets a constant iterator to the end of the signal
+    \return Constant iterator to the sample *following* the last sample
+    */
+    const_iterator end() const
+    {
+        return m_data.end();
+    }
+
+    /*!
+    \brief Gets a constant iterator to the end of the signal
+    \return Constant iterator to the sample *following* the last sample
+    */
+    const_iterator cend() const
+    {
+        return m_data.cend();
     }
 
     /*!
@@ -169,9 +228,9 @@ public:
     void add_channel(const signal<T>& signal)
     {
         // Validate sample rate
-        if (m_sample_rate)
+        if (this->sample_rate())
         {
-            assert(signal.sample_rate() == m_sample_rate);
+            assert(signal.sample_rate() == this->sample_rate());
         }
         else
         {
@@ -179,25 +238,19 @@ public:
         }
 
         // Validate size
-        if (m_size)
+        if (this->size())
         {
-            assert(signal.size() == m_size);
+            assert(signal.size() == this->size());
         }
         else
         {
-            m_size = signal.size();
+            m_data.resize(signal.size());
         }
 
-        m_channels.push_back(signal);
-    }
-
-    /*!
-    \brief Gets the number of channels in the signal
-    \return Number of channels in the signal
-    */
-    size_type channels() const
-    {
-        return m_channels.size();
+        for (size_type n = 0; n < this->size(); ++n)
+        {
+            m_data[n].push_back(signal[n]);
+        }
     }
 
     /*!
@@ -206,7 +259,16 @@ public:
     */
     size_type size() const
     {
-        return m_size;
+        return m_data.size();
+    }
+
+    /*!
+    \brief Gets the number of channels in the signal
+    \return Number of channels in the signal
+    */
+    size_type channels() const
+    {
+        return m_data.size() == 0 ? 0 : m_data[0].size();
     }
 
     // Friend declaration for swap
@@ -215,35 +277,8 @@ public:
 
 private:
 
-    // Proxy class that provides a limited interface to the signal class
-    // We don't want to allow users to modify the size of a signal contained within a multi-signal.
-    class signal_proxy final
-    {
-    public:
-        using const_iterator = typename signal<T>::const_iterator;
-        using iterator = typename signal<T>::iterator;
-        using size_type = typename signal<T>::size_type;
-        using value_type = typename signal<T>::value_type;
-        signal_proxy(signal<T>& signal) : m_signal(signal) {}
-        operator signal<T>() { return m_signal; }
-        double duration() const { return m_signal.duration(); }
-        size_t sample_rate() const { return m_signal.sample_rate(); }
-        iterator begin() { return m_signal.begin(); }
-        const_iterator begin() const { return m_signal.begin(); }
-        const_iterator cbegin() const { return m_signal.cbegin(); }
-        iterator end() { return m_signal.end(); }
-        const_iterator end() const { return m_signal.end(); }
-        const_iterator cend() const { return m_signal.cend(); }
-        size_type size() const { return m_signal.size(); }
-        const value_type& operator[](const size_type index) const { return m_signal[index]; }
-        typename value_type& operator[](const size_type index) { return m_signal[index]; }
-    private:
-        signal<T>& m_signal;
-    };
-
     size_t m_sample_rate;
-    size_type m_size;
-    std::vector<signal<T>> m_channels;
+    std::vector<std::vector<T>> m_data;
 };
 
 /*!
@@ -255,8 +290,8 @@ template<typename T>
 void swap(multisignal<T>& signal1, multisignal<T>& signal2)
 {
     using std::swap;
-    swap(signal1.m_channels, signal2.m_channels);
+    swap(signal1.m_sample_rate, signal2.m_sample_rate);
+    swap(signal1.m_data, signal2.m_data);
 }
-
 
 } /* namespace tnt::dsp */

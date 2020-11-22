@@ -53,8 +53,8 @@ public:
     \param[in] size Size
     */
     explicit signal(const size_t sample_rate, const size_type& size)
-        : m_data(size)
-        , m_sample_rate(sample_rate)
+        : m_sample_rate(sample_rate)
+        , m_data(size)
     {}
 
     /*!
@@ -64,8 +64,8 @@ public:
     */
     template <typename U>
     signal(const signal<U>& real, const signal<U>& imaginary)
-        : m_data(real.size())
-        , m_sample_rate(real.sample_rate())
+        : m_sample_rate(real.sample_rate())
+        , m_data(real.size())
     {
         assert(real.sample_rate() == imaginary.sample_rate());
         assert(real.size() == imaginary.size());
@@ -253,8 +253,8 @@ public:
     friend void swap(signal<U>& signal1, signal<U>& signal2);
 
 private:
-    std::vector<T> m_data;
     size_t m_sample_rate;
+    std::vector<T> m_data;
 };
 
 /*!
@@ -266,8 +266,8 @@ template<typename T>
 void swap(signal<T>& signal1, signal<T>& signal2)
 {
     using std::swap;
-    swap(signal1.m_data, signal2.m_data);
     swap(signal1.m_sample_rate, signal2.m_sample_rate);
+    swap(signal1.m_data, signal2.m_data);
 }
 
 /*

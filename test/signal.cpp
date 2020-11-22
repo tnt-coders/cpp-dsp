@@ -179,13 +179,13 @@ TEMPLATE_TEST_CASE("signal iterators", "[signal][iterators]", double, float)
         const auto x = g.cosine(100);
 
         // Iterate through x, and also capture a copy of x to compare to
-        std::for_each(x.begin(), x.end(), [x, i=0](const auto& sample) mutable {
-            CHECK(sample == approx(x[i++]));
+        std::for_each(x.begin(), x.end(), [x, n=0](const auto& sample) mutable {
+            CHECK(sample == approx(x[n++]));
         });
 
         // Iterate through x, and also capture a copy of x to compare to
-        std::for_each(x.cbegin(), x.cend(), [x, i = 0](const auto& sample) mutable {
-            CHECK(sample == approx(x[i++]));
+        std::for_each(x.cbegin(), x.cend(), [x, n = 0](const auto& sample) mutable {
+            CHECK(sample == approx(x[n++]));
         });
     }
 
