@@ -38,7 +38,7 @@ T magnitude(const std::complex<T>& sample)
 template <typename T>
 signal<T> magnitude(const signal<T>& x)
 {
-    signal<T> x_magnitude{ x.sample_rate(), x.size() };
+    signal<T> x_magnitude(x.sample_rate(), x.size());
     std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
         return magnitude(sample);
     });
@@ -54,7 +54,7 @@ signal<T> magnitude(const signal<T>& x)
 template <typename T>
 signal<T> magnitude(const signal<std::complex<T>>& x)
 {
-    signal<T> x_magnitude{ x.sample_rate(), x.size() };
+    signal<T> x_magnitude(x.sample_rate(), x.size());
     std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
         return magnitude(sample);
     });
@@ -128,7 +128,7 @@ T phase(const std::complex<T>& sample)
 template <typename T>
 signal<T> phase(const signal<T>& x)
 {
-    signal<T> x_phase{ x.sample_rate(), x.size() };
+    signal<T> x_phase(x.sample_rate(), x.size());
     std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
         return phase(sample);
     });
@@ -144,7 +144,7 @@ signal<T> phase(const signal<T>& x)
 template <typename T>
 signal<T> phase(const signal<std::complex<T>>& x)
 {
-    signal<T> x_phase{ x.sample_rate(), x.size() };
+    signal<T> x_phase(x.sample_rate(), x.size());
     std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
         return phase(sample);
     });
@@ -182,7 +182,7 @@ T power(const std::complex<T>& sample)
 template <typename T>
 signal<T> power(const signal<T>& x)
 {
-    signal<T> x_power{ x.sample_rate(), x.size() };
+    signal<T> x_power(x.sample_rate(), x.size());
     std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
         return power(sample);
     });
@@ -198,7 +198,7 @@ signal<T> power(const signal<T>& x)
 template <typename T>
 signal<T> power(const signal<std::complex<T>>& x)
 {
-    signal<T> x_power{ x.sample_rate(), x.size() };
+    signal<T> x_power(x.sample_rate(), x.size());
     std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
         return power(sample);
     });

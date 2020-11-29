@@ -10,11 +10,11 @@ using namespace tnt;
 
 TEMPLATE_TEST_CASE("multisignal construction", "[multisignal][construction]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 1000, 10 };
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     SECTION("Construct a real signal given the sample rate")
     {
-        const dsp::multisignal<TestType> x{ 1000 };
+        const dsp::multisignal<TestType> x(1000);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 0);
@@ -22,7 +22,7 @@ TEMPLATE_TEST_CASE("multisignal construction", "[multisignal][construction]", do
 
     SECTION("Construct a complex signal given the sample rate")
     {
-        const dsp::multisignal<std::complex<TestType>> x{ 1000 };
+        const dsp::multisignal<std::complex<TestType>> x(1000);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 0);
@@ -30,7 +30,7 @@ TEMPLATE_TEST_CASE("multisignal construction", "[multisignal][construction]", do
 
     SECTION("Construct a real signal given the sample rate and size")
     {
-        const dsp::multisignal<TestType> x{ 1000, 10 };
+        const dsp::multisignal<TestType> x(1000, 10);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 10);
@@ -38,7 +38,7 @@ TEMPLATE_TEST_CASE("multisignal construction", "[multisignal][construction]", do
 
     SECTION("Construct a complex signal given the sample rate and size")
     {
-        const dsp::multisignal<std::complex<TestType>> x{ 1000, 10 };
+        const dsp::multisignal<std::complex<TestType>> x(1000, 10);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 10);
@@ -46,7 +46,7 @@ TEMPLATE_TEST_CASE("multisignal construction", "[multisignal][construction]", do
 
     SECTION("Construct a real signal given the sample rate, size, and number of channels")
     {
-        const dsp::multisignal<TestType> x{ 1000, 10, 2 };
+        const dsp::multisignal<TestType> x(1000, 10, 2);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 10);
@@ -55,7 +55,7 @@ TEMPLATE_TEST_CASE("multisignal construction", "[multisignal][construction]", do
 
     SECTION("Construct a complex signal given the sample rate, size, and number of channels")
     {
-        const dsp::multisignal<std::complex<TestType>> x{ 1000, 10, 2 };
+        const dsp::multisignal<std::complex<TestType>> x(1000, 10, 2);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 10);
@@ -93,7 +93,7 @@ TEMPLATE_TEST_CASE("multisignal construction", "[multisignal][construction]", do
             g.sine(100),
         };
 
-        const dsp::multisignal<TestType> x2{ x1 };
+        const dsp::multisignal<TestType> x2(x1);
 
         CHECK(x2.sample_rate() == x1.sample_rate());
         REQUIRE(x2.size() == x1.size());
@@ -116,7 +116,7 @@ TEMPLATE_TEST_CASE("multisignal construction", "[multisignal][construction]", do
         };
 
         const auto x1_copy = x1;
-        const dsp::multisignal<TestType> x2{ std::move(x1) };
+        const dsp::multisignal<TestType> x2(std::move(x1));
 
         CHECK(x2.sample_rate() == x1_copy.sample_rate());
         REQUIRE(x2.size() == x1_copy.size());
@@ -134,7 +134,7 @@ TEMPLATE_TEST_CASE("multisignal construction", "[multisignal][construction]", do
 
 TEMPLATE_TEST_CASE("multisignal assignment", "[multisignal][assignment]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 1000, 10 };
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     SECTION("Copy assignment")
     {
@@ -184,7 +184,7 @@ TEMPLATE_TEST_CASE("multisignal assignment", "[multisignal][assignment]", double
 
 TEMPLATE_TEST_CASE("multisignal accessors", "[multisignal][accessors]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 1000, 10 };
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     SECTION("channel")
     {
@@ -214,14 +214,14 @@ TEMPLATE_TEST_CASE("multisignal accessors", "[multisignal][accessors]", double, 
 
     SECTION("duration")
     {
-        const dsp::multisignal<TestType> x{ 1000, 2500 };
+        const dsp::multisignal<TestType> x(1000, 2500);
 
         CHECK(x.duration() == approx(2.5));
     }
 
     SECTION("sample_rate")
     {
-        const dsp::multisignal<TestType> x{ 1000 };
+        const dsp::multisignal<TestType> x(1000);
 
         CHECK(x.sample_rate() == 1000);
     }
@@ -229,7 +229,7 @@ TEMPLATE_TEST_CASE("multisignal accessors", "[multisignal][accessors]", double, 
 
 TEMPLATE_TEST_CASE("multisignal data access", "[multisignal][data access]", double, float)
 {
-     const dsp::signal_generator<TestType> g{ 1000, 10 };
+     const dsp::signal_generator<TestType> g(1000, 10);
      const auto c0 = g.cosine(100);
      const auto c1 = g.sine(100);
 
@@ -275,7 +275,7 @@ TEMPLATE_TEST_CASE("multisignal data access", "[multisignal][data access]", doub
 
 TEMPLATE_TEST_CASE("miltisignal iterators", "[multisignal][iterators]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 1000, 10 };
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     SECTION("Constant iterators")
     {
@@ -334,14 +334,14 @@ TEMPLATE_TEST_CASE("multisignal capacity", "[multisignal][capacity]", double, fl
 {
     SECTION("size")
     {
-        const dsp::multisignal<TestType> x{ 1000, 10 };
+        const dsp::multisignal<TestType> x(1000, 10);
 
         CHECK(x.size() == 10);
     }
 
     SECTION("channels")
     {
-        const dsp::multisignal<TestType> x{ 1000, 10, 2 };
+        const dsp::multisignal<TestType> x(1000, 10, 2);
 
         CHECK(x.channels() == 2);
     }
@@ -349,11 +349,11 @@ TEMPLATE_TEST_CASE("multisignal capacity", "[multisignal][capacity]", double, fl
 
 TEMPLATE_TEST_CASE("multisignal modifiers", "[multisignal][modifiers]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 1000, 10 };
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     SECTION("add_channel")
     {
-        dsp::multisignal<TestType> x{ g.sample_rate(), g.size() };
+        dsp::multisignal<TestType> x(g.sample_rate(), g.size());
         x.add_channel(g.cosine(100));
         const auto data = g.cosine(100);
 

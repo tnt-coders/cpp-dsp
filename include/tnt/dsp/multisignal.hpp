@@ -120,7 +120,7 @@ public:
     {
         assert(channel < this->channels());
 
-        signal<T> signal{ this->sample_rate(), this->size() };
+        signal<T> signal(this->sample_rate(), this->size());
         for (size_type n = 0; n < this->size(); ++n)
         {
             signal[n] = m_data[n][channel];

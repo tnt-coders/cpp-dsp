@@ -10,7 +10,7 @@ using namespace tnt;
 
 TEMPLATE_TEST_CASE("magnitude", "[magnitude]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 4000, 4 };
+    const dsp::signal_generator<TestType> g(4000, 4);
 
     SECTION("Magnitude of a real sample")
     {
@@ -20,10 +20,10 @@ TEMPLATE_TEST_CASE("magnitude", "[magnitude]", double, float)
 
     SECTION("Magnitude of a complex sample")
     {
-        CHECK(dsp::magnitude(std::complex<TestType>{ 3, 4 }) == approx(5));
-        CHECK(dsp::magnitude(std::complex<TestType>{ -3, 4 }) == approx(5));
-        CHECK(dsp::magnitude(std::complex<TestType>{ 3, -4 }) == approx(5));
-        CHECK(dsp::magnitude(std::complex<TestType>{ -3, -4 }) == approx(5));
+        CHECK(dsp::magnitude(std::complex<TestType>(3, 4)) == approx(5));
+        CHECK(dsp::magnitude(std::complex<TestType>(-3, 4)) == approx(5));
+        CHECK(dsp::magnitude(std::complex<TestType>(3, -4)) == approx(5));
+        CHECK(dsp::magnitude(std::complex<TestType>(-3, -4)) == approx(5));
     }
 
     SECTION("Magnitude of a real signal")
@@ -51,7 +51,7 @@ TEMPLATE_TEST_CASE("magnitude", "[magnitude]", double, float)
 
 TEMPLATE_TEST_CASE("phase", "[phase]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 4000, 4 };
+    const dsp::signal_generator<TestType> g(4000, 4);
 
     SECTION("Phase of a real sample")
     {
@@ -61,10 +61,10 @@ TEMPLATE_TEST_CASE("phase", "[phase]", double, float)
 
     SECTION("Phase of a complex sample")
     {
-        CHECK(dsp::phase(std::complex<TestType>{ 1, 1 }) == approx(M_PI / 4));
-        CHECK(dsp::phase(std::complex<TestType>{ -1, 1 }) == approx(3 * M_PI / 4));
-        CHECK(dsp::phase(std::complex<TestType>{ 1, -1 }) == approx(-M_PI / 4));
-        CHECK(dsp::phase(std::complex<TestType>{ -1, -1 }) == approx(-3 * M_PI / 4));
+        CHECK(dsp::phase(std::complex<TestType>(1, 1)) == approx(M_PI / 4));
+        CHECK(dsp::phase(std::complex<TestType>(-1, 1)) == approx(3 * M_PI / 4));
+        CHECK(dsp::phase(std::complex<TestType>(1, -1)) == approx(-M_PI / 4));
+        CHECK(dsp::phase(std::complex<TestType>(-1, -1)) == approx(-3 * M_PI / 4));
     }
 
     SECTION("Phase of a real signal")
@@ -92,7 +92,7 @@ TEMPLATE_TEST_CASE("phase", "[phase]", double, float)
 
 TEMPLATE_TEST_CASE("power", "[power]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 4000, 4 };
+    const dsp::signal_generator<TestType> g(4000, 4);
 
     SECTION("Power of a real sample")
     {
@@ -104,10 +104,10 @@ TEMPLATE_TEST_CASE("power", "[power]", double, float)
 
     SECTION("Power of a complex sample")
     {
-        CHECK(dsp::power(std::complex<TestType>{ 3, 4 }) == approx(25));
-        CHECK(dsp::power(std::complex<TestType>{ -3, 4 }) == approx(25));
-        CHECK(dsp::power(std::complex<TestType>{ 3, -4 }) == approx(25));
-        CHECK(dsp::power(std::complex<TestType>{ -3, -4 }) == approx(25));
+        CHECK(dsp::power(std::complex<TestType>(3, 4)) == approx(25));
+        CHECK(dsp::power(std::complex<TestType>(-3, 4)) == approx(25));
+        CHECK(dsp::power(std::complex<TestType>(3, -4)) == approx(25));
+        CHECK(dsp::power(std::complex<TestType>(-3, -4)) == approx(25));
     }
 
     SECTION("Power of a real signal")

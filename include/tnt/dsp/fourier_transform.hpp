@@ -26,9 +26,9 @@ signal<std::complex<T>> fourier_transform(const signal<T>& x)
     // If N is odd, just perform the complex FFT
     if (!impl::is_even(N))
     {
-        signal<std::complex<T>> x_p{ f_s, N };
+        signal<std::complex<T>> x_p(f_s, N);
         std::transform(x.begin(), x.end(), x_p.begin(), [](const auto& sample) {
-            return std::complex<T>{ sample };
+            return std::complex<T>(sample);
         });
 
         return fourier_transform(x_p);
@@ -39,13 +39,13 @@ signal<std::complex<T>> fourier_transform(const signal<T>& x)
     // Taking advantage of symmetry the FFT of a real signal can be computed
     // using a single N/2-point complex FFT. Split the input signal into its
     // even and odd components and load the data into a single complex vector.
-    signal<std::complex<T>> x_p{ f_s, N_over_2 };
+    signal<std::complex<T>> x_p(f_s, N_over_2);
     for (size_t n = 0; n < N_over_2; ++n)
     {
         const auto n_times_2 = n * 2;
 
         // x_p[n] = x[2n] + jx[2n + 1]
-        x_p[n] = std::complex<T>{ x[n_times_2], x[n_times_2 + 1] };
+        x_p[n] = std::complex<T>(x[n_times_2], x[n_times_2 + 1]);
     }
 
     // Perform the complex FFT
@@ -58,7 +58,7 @@ signal<std::complex<T>> fourier_transform(const signal<T>& x)
     X_p.push_back(X_p[0]);
 
     // Extract the real FFT from the output of the complex FFT
-    signal<std::complex<T>> X{ f_s, N };
+    signal<std::complex<T>> X(f_s, N);
     for (size_t m = 0; m < N_over_2; ++m)
     {
         const auto N_over_2_minus_m = N_over_2 - m;
@@ -76,10 +76,10 @@ signal<std::complex<T>> fourier_transform(const signal<T>& x)
         const auto a = std::cos(static_cast<T>(M_PI) * m / N_over_2);
         const auto b = std::sin(static_cast<T>(M_PI) * m / N_over_2);
 
-        X[m] = std::complex<T>{
+        X[m] = std::complex<T>(
             X_r.first + a * X_i.first - b * X_r.second,
             X_i.second - b * X_i.first - a * X_r.second
-        };
+        );
     }
 
     // X[m] = X*[N-m] where 1 <= m <= N/2 - 1
@@ -120,14 +120,14 @@ signal<std::complex<T>> inverse_fourier_transform(const signal<std::complex<T>>&
     const auto f_s = X.sample_rate();
     const auto N = X.size();
 
-    signal<std::complex<T>> X_p{ f_s, N };
+    signal<std::complex<T>> X_p(f_s, N);
     std::transform(X.begin(), X.end(), X_p.begin(), [](const auto& sample) {
         return std::conj(sample);
     });
 
     const auto x_p = fourier_transform(X_p);
 
-    signal<std::complex<T>> x{ f_s, N };
+    signal<std::complex<T>> x(f_s, N);
     std::transform(x_p.begin(), x_p.end(), x.begin(), [=](const auto& sample) {
         return std::conj(sample) / static_cast<T>(N);
     });

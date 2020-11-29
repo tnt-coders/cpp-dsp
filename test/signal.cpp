@@ -9,11 +9,11 @@ using namespace tnt;
 
 TEMPLATE_TEST_CASE("signal construction", "[signal][construction]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 1000, 10 };
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     SECTION("Construct a real signal given the sample rate")
     {
-        const dsp::signal<TestType> x{ 1000 };
+        const dsp::signal<TestType> x(1000);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 0);
@@ -21,7 +21,7 @@ TEMPLATE_TEST_CASE("signal construction", "[signal][construction]", double, floa
 
     SECTION("Construct a complex signal given the sample rate")
     {
-        const dsp::signal<std::complex<TestType>> x{ 1000 };
+        const dsp::signal<std::complex<TestType>> x(1000);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 0);
@@ -29,7 +29,7 @@ TEMPLATE_TEST_CASE("signal construction", "[signal][construction]", double, floa
 
     SECTION("Construct a real signal given the sample rate and size")
     {
-        const dsp::signal<TestType> x{ 1000, 10 };
+        const dsp::signal<TestType> x(1000, 10);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 10);
@@ -37,7 +37,7 @@ TEMPLATE_TEST_CASE("signal construction", "[signal][construction]", double, floa
 
     SECTION("Construct a complex signal given the sample rate and size")
     {
-        const dsp::signal<std::complex<TestType>> x{ 1000, 10 };
+        const dsp::signal<std::complex<TestType>> x(1000, 10);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 10);
@@ -47,7 +47,7 @@ TEMPLATE_TEST_CASE("signal construction", "[signal][construction]", double, floa
     {
         const auto x1_real = g.cosine(100);
         const auto x1_imag = g.sine(100);
-        const dsp::signal<std::complex<TestType>> x2{ x1_real, x1_imag };
+        const dsp::signal<std::complex<TestType>> x2(x1_real, x1_imag);
 
         CHECK(x2.sample_rate() == x1_real.sample_rate());
         CHECK(x2.sample_rate() == x1_imag.sample_rate());
@@ -64,7 +64,7 @@ TEMPLATE_TEST_CASE("signal construction", "[signal][construction]", double, floa
     SECTION("Copy constructor")
     {
         const auto x1 = g.cosine(100);
-        const dsp::signal<TestType> x2{ x1 };
+        const dsp::signal<TestType> x2(x1);
         
         CHECK(x2.sample_rate() == x1.sample_rate());
         REQUIRE(x2.size() == x1.size());
@@ -79,7 +79,7 @@ TEMPLATE_TEST_CASE("signal construction", "[signal][construction]", double, floa
     {
         auto x1 = g.cosine(100);
         const auto x1_copy = x1;
-        const dsp::signal<TestType> x2{ std::move(x1) };
+        const dsp::signal<TestType> x2(std::move(x1));
 
         CHECK(x2.sample_rate() == x1_copy.sample_rate());
         REQUIRE(x2.size() == x1_copy.size());
@@ -93,7 +93,7 @@ TEMPLATE_TEST_CASE("signal construction", "[signal][construction]", double, floa
 
 TEMPLATE_TEST_CASE("signal assignment", "[signal][assignment]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 1000, 10 };
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     SECTION("Copy assignment")
     {
@@ -129,20 +129,20 @@ TEMPLATE_TEST_CASE("signal accessors", "[signal][accessors]", double, float)
 {
     SECTION("duration")
     {
-        const dsp::signal<TestType> x{ 1000, 2500 };
+        const dsp::signal<TestType> x(1000, 2500);
         CHECK(x.duration() == approx(2.5));
     }
 
     SECTION("sample_rate")
     {
-        const dsp::signal<TestType> x{ 1000 };
+        const dsp::signal<TestType> x(1000);
         CHECK(x.sample_rate() == 1000);
     }
 }
 
 TEMPLATE_TEST_CASE("signal data access", "[signal][data access]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 1000, 10 };
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     SECTION("Constant data access")
     {
@@ -172,7 +172,7 @@ TEMPLATE_TEST_CASE("signal data access", "[signal][data access]", double, float)
 
 TEMPLATE_TEST_CASE("signal iterators", "[signal][iterators]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 1000, 10 };
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     SECTION("Constant iterators")
     {
@@ -207,7 +207,7 @@ TEMPLATE_TEST_CASE("signal capacity", "[signal][capacity]", double, float)
 {
     SECTION("capacity and reserve")
     {
-        dsp::signal<TestType> x{ 1000 };
+        dsp::signal<TestType> x(1000);
         x.reserve(100);
 
         CHECK(x.capacity() == 100);
@@ -220,7 +220,7 @@ TEMPLATE_TEST_CASE("signal capacity", "[signal][capacity]", double, float)
 
     SECTION("size and resize")
     {
-        dsp::signal<TestType> x{ 1000, 10 };
+        dsp::signal<TestType> x(1000, 10);
 
         CHECK(x.size() == 10);
 
@@ -239,11 +239,11 @@ TEMPLATE_TEST_CASE("signal capacity", "[signal][capacity]", double, float)
 
 TEMPLATE_TEST_CASE("signal modifiers", "[signal][modifiers]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 1000, 10 };
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     SECTION("push_back")
     {
-        dsp::signal<TestType> x{ 1000 };
+        dsp::signal<TestType> x(1000);
         x.push_back(1);
         x.push_back(2);
         x.push_back(3);
@@ -275,7 +275,7 @@ TEMPLATE_TEST_CASE("signal modifiers", "[signal][modifiers]", double, float)
 
 TEMPLATE_TEST_CASE("complex_signal", "[complex_signal]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 1000, 10 };
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     const auto x1_real = g.cosine(100);
     const auto x1_imag = g.sine(100);

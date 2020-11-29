@@ -53,7 +53,7 @@ public:
     */
     signal<T> cosine(T frequency, T amplitude = 1, T phase_shift = 0, T vertical_shift = 0) const
     {
-        signal<T> signal{ m_sample_rate, m_size };
+        signal<T> signal(m_sample_rate, m_size);
         for (size_t n = 0; n < signal.size(); ++n)
         {
             signal[n] = amplitude * std::cos(2 * static_cast<T>(M_PI) * frequency * n * m_sample_interval + phase_shift) + vertical_shift;
@@ -71,7 +71,7 @@ public:
     */
     signal<T> sine(T frequency, T amplitude = 1, T phase_shift = 0, T vertical_shift = 0) const
     {
-        signal<T> signal{ m_sample_rate, m_size };
+        signal<T> signal(m_sample_rate, m_size);
         for (size_t n = 0; n < signal.size(); ++n)
         {
             signal[n] = amplitude * std::sin(2 * static_cast<T>(M_PI) * frequency * n * m_sample_interval + phase_shift) + vertical_shift;

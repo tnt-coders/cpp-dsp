@@ -7,7 +7,7 @@ using namespace tnt;
 
 TEMPLATE_TEST_CASE("signal_generator construction", "[signal_generator][construction]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 1000, 10 };
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     CHECK(g.sample_rate() == 1000);
     CHECK(g.size() == 10);
@@ -15,7 +15,7 @@ TEMPLATE_TEST_CASE("signal_generator construction", "[signal_generator][construc
 
 TEMPLATE_TEST_CASE("signal_generator accessors", "[signal_generator][accessors]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 1000, 10 };
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     SECTION("sample_rate")
     {
@@ -39,14 +39,14 @@ TEMPLATE_TEST_CASE("signal_generator::cosine", "[signal_generator][cosine]", dou
     const TestType phase_shift = static_cast<TestType>(M_PI) / 2;
     const TestType vertical_shift = 2;
 
-    dsp::signal<TestType> cosine{ f_s, N };
+    dsp::signal<TestType> cosine(f_s, N);
 
     for (size_t n = 0; n < N; ++n)
     {
         cosine[n] = amplitude * std::cos(2 * static_cast<TestType>(M_PI) * frequency * n * t_s + phase_shift) + vertical_shift;
     }
 
-    const dsp::signal_generator<TestType> g{ f_s, N };
+    const dsp::signal_generator<TestType> g(f_s, N);
     const auto x = g.cosine(frequency, amplitude, phase_shift, vertical_shift);
 
     REQUIRE(x.size() == cosine.size());
@@ -69,14 +69,14 @@ TEMPLATE_TEST_CASE("signal_generator::sine", "[signal_generator][sine]", double,
     const TestType phase_shift = static_cast<TestType>(M_PI) / 2;
     const TestType vertical_shift = 2;
 
-    dsp::signal<TestType> sine{ f_s, N };
+    dsp::signal<TestType> sine(f_s, N);
 
     for (size_t n = 0; n < N; ++n)
     {
         sine[n] = amplitude * std::sin(2 * static_cast<TestType>(M_PI) * frequency * n * t_s + phase_shift) + vertical_shift;
     }
 
-    const dsp::signal_generator<TestType> g{ f_s, N };
+    const dsp::signal_generator<TestType> g(f_s, N);
     const auto x = g.sine(frequency, amplitude, phase_shift, vertical_shift);
 
     REQUIRE(x.size() == sine.size());

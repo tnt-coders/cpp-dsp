@@ -8,7 +8,7 @@ using namespace tnt;
 
 TEMPLATE_TEST_CASE("convolve", "[convolve]", double, float)
 {
-    const dsp::signal_generator<TestType> g{ 4000, 4 };
+    const dsp::signal_generator<TestType> g(4000, 4);
 
     SECTION("Convolve a real signal with a real signal")
     {

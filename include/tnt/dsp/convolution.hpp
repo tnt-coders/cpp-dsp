@@ -29,14 +29,14 @@ signal<T> convolve(const signal<T>& a, const signal<T>& b)
 
     // The convolution theorem states that multiplication in the frequency
     // domain is equivalent to convolution in the time domain
-    signal<std::complex<T>> C{ f_s, N };
+    signal<std::complex<T>> C(f_s, N);
     std::transform(A.begin(), A.end(), B.begin(), C.begin(), std::multiplies<std::complex<T>>());
 
     const auto c = inverse_fourier_transform(C);
 
     // Strip off the complex portion of the result since we are dealing
     // with only real input signals
-    signal<T> x{ f_s, N };
+    signal<T> x(f_s, N);
     std::transform(c.begin(), c.end(), x.begin(), [](const auto& sample) {
         return sample.real();
     });
@@ -59,7 +59,7 @@ signal<std::complex<T>> convolve(const signal<T>& a, const signal<std::complex<T
     const auto N = a.size();
 
     // Convert "a" into a complex signal
-    signal<std::complex<T>> a_p{ f_s, N };
+    signal<std::complex<T>> a_p(f_s, N);
     std::transform(a.begin(), a.end(), a_p.begin(), [](const auto& sample) {
         return std::complex<T>(sample);
     });
@@ -82,9 +82,9 @@ signal<std::complex<T>> convolve(const signal<std::complex<T>>& a, const signal<
     const auto N = a.size();
 
     // Convert "b" into a complex signal
-    signal<std::complex<T>> b_p{ f_s, N };
+    signal<std::complex<T>> b_p(f_s, N);
     std::transform(b.begin(), b.end(), b_p.begin(), [](const auto& sample) {
-        return std::complex<T>{ sample };
+        return std::complex<T>(sample);
     });
 
     return convolve(a, b_p);
