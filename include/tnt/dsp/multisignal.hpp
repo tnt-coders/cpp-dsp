@@ -9,7 +9,7 @@ namespace tnt::dsp
 {
 
 /*!
-\brief Represents a Multi-channel DSP signal to store and process sampled data
+\brief Represents a multi-channel DSP signal to store and process sampled data
 */
 template <typename T>
 class multisignal final
@@ -41,8 +41,8 @@ public:
     \param[in] signals One or more single channel signals
     */
     explicit multisignal(const std::initializer_list<signal<T>> signals)
-        : m_sample_rate(0)
-        , m_data()
+        : m_sample_rate{}
+        , m_data{}
     {
         for (const auto& signal : signals)
         {
@@ -56,7 +56,7 @@ public:
     */
     explicit multisignal(const size_t sample_rate)
         : m_sample_rate(sample_rate)
-        , m_data()
+        , m_data{}
     {}
 
     /*
