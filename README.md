@@ -1,6 +1,6 @@
 # Overview
 
-cpp-dsp is an open source, cross platform, C++ Implementation of common digital
+cpp-dsp is an open source, cross platform, C++ implementation of common digital
 signal processing algorithms.
 
 ## Documentation
@@ -23,7 +23,7 @@ cpp-dsp can be built as a standalone CMake project.
     cmake -H. -Bbuild
     cmake --build build
 
-To test the project, run CTest from the build/test directory.
+To test the project, run CTest from the build directory.
 
     cd build
     ctest
