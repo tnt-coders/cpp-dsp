@@ -6,20 +6,20 @@
 
 using namespace tnt;
 
-TEMPLATE_TEST_CASE("signal_generator construction",
-                   "[signal_generator][construction]",
+TEMPLATE_TEST_CASE("SignalGenerator construction",
+                   "[SignalGenerator][construction]",
                    double,
                    float)
 {
-    const auto g = dsp::signal_generator<TestType>(1000, 10);
+    const auto g = dsp::SignalGenerator<TestType>(1000, 10);
 
     CHECK(g.sample_rate() == 1000);
     CHECK(g.size() == 10);
 }
 
-TEMPLATE_TEST_CASE("signal_generator accessors", "[signal_generator][accessors]", double, float)
+TEMPLATE_TEST_CASE("SignalGenerator accessors", "[SignalGenerator][accessors]", double, float)
 {
-    const auto g = dsp::signal_generator<TestType>(1000, 10);
+    const auto g = dsp::SignalGenerator<TestType>(1000, 10);
 
     SECTION("sample_rate")
     {
@@ -32,7 +32,7 @@ TEMPLATE_TEST_CASE("signal_generator accessors", "[signal_generator][accessors]"
     }
 }
 
-TEMPLATE_TEST_CASE("signal_generator::cosine", "[signal_generator][cosine]", double, float)
+TEMPLATE_TEST_CASE("SignalGenerator::cosine", "[SignalGenerator][cosine]", double, float)
 {
     const size_t f_s = 1000;
     const size_t N   = 10;
@@ -43,7 +43,7 @@ TEMPLATE_TEST_CASE("signal_generator::cosine", "[signal_generator][cosine]", dou
     const TestType phase_shift    = static_cast<TestType>(M_PI) / 2;
     const TestType vertical_shift = 2;
 
-    auto cosine = dsp::signal<TestType>(f_s, N);
+    auto cosine = dsp::Signal<TestType>(f_s, N);
 
     for (size_t n = 0; n < N; ++n)
     {
@@ -53,7 +53,7 @@ TEMPLATE_TEST_CASE("signal_generator::cosine", "[signal_generator][cosine]", dou
                   + vertical_shift;
     }
 
-    const auto dsp::signal_generator<TestType>(f_s, N);
+    const auto g = dsp::SignalGenerator<TestType>(f_s, N);
     const auto x = g.cosine(frequency, amplitude, phase_shift, vertical_shift);
 
     REQUIRE(x.size() == cosine.size());
@@ -65,7 +65,7 @@ TEMPLATE_TEST_CASE("signal_generator::cosine", "[signal_generator][cosine]", dou
     }
 }
 
-TEMPLATE_TEST_CASE("signal_generator::sine", "[signal_generator][sine]", double, float)
+TEMPLATE_TEST_CASE("SignalGenerator::sine", "[SignalGenerator][sine]", double, float)
 {
     const size_t f_s = 1000;
     const size_t N   = 10;
@@ -76,7 +76,7 @@ TEMPLATE_TEST_CASE("signal_generator::sine", "[signal_generator][sine]", double,
     const TestType phase_shift    = static_cast<TestType>(M_PI) / 2;
     const TestType vertical_shift = 2;
 
-    auto sine = dsp::signal<TestType>(f_s, N);
+    auto sine = dsp::Signal<TestType>(f_s, N);
 
     for (size_t n = 0; n < N; ++n)
     {
@@ -85,7 +85,7 @@ TEMPLATE_TEST_CASE("signal_generator::sine", "[signal_generator][sine]", double,
                 + vertical_shift;
     }
 
-    const auto g = dsp::signal_generator<TestType>(f_s, N);
+    const auto g = dsp::SignalGenerator<TestType>(f_s, N);
     const auto x = g.sine(frequency, amplitude, phase_shift, vertical_shift);
 
     REQUIRE(x.size() == sine.size());

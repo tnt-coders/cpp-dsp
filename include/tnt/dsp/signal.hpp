@@ -15,7 +15,7 @@ namespace tnt::dsp
 \brief Represents a DSP signal to store and process sampled data
 */
 template <typename T>
-class signal final
+class Signal final
 {
 public:
     /*!
@@ -42,7 +42,7 @@ public:
     \brief Constructor
     \param[in] sample_rate Sample rate
     */
-    explicit signal(const size_t sample_rate)
+    explicit Signal(const size_t sample_rate)
         : m_sample_rate(sample_rate)
     {}
 
@@ -51,7 +51,7 @@ public:
     \param[in] sample_rate Sample rate
     \param[in] size Size
     */
-    explicit signal(const size_t sample_rate, const size_type& size)
+    explicit Signal(const size_t sample_rate, const size_type& size)
         : m_sample_rate(sample_rate)
         , m_data(size)
     {}
@@ -62,7 +62,7 @@ public:
     \param[in] imaginary Signal containing the imaginary samples
     */
     template <typename U>
-    signal(const signal<U>& real, const signal<U>& imaginary)
+    Signal(const Signal<U>& real, const Signal<U>& imaginary)
         : m_sample_rate(real.sample_rate())
         , m_data(real.size())
     {
@@ -79,32 +79,32 @@ public:
     \brief Copy constructor
     \param[in] signal Signal
     */
-    signal(const signal<T>& signal) = default;
+    Signal(const Signal<T>& signal) = default;
 
     /*!
     \brief Move constructor
     \param[in] signal Signal
     */
-    signal(signal<T>&& signal) = default;
+    Signal(Signal<T>&& signal) = default;
 
     /*!
     \brief Copy assignment operator
     \param[in] signal Signal to assign from
     \return Signal equal to the input
     */
-    signal<T>& operator=(const signal<T>& signal) = default;
+    Signal<T>& operator=(const Signal<T>& signal) = default;
 
     /*!
     \brief Move assignment operator
     \param[in] signal Signal to assign from
     \return Signal equal to the input
     */
-    signal<T>& operator=(signal<T>&& signal) = default;
+    Signal<T>& operator=(Signal<T>&& signal) = default;
 
     /*!
     \brief Destructor
     */
-    ~signal() = default;
+    ~Signal() = default;
 
     /*!
     \brief Gets the duration of the signal in seconds
@@ -249,7 +249,7 @@ public:
 
     // Friend declaration for swap
     template <typename U>
-    friend void swap(signal<U>& signal1, signal<U>& signal2);
+    friend void swap(Signal<U>& signal1, Signal<U>& signal2);
 
 private:
     size_t         m_sample_rate;
@@ -262,7 +262,7 @@ private:
 \param[in] signal2 Second signal to swap
 */
 template <typename T>
-void swap(signal<T>& signal1, signal<T>& signal2)
+void swap(Signal<T>& signal1, Signal<T>& signal2)
 {
     using std::swap;
     swap(signal1.m_sample_rate, signal2.m_sample_rate);
@@ -276,9 +276,9 @@ void swap(signal<T>& signal1, signal<T>& signal2)
 \return Complex signal created from the real and imaginary parts
 */
 template <typename T>
-signal<std::complex<T>> complex_signal(signal<T> real, signal<T> imaginary)
+Signal<std::complex<T>> complex_signal(Signal<T> real, Signal<T> imaginary)
 {
-    return dsp::signal<std::complex<T>>(real, imaginary);
+    return dsp::Signal<std::complex<T>>(real, imaginary);
 }
 
 } /* namespace tnt::dsp */

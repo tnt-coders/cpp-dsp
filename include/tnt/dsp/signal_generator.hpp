@@ -12,7 +12,7 @@ namespace tnt::dsp
 \brief Generates signals of similar sample rates/sizes
 */
 template <typename T>
-class signal_generator final
+class SignalGenerator final
 {
 public:
     /*!
@@ -20,7 +20,7 @@ public:
     \param[in] sample_rate Sample rate to use for generated signals
     \param[in] size Size to use for generated signals
     */
-    signal_generator(size_t sample_rate, size_t size)
+    SignalGenerator(size_t sample_rate, size_t size)
         : m_sample_rate(sample_rate)
         , m_sample_interval(1 / static_cast<T>(m_sample_rate))
         , m_size(size)
@@ -51,9 +51,9 @@ public:
     \param[in] phase_shift Phase shift
     \param[in] vertical_shift Vertical shift
     */
-    signal<T> cosine(T frequency, T amplitude = 1, T phase_shift = 0, T vertical_shift = 0) const
+    Signal<T> cosine(T frequency, T amplitude = 1, T phase_shift = 0, T vertical_shift = 0) const
     {
-        auto signal = signal<T>(m_sample_rate, m_size);
+        auto signal = Signal<T>(m_sample_rate, m_size);
         for (size_t n = 0; n < signal.size(); ++n)
         {
             signal[n] = amplitude
@@ -72,9 +72,9 @@ public:
     \param[in] phase_shift Phase shift
     \param[in] vertical_shift Vertical shift
     */
-    signal<T> sine(T frequency, T amplitude = 1, T phase_shift = 0, T vertical_shift = 0) const
+    Signal<T> sine(T frequency, T amplitude = 1, T phase_shift = 0, T vertical_shift = 0) const
     {
-        auto signal = signal<T>(m_sample_rate, m_size);
+        auto signal = Signal<T>(m_sample_rate, m_size);
         for (size_t n = 0; n < signal.size(); ++n)
         {
             signal[n] = amplitude

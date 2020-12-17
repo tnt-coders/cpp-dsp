@@ -11,7 +11,7 @@ using namespace tnt;
 
 TEMPLATE_TEST_CASE("magnitude", "[magnitude]", double, float)
 {
-    const auto g = dsp::signal_generator<TestType>(4000, 4);
+    const auto g = dsp::SignalGenerator<TestType>(4000, 4);
 
     SECTION("Magnitude of a real sample")
     {
@@ -52,7 +52,7 @@ TEMPLATE_TEST_CASE("magnitude", "[magnitude]", double, float)
 
 TEMPLATE_TEST_CASE("phase", "[phase]", double, float)
 {
-    const auto g = dsp::signal_generator<TestType>(4000, 4);
+    const auto g = dsp::SignalGenerator<TestType>(4000, 4);
 
     SECTION("Phase of a real sample")
     {
@@ -93,7 +93,7 @@ TEMPLATE_TEST_CASE("phase", "[phase]", double, float)
 
 TEMPLATE_TEST_CASE("power", "[power]", double, float)
 {
-    const auto g = dsp::signal_generator<TestType>(4000, 4);
+    const auto g = dsp::SignalGenerator<TestType>(4000, 4);
 
     SECTION("Power of a real sample")
     {
