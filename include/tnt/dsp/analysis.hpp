@@ -1,6 +1,7 @@
 #pragma once
 
 #include "signal.hpp"
+
 #include <algorithm>
 #include <complex>
 #include <limits>
@@ -16,7 +17,7 @@ namespace tnt::dsp
 template <typename T>
 T magnitude(const T& sample)
 {
-    return std::abs(sample);
+	return std::abs(sample);
 }
 
 /*!
@@ -27,7 +28,7 @@ T magnitude(const T& sample)
 template <typename T>
 T magnitude(const std::complex<T>& sample)
 {
-    return std::abs(sample);
+	return std::abs(sample);
 }
 
 /*!
@@ -38,12 +39,12 @@ T magnitude(const std::complex<T>& sample)
 template <typename T>
 signal<T> magnitude(const signal<T>& x)
 {
-    signal<T> x_magnitude(x.sample_rate(), x.size());
-    std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
-        return magnitude(sample);
-    });
+	auto x_magnitude = signal<T>(x.sample_rate(), x.size());
+	std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
+		return magnitude(sample);
+	});
 
-    return x_magnitude;
+	return x_magnitude;
 }
 
 /*!
@@ -54,12 +55,12 @@ signal<T> magnitude(const signal<T>& x)
 template <typename T>
 signal<T> magnitude(const signal<std::complex<T>>& x)
 {
-    signal<T> x_magnitude(x.sample_rate(), x.size());
-    std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
-        return magnitude(sample);
-    });
+	auto x_magnitude = signal<T>(x.sample_rate(), x.size());
+	std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
+		return magnitude(sample);
+	});
 
-    return x_magnitude;
+	return x_magnitude;
 }
 
 /*!
@@ -71,8 +72,8 @@ signal<T> magnitude(const signal<std::complex<T>>& x)
 template <typename T>
 T phase(const T& sample, const T& epsilon)
 {
-    const auto x = std::abs(sample) < epsilon ? 0 : sample;
-    return std::arg(x);
+	const auto x = std::abs(sample) < epsilon ? 0 : sample;
+	return std::arg(x);
 }
 
 /*!
@@ -86,7 +87,7 @@ Phase does not behave well around 0. Values close to 0 will be treated as 0.
 template <typename T>
 T phase(const T& sample)
 {
-    return phase(sample, std::numeric_limits<T>::epsilon() * 100);
+	return phase(sample, std::numeric_limits<T>::epsilon() * 100);
 }
 
 /*!
@@ -98,12 +99,10 @@ T phase(const T& sample)
 template <typename T>
 T phase(const std::complex<T>& sample, const T& epsilon)
 {
-    const std::complex<T> x = {
-        std::abs(sample.real()) < epsilon ? 0 : sample.real(),
-        std::abs(sample.imag()) < epsilon ? 0 : sample.imag(),
-    };
-
-    return std::arg(x);
+	const auto real      = std::abs(sample.real()) < epsilon ? 0 : sample.real();
+	const auto imaginary = std::abs(sample.imag()) < epsilon ? 0 : sample.imag();
+	const auto x         = std::complex<T>(real, imaginary);
+	return std::arg(x);
 }
 
 /*!
@@ -117,7 +116,7 @@ Phase does not behave well around 0. Real/imaginary components close to 0 will b
 template <typename T>
 T phase(const std::complex<T>& sample)
 {
-    return phase(sample, std::numeric_limits<T>::epsilon() * 100);
+	return phase(sample, std::numeric_limits<T>::epsilon() * 100);
 }
 
 /*!
@@ -128,12 +127,12 @@ T phase(const std::complex<T>& sample)
 template <typename T>
 signal<T> phase(const signal<T>& x)
 {
-    signal<T> x_phase(x.sample_rate(), x.size());
-    std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
-        return phase(sample);
-    });
+	auto x_phase = signal<T>(x.sample_rate(), x.size());
+	std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
+		return phase(sample);
+	});
 
-    return x_phase;
+	return x_phase;
 }
 
 /*!
@@ -144,12 +143,12 @@ signal<T> phase(const signal<T>& x)
 template <typename T>
 signal<T> phase(const signal<std::complex<T>>& x)
 {
-    signal<T> x_phase(x.sample_rate(), x.size());
-    std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
-        return phase(sample);
-    });
+	auto x_phase = signal<T>(x.sample_rate(), x.size());
+	std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
+		return phase(sample);
+	});
 
-    return x_phase;
+	return x_phase;
 }
 
 /*!
@@ -160,7 +159,7 @@ signal<T> phase(const signal<std::complex<T>>& x)
 template <typename T>
 T power(const T& sample)
 {
-    return std::norm(sample);
+	return std::norm(sample);
 }
 
 /*!
@@ -171,7 +170,7 @@ T power(const T& sample)
 template <typename T>
 T power(const std::complex<T>& sample)
 {
-    return std::norm(sample);
+	return std::norm(sample);
 }
 
 /*!
@@ -182,12 +181,12 @@ T power(const std::complex<T>& sample)
 template <typename T>
 signal<T> power(const signal<T>& x)
 {
-    signal<T> x_power(x.sample_rate(), x.size());
-    std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
-        return power(sample);
-    });
+	auto x_power = signal<T>(x.sample_rate(), x.size());
+	std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
+		return power(sample);
+	});
 
-    return x_power;
+	return x_power;
 }
 
 /*!
@@ -198,12 +197,12 @@ signal<T> power(const signal<T>& x)
 template <typename T>
 signal<T> power(const signal<std::complex<T>>& x)
 {
-    signal<T> x_power(x.sample_rate(), x.size());
-    std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
-        return power(sample);
-    });
+	auto x_power = signal<T>(x.sample_rate(), x.size());
+	std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
+		return power(sample);
+	});
 
-    return x_power;
+	return x_power;
 }
 
 } /* namespace tnt::dsp */

@@ -17,6 +17,20 @@ tnt_project_New(${PROJECT_NAME}
   CONANFILE conanfile.py
 )
 
+find_program(CLANG_FORMAT "clang-format")
+if(CLANG_FORMAT)
+    file(GLOB_RECURSE ALL_CXX_SOURCE_FILES
+        ${PROJECT_SOURCE_DIR}/*.[ch]pp
+    )
+
+    add_custom_target(format
+        COMMAND clang-format
+        -i
+        -style=file
+        ${ALL_CXX_SOURCE_FILES}
+    )
+endif()
+
 # Find and install dependencies
 tnt_project_ConanInstall(${PROJECT_NAME})
 include(${CMAKE_BINARY_DIR}/conan_paths.cmake)

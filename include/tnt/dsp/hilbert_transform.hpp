@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fourier_transform.hpp"
+
 #include <complex>
 
 namespace tnt::dsp
@@ -14,28 +15,28 @@ namespace tnt::dsp
 template <typename T>
 signal<std::complex<T>> hilbert_transform(const signal<T>& x)
 {
-    const auto sampleRate = x.sample_rate();
-    const auto N = x.size();
+	const auto sampleRate = x.sample_rate();
+	const auto N          = x.size();
 
-    // Take the Fourier transform
-    const auto X = fourier_transform(x);
+	// Take the Fourier transform
+	const auto X = fourier_transform(x);
 
-    signal<std::complex<T>> X_c(sampleRate, N);
-    
-    // The DC component does not get doubled
-    X_c[0] = X[0];
+	auto X_c = signal<std::complex<T>>(sampleRate, N);
 
-    // Set all real to 2x the Fourier transform
-    // Zero out imaginary components (past N/2)
-    for(size_t n = 1; n <= N / 2; ++n)
-    {
-        X_c[n] = static_cast<T>(2) * X[n];
-    }
+	// The DC component does not get doubled
+	X_c[0] = X[0];
 
-    // Take the inverse Fourier transform
-    const auto x_c = inverse_fourier_transform(X_c);
+	// Set all real to 2x the Fourier transform
+	// Zero out imaginary components (past N/2)
+	for (size_t n = 1; n <= N / 2; ++n)
+	{
+		X_c[n] = static_cast<T>(2) * X[n];
+	}
 
-    return x_c;
+	// Take the inverse Fourier transform
+	const auto x_c = inverse_fourier_transform(X_c);
+
+	return x_c;
 }
 
 } /* namespace tnt::dsp */
