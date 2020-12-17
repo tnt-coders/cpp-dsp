@@ -26,7 +26,8 @@ if(CLANG_FORMAT)
     add_custom_target(format
         COMMAND clang-format
         -i
-        -style=file
+        --style=file
+        --verbose
         ${ALL_CXX_SOURCE_FILES}
     )
 endif()

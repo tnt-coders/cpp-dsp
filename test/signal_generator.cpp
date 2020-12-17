@@ -6,10 +6,7 @@
 
 using namespace tnt;
 
-TEMPLATE_TEST_CASE("SignalGenerator construction",
-                   "[SignalGenerator][construction]",
-                   double,
-                   float)
+TEMPLATE_TEST_CASE("SignalGenerator construction", "[SignalGenerator][construction]", double, float)
 {
     const auto g = dsp::SignalGenerator<TestType>(1000, 10);
 
