@@ -57,7 +57,7 @@ ColumnLimit: 100
 CompactNamespaces: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 ConstructorInitializerIndentWidth: 4
-ContinuationIndentWidth: 0
+ContinuationIndentWidth: 4
 Cpp11BracedListStyle: true
 DeriveLineEnding: true
 DerivePointerAlignment: false
@@ -94,7 +94,7 @@ NamespaceIndentation: None
 #ObjCBreakBeforeNestedBlockParam: (N/A)
 #ObjCSpaceAfterProperty: (N/A)
 #ObjCSpaceBeforeProtocolList: (N/A)
-#PenaltyBreakAssignment: (N/A)
+PenaltyBreakAssignment: 100
 #PenaltyBreakBeforeFirstCallParameter: (N/A)
 #PenaltyBreakFirstLessLess: (N/A)
 #PenaltyBreakString: (N/A)
@@ -144,5 +144,5 @@ Standard: Auto
 TabWidth: 4
 #TypenameMacros: (N/A)
 #UseCRLF: (superceded by DeriveLineEnding)
-UseTab: AlignWithSpaces
+UseTab: Never
 #WhitespaceSensitiveMacros: (N/A)

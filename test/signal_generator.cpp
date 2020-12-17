@@ -11,87 +11,88 @@ TEMPLATE_TEST_CASE("signal_generator construction",
                    double,
                    float)
 {
-	const auto g = dsp::signal_generator<TestType>(1000, 10);
+    const auto g = dsp::signal_generator<TestType>(1000, 10);
 
-	CHECK(g.sample_rate() == 1000);
-	CHECK(g.size() == 10);
+    CHECK(g.sample_rate() == 1000);
+    CHECK(g.size() == 10);
 }
 
 TEMPLATE_TEST_CASE("signal_generator accessors", "[signal_generator][accessors]", double, float)
 {
-	const auto g = dsp::signal_generator<TestType>(1000, 10);
+    const auto g = dsp::signal_generator<TestType>(1000, 10);
 
-	SECTION("sample_rate")
-	{
-		CHECK(g.sample_rate() == 1000);
-	}
+    SECTION("sample_rate")
+    {
+        CHECK(g.sample_rate() == 1000);
+    }
 
-	SECTION("size")
-	{
-		CHECK(g.size() == 10);
-	}
+    SECTION("size")
+    {
+        CHECK(g.size() == 10);
+    }
 }
 
 TEMPLATE_TEST_CASE("signal_generator::cosine", "[signal_generator][cosine]", double, float)
 {
-	const size_t f_s = 1000;
-	const size_t N   = 10;
-	const auto   t_s = 1 / static_cast<TestType>(f_s);
+    const size_t f_s = 1000;
+    const size_t N   = 10;
+    const auto   t_s = 1 / static_cast<TestType>(f_s);
 
-	const TestType frequency      = 100;
-	const TestType amplitude      = 2;
-	const TestType phase_shift    = static_cast<TestType>(M_PI) / 2;
-	const TestType vertical_shift = 2;
+    const TestType frequency      = 100;
+    const TestType amplitude      = 2;
+    const TestType phase_shift    = static_cast<TestType>(M_PI) / 2;
+    const TestType vertical_shift = 2;
 
-	auto cosine = dsp::signal<TestType>(f_s, N);
+    auto cosine = dsp::signal<TestType>(f_s, N);
 
-	for (size_t n = 0; n < N; ++n)
-	{
-		cosine[n] =
-		amplitude * std::cos(2 * static_cast<TestType>(M_PI) * frequency * n * t_s + phase_shift)
-		+ vertical_shift;
-	}
+    for (size_t n = 0; n < N; ++n)
+    {
+        cosine[n] = amplitude
+                      * std::cos(2 * static_cast<TestType>(M_PI) * frequency * n * t_s
+                                 + phase_shift)
+                  + vertical_shift;
+    }
 
-	const auto dsp::signal_generator<TestType>(f_s, N);
-	const auto x = g.cosine(frequency, amplitude, phase_shift, vertical_shift);
+    const auto dsp::signal_generator<TestType>(f_s, N);
+    const auto x = g.cosine(frequency, amplitude, phase_shift, vertical_shift);
 
-	REQUIRE(x.size() == cosine.size());
-	REQUIRE(x.sample_rate() == cosine.sample_rate());
+    REQUIRE(x.size() == cosine.size());
+    REQUIRE(x.sample_rate() == cosine.sample_rate());
 
-	for (size_t n = 0; n < N; ++n)
-	{
-		CHECK(x[n] == approx(cosine[n]));
-	}
+    for (size_t n = 0; n < N; ++n)
+    {
+        CHECK(x[n] == approx(cosine[n]));
+    }
 }
 
 TEMPLATE_TEST_CASE("signal_generator::sine", "[signal_generator][sine]", double, float)
 {
-	const size_t f_s = 1000;
-	const size_t N   = 10;
-	const auto   t_s = 1 / static_cast<TestType>(f_s);
+    const size_t f_s = 1000;
+    const size_t N   = 10;
+    const auto   t_s = 1 / static_cast<TestType>(f_s);
 
-	const TestType frequency      = 100;
-	const TestType amplitude      = 2;
-	const TestType phase_shift    = static_cast<TestType>(M_PI) / 2;
-	const TestType vertical_shift = 2;
+    const TestType frequency      = 100;
+    const TestType amplitude      = 2;
+    const TestType phase_shift    = static_cast<TestType>(M_PI) / 2;
+    const TestType vertical_shift = 2;
 
-	auto sine = dsp::signal<TestType>(f_s, N);
+    auto sine = dsp::signal<TestType>(f_s, N);
 
-	for (size_t n = 0; n < N; ++n)
-	{
-		sine[n] =
-		amplitude * std::sin(2 * static_cast<TestType>(M_PI) * frequency * n * t_s + phase_shift)
-		+ vertical_shift;
-	}
+    for (size_t n = 0; n < N; ++n)
+    {
+        sine[n] = amplitude
+                    * std::sin(2 * static_cast<TestType>(M_PI) * frequency * n * t_s + phase_shift)
+                + vertical_shift;
+    }
 
-	const auto g = dsp::signal_generator<TestType>(f_s, N);
-	const auto x = g.sine(frequency, amplitude, phase_shift, vertical_shift);
+    const auto g = dsp::signal_generator<TestType>(f_s, N);
+    const auto x = g.sine(frequency, amplitude, phase_shift, vertical_shift);
 
-	REQUIRE(x.size() == sine.size());
-	REQUIRE(x.sample_rate() == sine.sample_rate());
+    REQUIRE(x.size() == sine.size());
+    REQUIRE(x.sample_rate() == sine.sample_rate());
 
-	for (size_t n = 0; n < N; ++n)
-	{
-		CHECK(x[n] == approx(sine[n]));
-	}
+    for (size_t n = 0; n < N; ++n)
+    {
+        CHECK(x[n] == approx(sine[n]));
+    }
 }
