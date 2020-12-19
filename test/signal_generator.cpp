@@ -8,7 +8,7 @@ using namespace tnt;
 
 TEMPLATE_TEST_CASE("SignalGenerator construction", "[SignalGenerator][construction]", double, float)
 {
-    const auto g = dsp::SignalGenerator<TestType>(1000, 10);
+    const dsp::SignalGenerator<TestType> g(1000, 10);
 
     CHECK(g.sample_rate() == 1000);
     CHECK(g.size() == 10);
@@ -16,7 +16,7 @@ TEMPLATE_TEST_CASE("SignalGenerator construction", "[SignalGenerator][constructi
 
 TEMPLATE_TEST_CASE("SignalGenerator accessors", "[SignalGenerator][accessors]", double, float)
 {
-    const auto g = dsp::SignalGenerator<TestType>(1000, 10);
+    const dsp::SignalGenerator<TestType> g(1000, 10);
 
     SECTION("sample_rate")
     {
@@ -40,7 +40,7 @@ TEMPLATE_TEST_CASE("SignalGenerator::cosine", "[SignalGenerator][cosine]", doubl
     const TestType phase_shift    = static_cast<TestType>(M_PI) / 2;
     const TestType vertical_shift = 2;
 
-    auto cosine = dsp::Signal<TestType>(f_s, N);
+    dsp::Signal<TestType> cosine(f_s, N);
 
     for (size_t n = 0; n < N; ++n)
     {
@@ -50,7 +50,8 @@ TEMPLATE_TEST_CASE("SignalGenerator::cosine", "[SignalGenerator][cosine]", doubl
                   + vertical_shift;
     }
 
-    const auto g = dsp::SignalGenerator<TestType>(f_s, N);
+    const dsp::SignalGenerator<TestType> g(f_s, N);
+
     const auto x = g.cosine(frequency, amplitude, phase_shift, vertical_shift);
 
     REQUIRE(x.size() == cosine.size());
@@ -73,7 +74,7 @@ TEMPLATE_TEST_CASE("SignalGenerator::sine", "[SignalGenerator][sine]", double, f
     const TestType phase_shift    = static_cast<TestType>(M_PI) / 2;
     const TestType vertical_shift = 2;
 
-    auto sine = dsp::Signal<TestType>(f_s, N);
+    dsp::Signal<TestType> sine(f_s, N);
 
     for (size_t n = 0; n < N; ++n)
     {
@@ -82,7 +83,8 @@ TEMPLATE_TEST_CASE("SignalGenerator::sine", "[SignalGenerator][sine]", double, f
                 + vertical_shift;
     }
 
-    const auto g = dsp::SignalGenerator<TestType>(f_s, N);
+    const dsp::SignalGenerator<TestType> g(f_s, N);
+
     const auto x = g.sine(frequency, amplitude, phase_shift, vertical_shift);
 
     REQUIRE(x.size() == sine.size());

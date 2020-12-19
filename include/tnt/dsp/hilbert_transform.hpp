@@ -21,7 +21,7 @@ Signal<std::complex<T>> hilbert_transform(const Signal<T>& x)
     // Take the Fourier transform
     const auto X = fourier_transform(x);
 
-    auto X_c = Signal<std::complex<T>>(sampleRate, N);
+    Signal<std::complex<T>> X_c(sampleRate, N);
 
     // The DC component does not get doubled
     X_c[0] = X[0];

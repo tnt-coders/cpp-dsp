@@ -53,7 +53,7 @@ public:
     */
     Signal<T> cosine(T frequency, T amplitude = 1, T phase_shift = 0, T vertical_shift = 0) const
     {
-        auto signal = Signal<T>(m_sample_rate, m_size);
+        Signal<T> signal(m_sample_rate, m_size);
         for (size_t n = 0; n < signal.size(); ++n)
         {
             signal[n] = amplitude
@@ -74,7 +74,7 @@ public:
     */
     Signal<T> sine(T frequency, T amplitude = 1, T phase_shift = 0, T vertical_shift = 0) const
     {
-        auto signal = Signal<T>(m_sample_rate, m_size);
+        Signal<T> signal(m_sample_rate, m_size);
         for (size_t n = 0; n < signal.size(); ++n)
         {
             signal[n] = amplitude

@@ -40,7 +40,7 @@ public:
     \brief Constructor
     \param[in] signals One or more single channel signals
     */
-    explicit Multisignal(const std::initializer_list<Signal<T>> signals)
+    Multisignal(const std::initializer_list<Signal<T>> signals)
         : m_sample_rate{}
         , m_data{}
     {
@@ -122,7 +122,7 @@ public:
     {
         assert(channel < this->channels());
 
-        auto signal = Signal<T>(this->sample_rate(), this->size());
+        Signal<T> signal(this->sample_rate(), this->size());
         for (size_type n = 0; n < this->size(); ++n)
         {
             signal[n] = m_data[n][channel];

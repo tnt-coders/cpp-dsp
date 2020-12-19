@@ -17,7 +17,8 @@ TEMPLATE_TEST_CASE("fourier_transform", "[fourier_transform]", double, float)
     {
         for (size_t N = 1; N <= 10; ++N)
         {
-            const auto g  = dsp::SignalGenerator<TestType>(1000, N);
+            const dsp::SignalGenerator<TestType> g(1000, N);
+
             const auto x  = g.cosine(100);
             const auto X  = dft(x);
             const auto X2 = dsp::fourier_transform(x);
@@ -37,7 +38,8 @@ TEMPLATE_TEST_CASE("fourier_transform", "[fourier_transform]", double, float)
     {
         for (size_t N = 1; N <= 10; ++N)
         {
-            const auto g  = dsp::SignalGenerator<TestType>(1000, N);
+            const dsp::SignalGenerator<TestType> g(1000, N);
+
             const auto x  = dsp::complex_signal(g.cosine(100), g.sine(100));
             const auto X  = dft(x);
             const auto X2 = dsp::fourier_transform(x);
@@ -60,7 +62,8 @@ TEMPLATE_TEST_CASE("inverse_fourier_transform", "[inverse_fourier_transform]", d
     {
         for (size_t N = 1; N <= 10; ++N)
         {
-            const auto g  = dsp::SignalGenerator<TestType>(1000, N);
+            const dsp::SignalGenerator<TestType> g(1000, N);
+
             const auto x  = g.cosine(100);
             auto       X  = dsp::fourier_transform(x);
             auto       x2 = dsp::inverse_fourier_transform(X);
@@ -79,7 +82,8 @@ TEMPLATE_TEST_CASE("inverse_fourier_transform", "[inverse_fourier_transform]", d
     {
         for (size_t N = 1; N <= 10; ++N)
         {
-            const auto g  = dsp::SignalGenerator<TestType>(1000, N);
+            const dsp::SignalGenerator<TestType> g(1000, N);
+
             const auto x  = dsp::complex_signal(g.cosine(100), g.sine(100));
             const auto X  = dsp::fourier_transform(x);
             const auto x2 = dsp::inverse_fourier_transform(X);
@@ -103,7 +107,7 @@ dsp::Signal<std::complex<T>> dft(const dsp::Signal<T>& x)
     const auto f_s = x.sample_rate();
     const auto N   = x.size();
 
-    auto X = dsp::Signal<std::complex<T>>(f_s, N);
+    dsp::Signal<std::complex<T>> X(f_s, N);
 
     // Take advantage of DFT symmetry when dealing with real input signals
     // Only the first N/2 + 1 outputs are unique
@@ -131,7 +135,7 @@ dsp::Signal<std::complex<T>> dft(const dsp::Signal<std::complex<T>>& x)
     const auto f_s = x.sample_rate();
     const auto N   = x.size();
 
-    auto X = dsp::Signal<std::complex<T>>(f_s, N);
+    dsp::Signal<std::complex<T>> X(f_s, N);
 
     for (size_t k = 0; k < N; ++k)
     {

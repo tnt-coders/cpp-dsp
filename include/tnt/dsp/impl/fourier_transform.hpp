@@ -22,7 +22,7 @@ Signal<std::complex<T>> bluestein_fft(const Signal<std::complex<T>>& x)
     const auto M = impl::next_power_of_2(2 * N - 1);
 
     // Calculate the "phase factors"
-    auto P = Signal<std::complex<T>>(f_s, N);
+    Signal<std::complex<T>> P(f_s, N);
     for (size_t n = 0; n < N; ++n)
     {
         // %(2*N) is done to improve accuracy of floating point trigonometry
@@ -30,10 +30,10 @@ Signal<std::complex<T>> bluestein_fft(const Signal<std::complex<T>>& x)
     }
 
     // Construct the two sequences to perform convolution
-    auto a = Signal<std::complex<T>>(f_s, M);
-    auto b = Signal<std::complex<T>>(f_s, M);
-    a[0]   = x[0] * P[0];
-    b[0]   = P[0];
+    Signal<std::complex<T>> a(f_s, M);
+    Signal<std::complex<T>> b(f_s, M);
+    a[0] = x[0] * P[0];
+    b[0] = P[0];
     for (size_t n = 1; n < N; ++n)
     {
         a[n] = x[n] * P[n];
@@ -43,7 +43,7 @@ Signal<std::complex<T>> bluestein_fft(const Signal<std::complex<T>>& x)
     const auto c = impl::convolve(a, b);
 
     // Mutiply by the "phase factors" to obtain the correct results
-    auto X = Signal<std::complex<T>>(f_s, N);
+    Signal<std::complex<T>> X(f_s, N);
     for (size_t m = 0; m < N; ++m)
     {
         X[m] = c[m] * P[m];
@@ -64,10 +64,11 @@ Signal<std::complex<T>> convolve(const Signal<std::complex<T>>& a, const Signal<
     const auto f_s      = a.sample_rate();
     const auto N        = a.size();
     const auto N_over_2 = N / 2;
+    const auto omega    = 2 * static_cast<T>(M_PI) / N;
 
     // Pre-calculate the twiddle factors
-    auto       W     = Signal<std::complex<T>>(f_s, N_over_2);
-    const auto omega = 2 * static_cast<T>(M_PI) / N;
+    Signal<std::complex<T>> W(f_s, N_over_2);
+
     for (size_t n = 0; n < N_over_2; ++n)
     {
         W[n] = std::complex<T>(std::cos(-omega * n), std::sin(-omega * n));
@@ -79,7 +80,7 @@ Signal<std::complex<T>> convolve(const Signal<std::complex<T>>& a, const Signal<
 
     // The convolution theorem states that multiplication in the frequency
     // domain is equivalent to convolution in the time domain
-    auto C = Signal<std::complex<T>>(f_s, N);
+    Signal<std::complex<T>> C(f_s, N);
     std::transform(A.begin(), A.end(), B.begin(), C.begin(), std::multiplies<std::complex<T>>());
 
     return inverse_fourier_transform(C);
@@ -94,10 +95,11 @@ Signal<std::complex<T>> stockham_fft(const Signal<std::complex<T>>& x)
     const auto f_s      = x.sample_rate();
     const auto N        = x.size();
     const auto N_over_2 = N / 2;
+    const auto omega    = 2 * static_cast<T>(M_PI) / N;
 
     // Pre-calculate the twiddle factors
-    auto       W     = Signal<std::complex<T>>(f_s, N_over_2);
-    const auto omega = 2 * static_cast<T>(M_PI) / N;
+    Signal<std::complex<T>> W(f_s, N_over_2);
+
     for (size_t n = 0; n < N_over_2; ++n)
     {
         W[n] = std::complex<T>(std::cos(-omega * n), std::sin(-omega * n));
@@ -119,8 +121,8 @@ Signal<std::complex<T>> stockham_fft(const Signal<std::complex<T>>& x,
 
     // The Stockham algorithm requires one vector for input/output data and
     // another as a temporary workspace
-    auto a = Signal<std::complex<T>>(x);
-    auto b = Signal<std::complex<T>>(f_s, N);
+    Signal<std::complex<T>> a(x);
+    Signal<std::complex<T>> b(f_s, N);
 
     // Set the spacing between twiddle factors used at the first stage
     auto W_stride = N / 2;

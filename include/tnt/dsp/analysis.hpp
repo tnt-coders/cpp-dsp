@@ -39,7 +39,7 @@ T magnitude(const std::complex<T>& sample)
 template <typename T>
 Signal<T> magnitude(const Signal<T>& x)
 {
-    auto x_magnitude = Signal<T>(x.sample_rate(), x.size());
+    Signal<T> x_magnitude(x.sample_rate(), x.size());
     std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
         return magnitude(sample);
     });
@@ -55,7 +55,7 @@ Signal<T> magnitude(const Signal<T>& x)
 template <typename T>
 Signal<T> magnitude(const Signal<std::complex<T>>& x)
 {
-    auto x_magnitude = Signal<T>(x.sample_rate(), x.size());
+    Signal<T> x_magnitude(x.sample_rate(), x.size());
     std::transform(x.begin(), x.end(), x_magnitude.begin(), [](const auto& sample) {
         return magnitude(sample);
     });
@@ -101,7 +101,9 @@ T phase(const std::complex<T>& sample, const T& epsilon)
 {
     const auto real      = std::abs(sample.real()) < epsilon ? 0 : sample.real();
     const auto imaginary = std::abs(sample.imag()) < epsilon ? 0 : sample.imag();
-    const auto x         = std::complex<T>(real, imaginary);
+
+    const std::complex<T> x = {real, imaginary};
+
     return std::arg(x);
 }
 
@@ -127,7 +129,7 @@ T phase(const std::complex<T>& sample)
 template <typename T>
 Signal<T> phase(const Signal<T>& x)
 {
-    auto x_phase = Signal<T>(x.sample_rate(), x.size());
+    Signal<T> x_phase(x.sample_rate(), x.size());
     std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
         return phase(sample);
     });
@@ -143,7 +145,7 @@ Signal<T> phase(const Signal<T>& x)
 template <typename T>
 Signal<T> phase(const Signal<std::complex<T>>& x)
 {
-    auto x_phase = Signal<T>(x.sample_rate(), x.size());
+    Signal<T> x_phase(x.sample_rate(), x.size());
     std::transform(x.begin(), x.end(), x_phase.begin(), [](const auto& sample) {
         return phase(sample);
     });
@@ -181,7 +183,7 @@ T power(const std::complex<T>& sample)
 template <typename T>
 Signal<T> power(const Signal<T>& x)
 {
-    auto x_power = Signal<T>(x.sample_rate(), x.size());
+    Signal<T> x_power(x.sample_rate(), x.size());
     std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
         return power(sample);
     });
@@ -197,7 +199,7 @@ Signal<T> power(const Signal<T>& x)
 template <typename T>
 Signal<T> power(const Signal<std::complex<T>>& x)
 {
-    auto x_power = Signal<T>(x.sample_rate(), x.size());
+    Signal<T> x_power(x.sample_rate(), x.size());
     std::transform(x.begin(), x.end(), x_power.begin(), [](const auto& sample) {
         return power(sample);
     });

@@ -12,7 +12,8 @@ TEMPLATE_TEST_CASE("hilbert_transform", "[hilbert_transform]", double, float)
 {
     SECTION("Hilbert transform of an even length signal")
     {
-        const auto g   = dsp::SignalGenerator<TestType>(4000, 4);
+        const dsp::SignalGenerator<TestType> g(4000, 4);
+
         const auto x   = g.cosine(1000);
         const auto x_c = dsp::hilbert_transform(x);
 
@@ -28,7 +29,8 @@ TEMPLATE_TEST_CASE("hilbert_transform", "[hilbert_transform]", double, float)
 
     SECTION("Hilbert transform of an odd length signal")
     {
-        const auto g   = dsp::SignalGenerator<TestType>(4000, 5);
+        const dsp::SignalGenerator<TestType> g(4000, 5);
+
         const auto x   = g.cosine(1000);
         const auto x_c = dsp::hilbert_transform(x);
 
