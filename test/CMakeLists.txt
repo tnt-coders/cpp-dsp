@@ -1,7 +1,7 @@
 include(Catch)
 include(CTest)
 
-add_executable(dsp_test
+add_executable(${PROJECT_NAME}_test
     main.cpp
     analysis.cpp
     approx.cpp
@@ -13,11 +13,11 @@ add_executable(dsp_test
     signal_generator.cpp
 )
 
-target_compile_options(dsp_test PRIVATE -D_USE_MATH_DEFINES)
+target_compile_options(${PROJECT_NAME}_test PRIVATE -D_USE_MATH_DEFINES)
 
-target_link_libraries(dsp_test
-    tnt::dsp
+target_link_libraries(${PROJECT_NAME}_test
+    tnt::${PROJECT_NAME}
     Catch2::Catch2WithMain
 )
 
-catch_discover_tests(dsp_test)
+catch_discover_tests(${PROJECT_NAME}_test)
