@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.11.4)
 
 # Define the project
-project(cpp-dsp LANGUAGES CXX)
+project(dsp LANGUAGES CXX)
 
 # Get CMake modules from Git
 include(FetchContent)
