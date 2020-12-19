@@ -8,7 +8,7 @@ class CppDsp(ConanFile):
     exports_sources = "CMakeLists.txt", "docs/*", "include/*", "src/*", "test/*"
     generators = "cmake", "cmake_paths"
     license = "GNU Lesser General Public License v3.0"
-    name = "cpp-dsp"
+    name = "dsp"
     options = {"shared": [True, False]}
     settings = "os", "compiler", "build_type", "arch"
     topics = ("dsp")
