@@ -41,8 +41,8 @@ public:
     \param[in] signals One or more single channel signals
     */
     Multisignal(const std::initializer_list<Signal<T>> signals)
-        : m_sample_rate{}
-        , m_data{}
+        : m_sample_rate()
+        , m_data()
     {
         for (const auto& signal : signals)
         {
@@ -56,7 +56,7 @@ public:
     */
     explicit Multisignal(const size_t sample_rate)
         : m_sample_rate(sample_rate)
-        , m_data{}
+        , m_data()
     {}
 
     /*
