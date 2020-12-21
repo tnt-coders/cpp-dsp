@@ -24,4 +24,4 @@ constexpr size_t next_power_of_2(const size_t value)
     return result;
 }
 
-} /* namespace tnt::dsp::impl */
+}  // namespace tnt::dsp::impl

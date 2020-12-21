@@ -207,4 +207,4 @@ Signal<T> power(const Signal<std::complex<T>>& x)
     return x_power;
 }
 
-} /* namespace tnt::dsp */
+}  // namespace tnt::dsp

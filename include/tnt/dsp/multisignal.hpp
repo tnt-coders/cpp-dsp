@@ -295,4 +295,4 @@ void swap(Multisignal<T>& signal1, Multisignal<T>& signal2)
     swap(signal1.m_data, signal2.m_data);
 }
 
-} /* namespace tnt::dsp */
+}  // namespace tnt::dsp

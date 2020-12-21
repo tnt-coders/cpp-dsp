@@ -121,4 +121,4 @@ Signal<std::complex<T>> convolve(const Signal<std::complex<T>>& a, const Signal<
     return inverse_fourier_transform(C);
 }
 
-} /* namespace tnt::dsp */
+}  // namespace tnt::dsp

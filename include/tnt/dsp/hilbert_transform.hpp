@@ -39,4 +39,4 @@ Signal<std::complex<T>> hilbert_transform(const Signal<T>& x)
     return x_c;
 }
 
-} /* namespace tnt::dsp */
+}  // namespace tnt::dsp

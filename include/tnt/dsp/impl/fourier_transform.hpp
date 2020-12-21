@@ -166,4 +166,4 @@ Signal<std::complex<T>> stockham_fft(const Signal<std::complex<T>>& x,
     return a;
 }
 
-} /* namespace tnt::dsp::impl */
+}  // namespace tnt::dsp::impl

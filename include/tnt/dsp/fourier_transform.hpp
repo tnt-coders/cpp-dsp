@@ -126,4 +126,4 @@ Signal<std::complex<T>> inverse_fourier_transform(const Signal<std::complex<T>>&
     return x;
 }
 
-} /* namespace tnt::dsp */
+}  // namespace tnt::dsp

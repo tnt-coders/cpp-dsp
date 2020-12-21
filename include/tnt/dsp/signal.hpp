@@ -281,4 +281,4 @@ Signal<std::complex<T>> complex_signal(Signal<T> real, Signal<T> imaginary)
     return dsp::Signal<std::complex<T>>(real, imaginary);
 }
 
-} /* namespace tnt::dsp */
+}  // namespace tnt::dsp
