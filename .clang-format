@@ -101,7 +101,7 @@ PenaltyBreakAssignment: 100
 #PenaltyBreakTemplateDeclaration: (N/A)
 #PenaltyExcessCharacter: (N/A)
 #PenaltyIndentedWhitespace: (N/A)
-#PenaltyReturnTypeOnItsOwnLine: (N/A)
+PenaltyReturnTypeOnItsOwnLine: 100
 PointerAlignment: Left
 
 #TODO: Look into what this is
