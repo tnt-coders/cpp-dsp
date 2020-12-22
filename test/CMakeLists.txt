@@ -4,7 +4,7 @@ include(CTest)
 add_executable(${PROJECT_NAME}_test
     main.cpp
     analysis.cpp
-    approx.cpp
+    
     convolution.cpp
     fourier_transform.cpp
     hilbert_transform.cpp
@@ -17,6 +17,7 @@ target_compile_options(${PROJECT_NAME}_test PRIVATE -D_USE_MATH_DEFINES)
 
 target_link_libraries(${PROJECT_NAME}_test
     tnt::${PROJECT_NAME}
+    tnt::math
     Catch2::Catch2WithMain
 )
 

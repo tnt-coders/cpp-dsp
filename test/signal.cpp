@@ -1,10 +1,9 @@
-#include "approx.hpp"
-
 #include <algorithm>
 #include <catch2/catch_template_test_macros.hpp>
 #include <complex>
 #include <tnt/dsp/signal.hpp>
 #include <tnt/dsp/signal_generator.hpp>
+#include <tnt/math/comparison.hpp>
 
 using namespace tnt;
 
@@ -58,8 +57,8 @@ TEMPLATE_TEST_CASE("Signal construction", "[Signal][construction]", double, floa
 
         for (size_t n = 0; n < x2.size(); ++n)
         {
-            CHECK(x2[n].real() == approx(x1_real[n]));
-            CHECK(x2[n].imag() == approx(x1_imag[n]));
+            CHECK(math::near(x2[n].real(), x1_real[n]));
+            CHECK(math::near(x2[n].imag(), x1_imag[n]));
         }
     }
 
@@ -74,7 +73,7 @@ TEMPLATE_TEST_CASE("Signal construction", "[Signal][construction]", double, floa
 
         for (size_t n = 0; n < x2.size(); ++n)
         {
-            CHECK(x2[n] == approx(x1[n]));
+            CHECK(math::near(x2[n], x1[n]));
         }
     }
 
@@ -90,7 +89,7 @@ TEMPLATE_TEST_CASE("Signal construction", "[Signal][construction]", double, floa
 
         for (size_t n = 0; n < x2.size(); ++n)
         {
-            CHECK(x2[n] == approx(x1_copy[n]));
+            CHECK(math::near(x2[n], x1_copy[n]));
         }
     }
 }
@@ -109,7 +108,7 @@ TEMPLATE_TEST_CASE("Signal assignment", "[Signal][assignment]", double, float)
 
         for (size_t n = 0; n < x2.size(); ++n)
         {
-            CHECK(x2[n] == approx(x1[n]));
+            CHECK(math::near(x2[n], x1[n]));
         }
     }
 
@@ -124,7 +123,7 @@ TEMPLATE_TEST_CASE("Signal assignment", "[Signal][assignment]", double, float)
 
         for (size_t n = 0; n < x2.size(); ++n)
         {
-            CHECK(x2[n] == approx(x1_copy[n]));
+            CHECK(math::near(x2[n], x1_copy[n]));
         }
     }
 }
@@ -134,7 +133,7 @@ TEMPLATE_TEST_CASE("Signal accessors", "[Signal][accessors]", double, float)
     SECTION("duration")
     {
         const dsp::Signal<TestType> x(1000, 2500);
-        CHECK(x.duration() == approx(2.5));
+        CHECK(math::near(x.duration(), 2.5));
     }
 
     SECTION("sample_rate")
@@ -158,7 +157,7 @@ TEMPLATE_TEST_CASE("Signal data access", "[Signal][data access]", double, float)
 
         for (size_t n = 0; n < x2.size(); ++n)
         {
-            CHECK(x2[n] == approx(x1[n]));
+            CHECK(math::near(x2[n], x1[n]));
         }
     }
 
@@ -169,7 +168,7 @@ TEMPLATE_TEST_CASE("Signal data access", "[Signal][data access]", double, float)
         for (size_t n = 0; n < x.size(); ++n)
         {
             x[n] = 1;
-            CHECK(x[n] == approx(1));
+            CHECK(math::near(x[n], 1));
         }
     }
 }
@@ -184,12 +183,12 @@ TEMPLATE_TEST_CASE("Signal iterators", "[Signal][iterators]", double, float)
 
         // Iterate through x, and also capture a copy of x to compare to
         std::for_each(x.begin(), x.end(), [x, n = 0](const auto& sample) mutable {
-            CHECK(sample == approx(x[n++]));
+            CHECK(math::near(sample, x[n++]));
         });
 
         // Iterate through x, and also capture a copy of x to compare to
         std::for_each(x.cbegin(), x.cend(), [x, n = 0](const auto& sample) mutable {
-            CHECK(sample == approx(x[n++]));
+            CHECK(math::near(sample, x[n++]));
         });
     }
 
@@ -202,7 +201,7 @@ TEMPLATE_TEST_CASE("Signal iterators", "[Signal][iterators]", double, float)
         });
 
         std::for_each(x.begin(), x.end(), [](const auto& sample) {
-            CHECK(sample == approx(1));
+            CHECK(math::near(sample, 1));
         });
     }
 }
@@ -253,9 +252,9 @@ TEMPLATE_TEST_CASE("Signal modifiers", "[Signal][modifiers]", double, float)
         x.push_back(3);
 
         REQUIRE(x.size() == 3);
-        CHECK(x[0] == approx(1));
-        CHECK(x[1] == approx(2));
-        CHECK(x[2] == approx(3));
+        CHECK(math::near(x[0], 1));
+        CHECK(math::near(x[1], 2));
+        CHECK(math::near(x[2], 3));
     }
 
     SECTION("swap")
@@ -271,8 +270,8 @@ TEMPLATE_TEST_CASE("Signal modifiers", "[Signal][modifiers]", double, float)
         REQUIRE(x1.size() == x2.size());
         for (size_t n = 0; n < x1.size(); ++n)
         {
-            CHECK(x1[n] == approx(sine[n]));
-            CHECK(x2[n] == approx(cosine[n]));
+            CHECK(math::near(x1[n], sine[n]));
+            CHECK(math::near(x2[n], cosine[n]));
         }
     }
 }
@@ -292,7 +291,7 @@ TEMPLATE_TEST_CASE("complex_signal", "[complex_signal]", double, float)
 
     for (size_t n = 0; n < x2.size(); ++n)
     {
-        CHECK(x2[n].real() == approx(x1_real[n]));
-        CHECK(x2[n].imag() == approx(x1_imag[n]));
+        CHECK(math::near(x2[n].real(), x1_real[n]));
+        CHECK(math::near(x2[n].imag(), x1_imag[n]));
     }
 }

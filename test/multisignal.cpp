@@ -1,11 +1,10 @@
-#include "approx.hpp"
-
 #include <algorithm>
 #include <catch2/catch_template_test_macros.hpp>
 #include <complex>
 #include <tnt/dsp/multisignal.hpp>
 #include <tnt/dsp/signal.hpp>
 #include <tnt/dsp/signal_generator.hpp>
+#include <tnt/math/comparison.hpp>
 
 using namespace tnt;
 
@@ -104,7 +103,7 @@ TEMPLATE_TEST_CASE("Multisignal construction", "[Multisignal][construction]", do
         {
             for (size_t c = 0; c < x2.channels(); ++c)
             {
-                CHECK(x2[n][c] == approx(x1[n][c]));
+                CHECK(math::near(x2[n][c], x1[n][c]));
             }
         }
     }
@@ -128,7 +127,7 @@ TEMPLATE_TEST_CASE("Multisignal construction", "[Multisignal][construction]", do
         {
             for (size_t c = 0; c < x2.channels(); ++c)
             {
-                CHECK(x2[n][c] == approx(x1_copy[n][c]));
+                CHECK(math::near(x2[n][c], x1_copy[n][c]));
             }
         }
     }
@@ -155,7 +154,7 @@ TEMPLATE_TEST_CASE("Multisignal assignment", "[Multisignal][assignment]", double
         {
             for (size_t c = 0; c < x2.channels(); ++c)
             {
-                CHECK(x2[n][c] == approx(x1[n][c]));
+                CHECK(math::near(x2[n][c], x1[n][c]));
             }
         }
     }
@@ -178,7 +177,7 @@ TEMPLATE_TEST_CASE("Multisignal assignment", "[Multisignal][assignment]", double
         {
             for (size_t c = 0; c < x2.channels(); ++c)
             {
-                CHECK(x2[n][c] == approx(x1_copy[n][c]));
+                CHECK(math::near(x2[n][c], x1_copy[n][c]));
             }
         }
     }
@@ -210,8 +209,8 @@ TEMPLATE_TEST_CASE("Multisignal accessors", "[Multisignal][accessors]", double, 
 
         for (size_t n = 0; n < x.size(); ++n)
         {
-            CHECK(x_c0[n] == approx(c0[n]));
-            CHECK(x_c1[n] == approx(c1[n]));
+            CHECK(math::near(x_c0[n], c0[n]));
+            CHECK(math::near(x_c1[n], c1[n]));
         }
     }
 
@@ -219,7 +218,7 @@ TEMPLATE_TEST_CASE("Multisignal accessors", "[Multisignal][accessors]", double, 
     {
         const dsp::Multisignal<TestType> x(1000, 2500);
 
-        CHECK(x.duration() == approx(2.5));
+        CHECK(math::near(x.duration(), 2.5));
     }
 
     SECTION("sample_rate")
@@ -250,8 +249,8 @@ TEMPLATE_TEST_CASE("Multisignal data access", "[Multisignal][data access]", doub
         // const data access
         for (size_t n = 0; n < x.size(); ++n)
         {
-            CHECK(x[n][0] == approx(c0[n]));
-            CHECK(x[n][1] == approx(c1[n]));
+            CHECK(math::near(x[n][0], c0[n]));
+            CHECK(math::near(x[n][1], c1[n]));
         }
     }
 
@@ -267,12 +266,12 @@ TEMPLATE_TEST_CASE("Multisignal data access", "[Multisignal][data access]", doub
 
         for (size_t n = 0; n < x.size(); ++n)
         {
-            CHECK(x[n][0] == approx(c0[n]));
-            CHECK(x[n][1] == approx(c1[n]));
+            CHECK(math::near(x[n][0], c0[n]));
+            CHECK(math::near(x[n][1], c1[n]));
             x[n][0] = c1[n];
             x[n][1] = c0[n];
-            CHECK(x[n][0] == approx(c1[n]));
-            CHECK(x[n][1] == approx(c0[n]));
+            CHECK(math::near(x[n][0], c1[n]));
+            CHECK(math::near(x[n][1], c0[n]));
         }
     }
 }
@@ -296,7 +295,7 @@ TEMPLATE_TEST_CASE("miltisignal iterators", "[Multisignal][iterators]", double, 
                                           samples.end(),
                                           x[n++].begin(),
                                           [](const auto& sample1, const auto& sample2) {
-                                              return sample1 == approx(sample2);
+                                              return math::near(sample1, sample2);
                                           });
 
             CHECK(equal);
@@ -310,7 +309,7 @@ TEMPLATE_TEST_CASE("miltisignal iterators", "[Multisignal][iterators]", double, 
                                           samples.end(),
                                           x[n++].begin(),
                                           [](const auto& sample1, const auto& sample2) {
-                                              return sample1 == approx(sample2);
+                                              return math::near(sample1, sample2);
                                           });
 
             CHECK(equal);
@@ -332,7 +331,7 @@ TEMPLATE_TEST_CASE("miltisignal iterators", "[Multisignal][iterators]", double, 
 
         std::for_each(x.begin(), x.end(), [](const auto& samples) {
             std::for_each(samples.begin(), samples.end(), [](const auto& sample) {
-                CHECK(sample == approx(1));
+                CHECK(math::near(sample, 1));
             });
         });
     }
@@ -371,7 +370,7 @@ TEMPLATE_TEST_CASE("Multisignal modifiers", "[Multisignal][modifiers]", double, 
 
         for (size_t n = 0; n < x.size(); ++n)
         {
-            CHECK(x[n][0] == approx(data[n]));
+            CHECK(math::near(x[n][0], data[n]));
         }
     }
 
@@ -402,8 +401,8 @@ TEMPLATE_TEST_CASE("Multisignal modifiers", "[Multisignal][modifiers]", double, 
         {
             for (size_t c = 0; c < x1.channels(); ++c)
             {
-                CHECK(x1[n][c] == approx(x2_copy[n][c]));
-                CHECK(x2[n][c] == approx(x1_copy[n][c]));
+                CHECK(math::near(x1[n][c], x2_copy[n][c]));
+                CHECK(math::near(x2[n][c], x1_copy[n][c]));
             }
         }
     }

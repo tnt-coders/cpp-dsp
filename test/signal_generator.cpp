@@ -1,8 +1,7 @@
-#include "approx.hpp"
-
 #include <catch2/catch_template_test_macros.hpp>
 #include <tnt/dsp/signal.hpp>
 #include <tnt/dsp/signal_generator.hpp>
+#include <tnt/math/comparison.hpp>
 
 using namespace tnt;
 
@@ -59,7 +58,7 @@ TEMPLATE_TEST_CASE("SignalGenerator::cosine", "[SignalGenerator][cosine]", doubl
 
     for (size_t n = 0; n < N; ++n)
     {
-        CHECK(x[n] == approx(cosine[n]));
+        CHECK(math::near(x[n], cosine[n]));
     }
 }
 
@@ -92,6 +91,6 @@ TEMPLATE_TEST_CASE("SignalGenerator::sine", "[SignalGenerator][sine]", double, f
 
     for (size_t n = 0; n < N; ++n)
     {
-        CHECK(x[n] == approx(sine[n]));
+        CHECK(math::near(x[n], sine[n]));
     }
 }

@@ -1,11 +1,10 @@
-#include "approx.hpp"
-
 #include <catch2/catch_template_test_macros.hpp>
 #include <cmath>
 #include <complex>
 #include <tnt/dsp/fourier_transform.hpp>
 #include <tnt/dsp/signal.hpp>
 #include <tnt/dsp/signal_generator.hpp>
+#include <tnt/math/comparison.hpp>
 
 // TODO: Test fourier_transform/inverse_fourier_transform of larger sizes for speed
 
@@ -28,8 +27,8 @@ TEMPLATE_TEST_CASE("fourier_transform", "[fourier_transform]", double, float)
 
             for (size_t m = 0; m < N; ++m)
             {
-                CHECK(X[m].real() == approx(X2[m].real()));
-                CHECK(X[m].imag() == approx(X2[m].imag()));
+                CHECK(math::near(X[m].real(), X2[m].real()));
+                CHECK(math::near(X[m].imag(), X2[m].imag()));
             }
         }
     }
@@ -49,8 +48,8 @@ TEMPLATE_TEST_CASE("fourier_transform", "[fourier_transform]", double, float)
 
             for (size_t m = 0; m < N; ++m)
             {
-                CHECK(X[m].real() == approx(X2[m].real()));
-                CHECK(X[m].imag() == approx(X2[m].imag()));
+                CHECK(math::near(X[m].real(), X2[m].real()));
+                CHECK(math::near(X[m].imag(), X2[m].imag()));
             }
         }
     }
@@ -73,7 +72,7 @@ TEMPLATE_TEST_CASE("inverse_fourier_transform", "[inverse_fourier_transform]", d
 
             for (size_t n = 0; n < N; ++n)
             {
-                CHECK(x[n] == approx(x2[n].real()));
+                CHECK(math::near(x[n], x2[n].real()));
             }
         }
     }
@@ -93,8 +92,8 @@ TEMPLATE_TEST_CASE("inverse_fourier_transform", "[inverse_fourier_transform]", d
 
             for (size_t m = 0; m < N; ++m)
             {
-                CHECK(x[m].real() == approx(x2[m].real()));
-                CHECK(x[m].imag() == approx(x2[m].imag()));
+                CHECK(math::near(x[m].real(), x2[m].real()));
+                CHECK(math::near(x[m].imag(), x2[m].imag()));
             }
         }
     }
