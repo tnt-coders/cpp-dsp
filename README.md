@@ -5,10 +5,9 @@ signal processing algorithms.
 
 ## Documentation
 
-The available functions are documented with Doxygen style comments in the C++
-header files. For now the easiest way to view the documentation is by simply
-opening the header files and reading the comments, but I plan on finding a way
-to actually build and formally publish the documentation in the near future.
+[![Documentation](https://codedocs.xyz/tnt-coders/cpp-dsp.svg)](https://codedocs.xyz/tnt-coders/cpp-dsp/)
+
+Documentation can be found at <https://codedocs.xyz/tnt-coders/cpp-dsp/>.
 
 ## Disclaimer
 
