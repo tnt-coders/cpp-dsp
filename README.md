@@ -1,19 +1,13 @@
-# Overview
+# cpp-dsp
 
-cpp-dsp is an open source, cross platform, C++ implementation of common digital
-signal processing algorithms.
-
-## Documentation
-
-[![Documentation](https://codedocs.xyz/tnt-coders/cpp-dsp.svg)](https://codedocs.xyz/tnt-coders/cpp-dsp/)
-
-Documentation can be found at <https://codedocs.xyz/tnt-coders/cpp-dsp/>.
+cpp-dsp is an open source, cross platform, C++ implementation of common digital signal processing
+algorithms.
 
 ## Disclaimer
 
-This library is still a work in progress, but since it can already calculate
-fast Fourier transforms of arbitrary sizes relatively quickly I am choosing to
-make it public now because others may find it useful.
+This library is still a work in progress, but since it can already calculate fast Fourier transforms
+of arbitrary sizes relatively quickly I am choosing to make it public now because others may find it
+useful.
 
 # Build Instructions
 
@@ -35,6 +29,5 @@ To test the project, run CTest from the build directory.
 
 ## Dependencies
 
-This project requires the Conan package manager to automatically manage all of
-its dependencies. To install Conan see:
-https://docs.conan.io/en/latest/installation.html
+This project requires the Conan package manager to automatically manage all of its dependencies. To
+install Conan see: https://docs.conan.io/en/latest/installation.html
