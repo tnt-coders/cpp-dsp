@@ -18,6 +18,7 @@ include(tnt/project/Project)
 tnt_project_New(${PROJECT_NAME}
   NAMESPACE tnt
   CONANFILE conanfile.py
+  VERSION_FROM_GIT
 )
 
 # Find and install dependencies
