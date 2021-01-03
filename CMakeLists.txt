@@ -7,7 +7,7 @@ project(dsp LANGUAGES CXX)
 include(FetchContent)
 FetchContent_Declare(cmake-modules
   GIT_REPOSITORY https://github.com/tnt-coders/cmake-modules.git
-  GIT_TAG main
+  GIT_TAG master
 )
 FetchContent_MakeAvailable(cmake-modules)
 
@@ -36,3 +36,8 @@ add_subdirectory(test)
 
 # Install project targets
 tnt_project_Install(${PROJECT_NAME})
+
+# Create a conan package from the project
+tnt_project_Package(${PROJECT_NAME}
+  USER tnt-coders
+)
