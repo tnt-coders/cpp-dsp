@@ -2,7 +2,7 @@ from conans import ConanFile, CMake, tools
 
 class CppDsp(ConanFile):
     author = "TNT Coders <tnt-coders@googlegroups.com>"
-    build_requires = ["catch2/3.0.0@tnt-coders/stable",
+    build_requires = ["catch2/3.0.0-1@tnt-coders/stable",
                       "math/1.0.0@tnt-coders/stable"]
     default_options = {"shared": False}
     description = "C++ Implementation of common digital signal processing algorithms"
