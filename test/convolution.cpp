@@ -8,9 +8,9 @@ using namespace tnt;
 
 TEMPLATE_TEST_CASE("convolve", "[convolve]", double, float)
 {
-    const dsp::SignalGenerator<TestType> g(4000, 4);
+    const dsp::signal_generator<TestType> g(4000, 4);
 
-    SECTION("Convolve a real signal with a real signal")
+    SECTION("convolve a real signal with a real signal")
     {
         const auto a = g.cosine(1000);
         const auto b = g.sine(1000);
@@ -25,7 +25,7 @@ TEMPLATE_TEST_CASE("convolve", "[convolve]", double, float)
         CHECK(math::near(c[3], -2));
     }
 
-    SECTION("Convolve a real signal with a complex signal")
+    SECTION("convolve a real signal with a complex signal")
     {
         const auto a = g.cosine(1000);
         const auto b = dsp::complex_signal(g.cosine(1000), g.sine(1000));
@@ -44,7 +44,7 @@ TEMPLATE_TEST_CASE("convolve", "[convolve]", double, float)
         CHECK(math::near(c[3].imag(), -2));
     }
 
-    SECTION("Convolve a complex signal with a real signal")
+    SECTION("convolve a complex signal with a real signal")
     {
         const auto a = dsp::complex_signal(g.cosine(1000), g.sine(1000));
         const auto b = g.cosine(1000);
@@ -63,7 +63,7 @@ TEMPLATE_TEST_CASE("convolve", "[convolve]", double, float)
         CHECK(math::near(c[3].imag(), -2));
     }
 
-    SECTION("Convolve a complex signal with a complex signal")
+    SECTION("convolve a complex signal with a complex signal")
     {
         const auto a = dsp::complex_signal(g.cosine(1000), g.sine(1000));
         const auto b = dsp::complex_signal(g.cosine(1000), g.sine(1000));

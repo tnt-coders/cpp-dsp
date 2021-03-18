@@ -8,63 +8,63 @@
 
 using namespace tnt;
 
-TEMPLATE_TEST_CASE("Multisignal construction", "[Multisignal][construction]", double, float)
+TEMPLATE_TEST_CASE("multisignal construction", "[multisignal][construction]", double, float)
 {
-    const dsp::SignalGenerator<TestType> g(1000, 10);
+    const dsp::signal_generator<TestType> g(1000, 10);
 
-    SECTION("Construct a real signal given the sample rate")
+    SECTION("construct a real signal given the sample rate")
     {
-        const dsp::Multisignal<TestType> x(1000);
+        const dsp::multisignal<TestType> x(1000);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 0);
     }
 
-    SECTION("Construct a complex signal given the sample rate")
+    SECTION("construct a complex signal given the sample rate")
     {
-        const dsp::Multisignal<std::complex<TestType>> x(1000);
+        const dsp::multisignal<std::complex<TestType>> x(1000);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 0);
     }
 
-    SECTION("Construct a real signal given the sample rate and size")
+    SECTION("construct a real signal given the sample rate and size")
     {
-        const dsp::Multisignal<TestType> x(1000, 10);
+        const dsp::multisignal<TestType> x(1000, 10);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 10);
     }
 
-    SECTION("Construct a complex signal given the sample rate and size")
+    SECTION("construct a complex signal given the sample rate and size")
     {
-        const dsp::Multisignal<std::complex<TestType>> x(1000, 10);
+        const dsp::multisignal<std::complex<TestType>> x(1000, 10);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 10);
     }
 
-    SECTION("Construct a real signal given the sample rate, size, and number of channels")
+    SECTION("construct a real signal given the sample rate, size, and number of channels")
     {
-        const dsp::Multisignal<TestType> x(1000, 10, 2);
+        const dsp::multisignal<TestType> x(1000, 10, 2);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 10);
         CHECK(x.channels() == 2);
     }
 
-    SECTION("Construct a complex signal given the sample rate, size, and number of channels")
+    SECTION("construct a complex signal given the sample rate, size, and number of channels")
     {
-        const dsp::Multisignal<std::complex<TestType>> x(1000, 10, 2);
+        const dsp::multisignal<std::complex<TestType>> x(1000, 10, 2);
 
         CHECK(x.sample_rate() == 1000);
         CHECK(x.size() == 10);
         CHECK(x.channels() == 2);
     }
 
-    SECTION("Construct a real multi-channel signal from multiple real signals")
+    SECTION("construct a real multi-channel signal from multiple real signals")
     {
-        const dsp::Multisignal<TestType> x = {
+        const dsp::multisignal<TestType> x = {
             g.cosine(100),
             g.sine(100),
         };
@@ -74,9 +74,9 @@ TEMPLATE_TEST_CASE("Multisignal construction", "[Multisignal][construction]", do
         CHECK(x.channels() == 2);
     }
 
-    SECTION("Construct a comple multi-channel signal from multiple complex signals")
+    SECTION("construct a comple multi-channel signal from multiple complex signals")
     {
-        const dsp::Multisignal<std::complex<TestType>> x = {
+        const dsp::multisignal<std::complex<TestType>> x = {
             {g.cosine(1000), g.sine(100)},
             {g.sine(1000), g.cosine(100)},
         };
@@ -86,14 +86,14 @@ TEMPLATE_TEST_CASE("Multisignal construction", "[Multisignal][construction]", do
         CHECK(x.channels() == 2);
     }
 
-    SECTION("Copy constructor")
+    SECTION("copy constructor")
     {
-        const dsp::Multisignal<TestType> x1 = {
+        const dsp::multisignal<TestType> x1 = {
             g.cosine(100),
             g.sine(100),
         };
 
-        dsp::Multisignal<TestType> x2(x1);
+        dsp::multisignal<TestType> x2(x1);
 
         CHECK(x2.sample_rate() == x1.sample_rate());
         REQUIRE(x2.size() == x1.size());
@@ -108,16 +108,16 @@ TEMPLATE_TEST_CASE("Multisignal construction", "[Multisignal][construction]", do
         }
     }
 
-    SECTION("Move constructor")
+    SECTION("move constructor")
     {
-        const dsp::Multisignal<TestType> x1 = {
+        const dsp::multisignal<TestType> x1 = {
             g.cosine(100),
             g.sine(100),
         };
 
         const auto x1_copy = x1;
 
-        const dsp::Multisignal<TestType> x2(std::move(x1));
+        const dsp::multisignal<TestType> x2(std::move(x1));
 
         CHECK(x2.sample_rate() == x1_copy.sample_rate());
         REQUIRE(x2.size() == x1_copy.size());
@@ -133,13 +133,13 @@ TEMPLATE_TEST_CASE("Multisignal construction", "[Multisignal][construction]", do
     }
 }
 
-TEMPLATE_TEST_CASE("Multisignal assignment", "[Multisignal][assignment]", double, float)
+TEMPLATE_TEST_CASE("multisignal assignment", "[multisignal][assignment]", double, float)
 {
-    const dsp::SignalGenerator<TestType> g(1000, 10);
+    const dsp::signal_generator<TestType> g(1000, 10);
 
-    SECTION("Copy assignment")
+    SECTION("copy assignment")
     {
-        const dsp::Multisignal<TestType> x1 = {
+        const dsp::multisignal<TestType> x1 = {
             g.cosine(100),
             g.sine(100),
         };
@@ -159,9 +159,9 @@ TEMPLATE_TEST_CASE("Multisignal assignment", "[Multisignal][assignment]", double
         }
     }
 
-    SECTION("Move assignment")
+    SECTION("move assignment")
     {
-        dsp::Multisignal<TestType> x1 = {
+        dsp::multisignal<TestType> x1 = {
             g.cosine(100),
             g.sine(100),
         };
@@ -183,16 +183,16 @@ TEMPLATE_TEST_CASE("Multisignal assignment", "[Multisignal][assignment]", double
     }
 }
 
-TEMPLATE_TEST_CASE("Multisignal accessors", "[Multisignal][accessors]", double, float)
+TEMPLATE_TEST_CASE("multisignal accessors", "[multisignal][accessors]", double, float)
 {
-    const dsp::SignalGenerator<TestType> g(1000, 10);
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     SECTION("channel")
     {
         const auto c0 = g.cosine(100);
         const auto c1 = g.sine(100);
 
-        const dsp::Multisignal<TestType> x = {
+        const dsp::multisignal<TestType> x = {
             c0,
             c1,
         };
@@ -216,29 +216,29 @@ TEMPLATE_TEST_CASE("Multisignal accessors", "[Multisignal][accessors]", double, 
 
     SECTION("duration")
     {
-        const dsp::Multisignal<TestType> x(1000, 2500);
+        const dsp::multisignal<TestType> x(1000, 2500);
 
         CHECK(math::near(x.duration(), 2.5));
     }
 
     SECTION("sample_rate")
     {
-        const dsp::Multisignal<TestType> x(1000);
+        const dsp::multisignal<TestType> x(1000);
 
         CHECK(x.sample_rate() == 1000);
     }
 }
 
-TEMPLATE_TEST_CASE("Multisignal data access", "[Multisignal][data access]", double, float)
+TEMPLATE_TEST_CASE("multisignal data access", "[multisignal][data access]", double, float)
 {
-    const dsp::SignalGenerator<TestType> g(1000, 10);
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     const auto c0 = g.cosine(100);
     const auto c1 = g.sine(100);
 
-    SECTION("Constant data access")
+    SECTION("constant data access")
     {
-        const dsp::Multisignal<TestType> x = {
+        const dsp::multisignal<TestType> x = {
             c0,
             c1,
         };
@@ -254,9 +254,9 @@ TEMPLATE_TEST_CASE("Multisignal data access", "[Multisignal][data access]", doub
         }
     }
 
-    SECTION("Mutable data access")
+    SECTION("mutable data access")
     {
-        dsp::Multisignal<TestType> x = {
+        dsp::multisignal<TestType> x = {
             c0,
             c1,
         };
@@ -276,13 +276,13 @@ TEMPLATE_TEST_CASE("Multisignal data access", "[Multisignal][data access]", doub
     }
 }
 
-TEMPLATE_TEST_CASE("miltisignal iterators", "[Multisignal][iterators]", double, float)
+TEMPLATE_TEST_CASE("multisignal iterators", "[multisignal][iterators]", double, float)
 {
-    const dsp::SignalGenerator<TestType> g(1000, 10);
+    const dsp::signal_generator<TestType> g(1000, 10);
 
-    SECTION("Constant iterators")
+    SECTION("constant iterators")
     {
-        const dsp::Multisignal<TestType> x = {
+        const dsp::multisignal<TestType> x = {
             g.cosine(100),
             g.sine(1000),
         };
@@ -316,9 +316,9 @@ TEMPLATE_TEST_CASE("miltisignal iterators", "[Multisignal][iterators]", double, 
         });
     }
 
-    SECTION("Mutable iterators")
+    SECTION("mutable iterators")
     {
-        dsp::Multisignal<TestType> x = {
+        dsp::multisignal<TestType> x = {
             g.cosine(100),
             g.sine(1000),
         };
@@ -337,30 +337,30 @@ TEMPLATE_TEST_CASE("miltisignal iterators", "[Multisignal][iterators]", double, 
     }
 }
 
-TEMPLATE_TEST_CASE("Multisignal capacity", "[Multisignal][capacity]", double, float)
+TEMPLATE_TEST_CASE("multisignal capacity", "[multisignal][capacity]", double, float)
 {
     SECTION("size")
     {
-        const dsp::Multisignal<TestType> x(1000, 10);
+        const dsp::multisignal<TestType> x(1000, 10);
 
         CHECK(x.size() == 10);
     }
 
     SECTION("channels")
     {
-        const dsp::Multisignal<TestType> x(1000, 10, 2);
+        const dsp::multisignal<TestType> x(1000, 10, 2);
 
         CHECK(x.channels() == 2);
     }
 }
 
-TEMPLATE_TEST_CASE("Multisignal modifiers", "[Multisignal][modifiers]", double, float)
+TEMPLATE_TEST_CASE("multisignal modifiers", "[multisignal][modifiers]", double, float)
 {
-    const dsp::SignalGenerator<TestType> g(1000, 10);
+    const dsp::signal_generator<TestType> g(1000, 10);
 
     SECTION("add_channel")
     {
-        dsp::Multisignal<TestType> x(g.sample_rate(), g.size());
+        dsp::multisignal<TestType> x(g.sample_rate(), g.size());
 
         x.add_channel(g.cosine(100));
         const auto data = g.cosine(100);
@@ -376,11 +376,11 @@ TEMPLATE_TEST_CASE("Multisignal modifiers", "[Multisignal][modifiers]", double, 
 
     SECTION("swap")
     {
-        dsp::Multisignal<TestType> x1 = {
+        dsp::multisignal<TestType> x1 = {
             g.cosine(100),
             g.sine(100),
         };
-        dsp::Multisignal<TestType> x2 = {
+        dsp::multisignal<TestType> x2 = {
             g.sine(100),
             g.cosine(100),
         };

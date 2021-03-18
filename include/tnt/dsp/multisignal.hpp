@@ -13,7 +13,7 @@ namespace tnt::dsp
 \brief Represents a multi-channel DSP signal to store and process sampled data
 */
 template <typename T>
-class Multisignal final
+class multisignal final
 {
 public:
     /*!
@@ -40,7 +40,7 @@ public:
     \brief Constructor
     \param[in] signals One or more single channel signals
     */
-    Multisignal(const std::initializer_list<Signal<T>> signals)
+    multisignal(const std::initializer_list<signal<T>> signals)
         : m_sample_rate()
         , m_data()
     {
@@ -54,7 +54,7 @@ public:
     \brief Constructor
     \param[in] sample_rate Sample rate
     */
-    explicit Multisignal(const size_t sample_rate)
+    explicit multisignal(const size_t sample_rate)
         : m_sample_rate(sample_rate)
         , m_data()
     {}
@@ -64,7 +64,7 @@ public:
     \param[in] sample_rate Sample rate
     \param[in] size Size
     */
-    explicit Multisignal(const size_t sample_rate, const size_type& size)
+    explicit multisignal(const size_t sample_rate, const size_type& size)
         : m_sample_rate(sample_rate)
         , m_data(size)
     {}
@@ -75,7 +75,7 @@ public:
     \param[in] size Size
     \param[in] channels Number of channels
     */
-    explicit Multisignal(const size_t                              sample_rate,
+    explicit multisignal(const size_t                              sample_rate,
                          const size_type&                          size,
                          const typename std::vector<T>::size_type& channels)
         : m_sample_rate(sample_rate)
@@ -86,43 +86,43 @@ public:
     \brief Copy constructor
     \param[in] signal Multi-channel signal
     */
-    Multisignal(const Multisignal& signal) = default;
+    multisignal(const multisignal& signal) = default;
 
     /*!
     \brief Move constructor
     \param[in] signal Multi-channel signal
     */
-    Multisignal(Multisignal<T>&& signal) = default;
+    multisignal(multisignal<T>&& signal) = default;
 
     /*!
     \brief Copy assignment operator
     \param[in] signal Multi-channel signal to assign from
     \return Multi-channel signal equal to the input
     */
-    Multisignal<T>& operator=(const Multisignal<T>& signal) = default;
+    multisignal<T>& operator=(const multisignal<T>& signal) = default;
 
     /*!
     \brief Move assignment operator
     \param[in] signal Multi-channel signal to assign from
     \return Multi-channel signal equal to the input
     */
-    Multisignal<T>& operator=(Multisignal<T>&& signal) = default;
+    multisignal<T>& operator=(multisignal<T>&& signal) = default;
 
     /*!
     \brief Destructor
     */
-    ~Multisignal() = default;
+    ~multisignal() = default;
 
     /*!
     \brief Gets the specified channel
     \param[in] channel Desired channel
     \return Signal contained in the specified channel
     */
-    Signal<T> channel(const typename std::vector<T>::size_type& channel) const
+    signal<T> channel(const typename std::vector<T>::size_type& channel) const
     {
         assert(channel < this->channels());
 
-        Signal<T> signal(this->sample_rate(), this->size());
+        signal<T> signal(this->sample_rate(), this->size());
         for (size_type n = 0; n < this->size(); ++n)
         {
             signal[n] = m_data[n][channel];
@@ -227,7 +227,7 @@ public:
     \brief Adds a channel
     \param[in] signal Signal to put in the channel
     */
-    void add_channel(const Signal<T>& signal)
+    void add_channel(const signal<T>& signal)
     {
         // Validate sample rate
         if (this->sample_rate())
@@ -275,7 +275,7 @@ public:
 
     // Friend declaration for swap
     template <typename U>
-    friend void swap(Multisignal<U>& signal1, Multisignal<U>& signal2);
+    friend void swap(multisignal<U>& signal1, multisignal<U>& signal2);
 
 private:
     size_t                      m_sample_rate;
@@ -288,7 +288,7 @@ private:
 \param[in] signal2 Second signal to swap
 */
 template <typename T>
-void swap(Multisignal<T>& signal1, Multisignal<T>& signal2)
+void swap(multisignal<T>& signal1, multisignal<T>& signal2)
 {
     using std::swap;
     swap(signal1.m_sample_rate, signal2.m_sample_rate);

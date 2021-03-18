@@ -13,7 +13,7 @@ namespace tnt::dsp
 \return Analytical signal representing the Hilbert transform of the input signal
 */
 template <typename T>
-Signal<std::complex<T>> hilbert_transform(const Signal<T>& x)
+signal<std::complex<T>> hilbert_transform(const signal<T>& x)
 {
     const auto sampleRate = x.sample_rate();
     const auto N          = x.size();
@@ -21,7 +21,7 @@ Signal<std::complex<T>> hilbert_transform(const Signal<T>& x)
     // Take the Fourier transform
     const auto X = fourier_transform(x);
 
-    Signal<std::complex<T>> X_c(sampleRate, N);
+    signal<std::complex<T>> X_c(sampleRate, N);
 
     // The DC component does not get doubled
     X_c[0] = X[0];

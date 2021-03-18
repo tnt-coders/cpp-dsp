@@ -10,15 +10,15 @@ using namespace tnt;
 
 TEMPLATE_TEST_CASE("magnitude", "[magnitude]", double, float)
 {
-    const dsp::SignalGenerator<TestType> g(4000, 4);
+    const dsp::signal_generator<TestType> g(4000, 4);
 
-    SECTION("Magnitude of a real sample")
+    SECTION("magnitude of a real sample")
     {
         CHECK(math::near(dsp::magnitude<TestType>(1), 1));
         CHECK(math::near(dsp::magnitude<TestType>(-1), 1));
     }
 
-    SECTION("Magnitude of a complex sample")
+    SECTION("magnitude of a complex sample")
     {
         CHECK(math::near(dsp::magnitude(std::complex<TestType>(3, 4)), 5));
         CHECK(math::near(dsp::magnitude(std::complex<TestType>(-3, 4)), 5));
@@ -26,7 +26,7 @@ TEMPLATE_TEST_CASE("magnitude", "[magnitude]", double, float)
         CHECK(math::near(dsp::magnitude(std::complex<TestType>(-3, -4)), 5));
     }
 
-    SECTION("Magnitude of a real signal")
+    SECTION("magnitude of a real signal")
     {
         const auto x           = g.cosine(1000);
         const auto x_magnitude = dsp::magnitude(x);
@@ -37,7 +37,7 @@ TEMPLATE_TEST_CASE("magnitude", "[magnitude]", double, float)
         CHECK(math::near(x_magnitude[3], 0));
     }
 
-    SECTION("Magnitude of a complex signal")
+    SECTION("magnitude of a complex signal")
     {
         const auto x           = dsp::complex_signal(g.cosine(1000), g.sine(1000));
         const auto x_magnitude = dsp::magnitude(x);
@@ -51,15 +51,15 @@ TEMPLATE_TEST_CASE("magnitude", "[magnitude]", double, float)
 
 TEMPLATE_TEST_CASE("phase", "[phase]", double, float)
 {
-    const dsp::SignalGenerator<TestType> g(4000, 4);
+    const dsp::signal_generator<TestType> g(4000, 4);
 
-    SECTION("Phase of a real sample")
+    SECTION("phase of a real sample")
     {
         CHECK(math::near(dsp::phase<TestType>(1), 0));
         CHECK(math::near(dsp::phase<TestType>(-1), M_PI));
     }
 
-    SECTION("Phase of a complex sample")
+    SECTION("phase of a complex sample")
     {
         CHECK(math::near(dsp::phase(std::complex<TestType>(1, 1)), M_PI / 4));
         CHECK(math::near(dsp::phase(std::complex<TestType>(-1, 1)), 3 * M_PI / 4));
@@ -67,7 +67,7 @@ TEMPLATE_TEST_CASE("phase", "[phase]", double, float)
         CHECK(math::near(dsp::phase(std::complex<TestType>(-1, -1)), -3 * M_PI / 4));
     }
 
-    SECTION("Phase of a real signal")
+    SECTION("phase of a real signal")
     {
         auto       x       = g.cosine(1000);
         const auto x_phase = dsp::phase(x);
@@ -78,7 +78,7 @@ TEMPLATE_TEST_CASE("phase", "[phase]", double, float)
         CHECK(math::near(x_phase[3], 0));
     }
 
-    SECTION("Phase of a complex signal")
+    SECTION("phase of a complex signal")
     {
         auto       x       = dsp::complex_signal(g.cosine(1000), g.sine(1000));
         const auto x_phase = dsp::phase(x);
@@ -92,9 +92,9 @@ TEMPLATE_TEST_CASE("phase", "[phase]", double, float)
 
 TEMPLATE_TEST_CASE("power", "[power]", double, float)
 {
-    const dsp::SignalGenerator<TestType> g(4000, 4);
+    const dsp::signal_generator<TestType> g(4000, 4);
 
-    SECTION("Power of a real sample")
+    SECTION("power of a real sample")
     {
         CHECK(math::near(dsp::power<TestType>(1), 1));
         CHECK(math::near(dsp::power<TestType>(-1), 1));
@@ -102,7 +102,7 @@ TEMPLATE_TEST_CASE("power", "[power]", double, float)
         CHECK(math::near(dsp::power<TestType>(-2), 4));
     }
 
-    SECTION("Power of a complex sample")
+    SECTION("power of a complex sample")
     {
         CHECK(math::near(dsp::power(std::complex<TestType>(3, 4)), 25));
         CHECK(math::near(dsp::power(std::complex<TestType>(-3, 4)), 25));
@@ -110,7 +110,7 @@ TEMPLATE_TEST_CASE("power", "[power]", double, float)
         CHECK(math::near(dsp::power(std::complex<TestType>(-3, -4)), 25));
     }
 
-    SECTION("Power of a real signal")
+    SECTION("power of a real signal")
     {
         const auto x1       = g.cosine(1000);
         const auto x2       = g.cosine(1000, 2);
@@ -127,7 +127,7 @@ TEMPLATE_TEST_CASE("power", "[power]", double, float)
         CHECK(math::near(x2_power[3], 0));
     }
 
-    SECTION("Power of a complex signal")
+    SECTION("power of a complex signal")
     {
         const auto x1       = dsp::complex_signal(g.cosine(1000), g.sine(1000));
         const auto x2       = dsp::complex_signal(g.cosine(1000, 2), g.sine(1000, 2));

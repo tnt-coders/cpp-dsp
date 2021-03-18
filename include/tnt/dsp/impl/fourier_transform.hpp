@@ -12,7 +12,7 @@ namespace tnt::dsp::impl
 
 // C++ implementation of the Bluestein FFT algorithm
 template <typename T>
-Signal<std::complex<T>> bluestein_fft(const Signal<std::complex<T>>& x)
+signal<std::complex<T>> bluestein_fft(const signal<std::complex<T>>& x)
 {
     const auto f_s = x.sample_rate();
     const auto N   = x.size();
@@ -22,7 +22,7 @@ Signal<std::complex<T>> bluestein_fft(const Signal<std::complex<T>>& x)
     const auto M = impl::next_power_of_2(2 * N - 1);
 
     // Calculate the "phase factors"
-    Signal<std::complex<T>> P(f_s, N);
+    signal<std::complex<T>> P(f_s, N);
     for (size_t n = 0; n < N; ++n)
     {
         // %(2*N) is done to improve accuracy of floating point trigonometry
@@ -30,8 +30,8 @@ Signal<std::complex<T>> bluestein_fft(const Signal<std::complex<T>>& x)
     }
 
     // Construct the two sequences to perform convolution
-    Signal<std::complex<T>> a(f_s, M);
-    Signal<std::complex<T>> b(f_s, M);
+    signal<std::complex<T>> a(f_s, M);
+    signal<std::complex<T>> b(f_s, M);
     a[0] = x[0] * P[0];
     b[0] = P[0];
     for (size_t n = 1; n < N; ++n)
@@ -43,7 +43,7 @@ Signal<std::complex<T>> bluestein_fft(const Signal<std::complex<T>>& x)
     const auto c = impl::convolve(a, b);
 
     // Mutiply by the "phase factors" to obtain the correct results
-    Signal<std::complex<T>> X(f_s, N);
+    signal<std::complex<T>> X(f_s, N);
     for (size_t m = 0; m < N; ++m)
     {
         X[m] = c[m] * P[m];
@@ -55,7 +55,7 @@ Signal<std::complex<T>> bluestein_fft(const Signal<std::complex<T>>& x)
 // Note that this is specialized for performing the Bluestein FFT efficiently.
 // This is not a general purpose convolution algorithm.
 template <typename T>
-Signal<std::complex<T>> convolve(const Signal<std::complex<T>>& a, const Signal<std::complex<T>>& b)
+signal<std::complex<T>> convolve(const signal<std::complex<T>>& a, const signal<std::complex<T>>& b)
 {
     assert(a.sample_rate() == b.sample_rate());
     assert(a.size() == b.size());
@@ -67,7 +67,7 @@ Signal<std::complex<T>> convolve(const Signal<std::complex<T>>& a, const Signal<
     const auto omega    = 2 * static_cast<T>(M_PI) / N;
 
     // Pre-calculate the twiddle factors
-    Signal<std::complex<T>> W(f_s, N_over_2);
+    signal<std::complex<T>> W(f_s, N_over_2);
 
     for (size_t n = 0; n < N_over_2; ++n)
     {
@@ -80,7 +80,7 @@ Signal<std::complex<T>> convolve(const Signal<std::complex<T>>& a, const Signal<
 
     // The convolution theorem states that multiplication in the frequency
     // domain is equivalent to convolution in the time domain
-    Signal<std::complex<T>> C(f_s, N);
+    signal<std::complex<T>> C(f_s, N);
     std::transform(A.begin(), A.end(), B.begin(), C.begin(), std::multiplies<std::complex<T>>());
 
     return inverse_fourier_transform(C);
@@ -88,7 +88,7 @@ Signal<std::complex<T>> convolve(const Signal<std::complex<T>>& a, const Signal<
 
 // C++ implementation of the Stockam FFT algorithm
 template <typename T>
-Signal<std::complex<T>> stockham_fft(const Signal<std::complex<T>>& x)
+signal<std::complex<T>> stockham_fft(const signal<std::complex<T>>& x)
 {
     assert(impl::is_power_of_2(x.size()));
 
@@ -98,7 +98,7 @@ Signal<std::complex<T>> stockham_fft(const Signal<std::complex<T>>& x)
     const auto omega    = 2 * static_cast<T>(M_PI) / N;
 
     // Pre-calculate the twiddle factors
-    Signal<std::complex<T>> W(f_s, N_over_2);
+    signal<std::complex<T>> W(f_s, N_over_2);
 
     for (size_t n = 0; n < N_over_2; ++n)
     {
@@ -110,8 +110,8 @@ Signal<std::complex<T>> stockham_fft(const Signal<std::complex<T>>& x)
 
 // C++ implementation of the Stockam FFT algorithm
 template <typename T>
-Signal<std::complex<T>> stockham_fft(const Signal<std::complex<T>>& x,
-                                     const Signal<std::complex<T>>& W)
+signal<std::complex<T>> stockham_fft(const signal<std::complex<T>>& x,
+                                     const signal<std::complex<T>>& W)
 {
     assert(impl::is_power_of_2(x.size()));
 
@@ -121,8 +121,8 @@ Signal<std::complex<T>> stockham_fft(const Signal<std::complex<T>>& x,
 
     // The Stockham algorithm requires one vector for input/output data and
     // another as a temporary workspace
-    Signal<std::complex<T>> a(x);
-    Signal<std::complex<T>> b(f_s, N);
+    signal<std::complex<T>> a(x);
+    signal<std::complex<T>> b(f_s, N);
 
     // Set the spacing between twiddle factors used at the first stage
     auto W_stride = N / 2;

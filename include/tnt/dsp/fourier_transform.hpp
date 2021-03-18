@@ -18,7 +18,7 @@ namespace tnt::dsp
 \return Signal representing the FFT of the input data
 */
 template <typename T>
-Signal<std::complex<T>> fourier_transform(const Signal<T>& x)
+signal<std::complex<T>> fourier_transform(const signal<T>& x)
 {
     const auto f_s = x.sample_rate();
     const auto N   = x.size();
@@ -27,7 +27,7 @@ Signal<std::complex<T>> fourier_transform(const Signal<T>& x)
     // If N is odd, just perform the complex FFT
     if (!impl::is_even(N))
     {
-        Signal<std::complex<T>> x_p(f_s, N);
+        signal<std::complex<T>> x_p(f_s, N);
         std::transform(x.begin(), x.end(), x_p.begin(), [](const auto& sample) {
             return std::complex<T>(sample);
         });
@@ -40,7 +40,7 @@ Signal<std::complex<T>> fourier_transform(const Signal<T>& x)
     // Taking advantage of symmetry the FFT of a real signal can be computed
     // using a single N/2-point complex FFT. Split the input signal into its
     // even and odd components and load the data into a single complex vector.
-    Signal<std::complex<T>> x_p(f_s, N_over_2);
+    signal<std::complex<T>> x_p(f_s, N_over_2);
     for (size_t n = 0; n < N_over_2; ++n)
     {
         const auto n_times_2 = n * 2;
@@ -57,7 +57,7 @@ Signal<std::complex<T>> fourier_transform(const Signal<T>& x)
     X_p.push_back(X_p[0]);
 
     // Extract the real FFT from the output of the complex FFT
-    Signal<std::complex<T>> X(f_s, N);
+    signal<std::complex<T>> X(f_s, N);
     for (size_t m = 0; m < N_over_2; ++m)
     {
         const auto N_over_2_minus_m = N_over_2 - m;
@@ -93,7 +93,7 @@ Signal<std::complex<T>> fourier_transform(const Signal<T>& x)
 \return Signal representing the FFT of the input data
 */
 template <typename T>
-Signal<std::complex<T>> fourier_transform(const Signal<std::complex<T>>& x)
+signal<std::complex<T>> fourier_transform(const signal<std::complex<T>>& x)
 {
     const auto N = x.size();
 
@@ -106,19 +106,19 @@ Signal<std::complex<T>> fourier_transform(const Signal<std::complex<T>>& x)
 \return Signal representing the IFFT of the input data
 */
 template <typename T>
-Signal<std::complex<T>> inverse_fourier_transform(const Signal<std::complex<T>>& X)
+signal<std::complex<T>> inverse_fourier_transform(const signal<std::complex<T>>& X)
 {
     const auto f_s = X.sample_rate();
     const auto N   = X.size();
 
-    Signal<std::complex<T>> X_p(f_s, N);
+    signal<std::complex<T>> X_p(f_s, N);
     std::transform(X.begin(), X.end(), X_p.begin(), [](const auto& sample) {
         return std::conj(sample);
     });
 
     const auto x_p = fourier_transform(X_p);
 
-    Signal<std::complex<T>> x(f_s, N);
+    signal<std::complex<T>> x(f_s, N);
     std::transform(x_p.begin(), x_p.end(), x.begin(), [=](const auto& sample) {
         return std::conj(sample) / static_cast<T>(N);
     });

@@ -12,11 +12,11 @@ using namespace tnt;
 
 TEMPLATE_TEST_CASE("fourier_transform", "[fourier_transform]", double, float)
 {
-    SECTION("Fourier transform of a real signal")
+    SECTION("fourier transform of a real signal")
     {
         for (size_t N = 1; N <= 10; ++N)
         {
-            const dsp::SignalGenerator<TestType> g(1000, N);
+            const dsp::signal_generator<TestType> g(1000, N);
 
             const auto x  = g.cosine(100);
             const auto X  = dft(x);
@@ -33,11 +33,11 @@ TEMPLATE_TEST_CASE("fourier_transform", "[fourier_transform]", double, float)
         }
     }
 
-    SECTION("Fourier transform of a complex signal")
+    SECTION("fourier transform of a complex signal")
     {
         for (size_t N = 1; N <= 10; ++N)
         {
-            const dsp::SignalGenerator<TestType> g(1000, N);
+            const dsp::signal_generator<TestType> g(1000, N);
 
             const auto x  = dsp::complex_signal(g.cosine(100), g.sine(100));
             const auto X  = dft(x);
@@ -57,11 +57,11 @@ TEMPLATE_TEST_CASE("fourier_transform", "[fourier_transform]", double, float)
 
 TEMPLATE_TEST_CASE("inverse_fourier_transform", "[inverse_fourier_transform]", double, float)
 {
-    SECTION("Inverse fourier transform of a real signal")
+    SECTION("inverse fourier transform of a real signal")
     {
         for (size_t N = 1; N <= 10; ++N)
         {
-            const dsp::SignalGenerator<TestType> g(1000, N);
+            const dsp::signal_generator<TestType> g(1000, N);
 
             const auto x  = g.cosine(100);
             auto       X  = dsp::fourier_transform(x);
@@ -77,11 +77,11 @@ TEMPLATE_TEST_CASE("inverse_fourier_transform", "[inverse_fourier_transform]", d
         }
     }
 
-    SECTION("Inverse fourier transform of a complex signal")
+    SECTION("inverse fourier transform of a complex signal")
     {
         for (size_t N = 1; N <= 10; ++N)
         {
-            const dsp::SignalGenerator<TestType> g(1000, N);
+            const dsp::signal_generator<TestType> g(1000, N);
 
             const auto x  = dsp::complex_signal(g.cosine(100), g.sine(100));
             const auto X  = dsp::fourier_transform(x);
@@ -101,12 +101,12 @@ TEMPLATE_TEST_CASE("inverse_fourier_transform", "[inverse_fourier_transform]", d
 
 // Implementation of slow Fourier transform to compare against
 template <typename T>
-dsp::Signal<std::complex<T>> dft(const dsp::Signal<T>& x)
+dsp::signal<std::complex<T>> dft(const dsp::signal<T>& x)
 {
     const auto f_s = x.sample_rate();
     const auto N   = x.size();
 
-    dsp::Signal<std::complex<T>> X(f_s, N);
+    dsp::signal<std::complex<T>> X(f_s, N);
 
     // Take advantage of DFT symmetry when dealing with real input signals
     // Only the first N/2 + 1 outputs are unique
@@ -129,12 +129,12 @@ dsp::Signal<std::complex<T>> dft(const dsp::Signal<T>& x)
 
 // Implementation of slow fourier transform to compare against
 template <typename T>
-dsp::Signal<std::complex<T>> dft(const dsp::Signal<std::complex<T>>& x)
+dsp::signal<std::complex<T>> dft(const dsp::signal<std::complex<T>>& x)
 {
     const auto f_s = x.sample_rate();
     const auto N   = x.size();
 
-    dsp::Signal<std::complex<T>> X(f_s, N);
+    dsp::signal<std::complex<T>> X(f_s, N);
 
     for (size_t k = 0; k < N; ++k)
     {
