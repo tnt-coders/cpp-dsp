@@ -1,5 +1,5 @@
 include(Catch)
-include(CTest)
+# TODO: Add "include(CTest)" and configure it properly
 
 add_executable(${PROJECT_NAME}_test
     main.cpp
