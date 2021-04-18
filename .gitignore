@@ -1,6 +1,10 @@
 # Build artifacts
 build
 
+# CLion auto-generated files
+.idea
+cmake-build-*
+
 # Visual Studio auto-generated files
 .vs
 out
